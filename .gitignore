@@ -1,5 +1,5 @@
 yarn.lock
-packagon.json-lock
+package.json-lock
 node_modules/**/*
 .expo/*
 npm-debug.*
