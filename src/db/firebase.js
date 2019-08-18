@@ -1,6 +1,8 @@
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 
+import 'firebase/functions';
+
 const firebaseConfig = {
   apiKey: functions.config().firebaseapi.id,
   authDomain: 'event-hive.firebaseapp.com',

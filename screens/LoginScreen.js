@@ -1,5 +1,6 @@
 import React from 'react';
 import eventBriteData from '../src/db/eventBriteData';
+import eventBriteToken from '../secrets';
 
 import { StyleSheet, View, Text } from 'react-native';
 
@@ -28,6 +29,7 @@ export default class LoginScreen extends React.Component {
   }
 
   render() {
+    console.log(eventBriteToken);
     return (
       <View>
         <Text>This is the login screen</Text>
