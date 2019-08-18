@@ -38,4 +38,13 @@ export class FirebaseWrapper {
       console.log(error);
     }
   }
+
+  async GetEvents(collectionPath, doc) {
+    try {
+      const ref = this._firestore.collection(collectionPath).doc(doc)
+      return ref.get()
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
