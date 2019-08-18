@@ -1,8 +1,8 @@
-import firebase from 'firebase';
+import * as firebase from 'firebase';
 import '@firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCGCj33IN_bBb4jlPiBfqpum0iFDjq28ZI',
+  apiKey: functions.config().firebaseapi.id,
   authDomain: 'event-hive.firebaseapp.com',
   databaseURL: 'https://event-hive.firebaseio.com',
   projectId: 'event-hive',
@@ -11,7 +11,7 @@ const firebaseConfig = {
   appId: '1:1008246741429:web:b037d03a79b031d9',
 }; // apiKey, authDomain, etc. (see above)
 
-firebase.initializeApp(firebaseConfig);
+const firestore = firebase.initializeApp(firebaseConfig).firestore();
 
 const dbh = firebase.firestore();
 
@@ -23,3 +23,5 @@ dbh
     location: { latitude: 100, longitude: 40 },
     name: 'Monday Bee Keeping',
   });
+
+export default firestore;
