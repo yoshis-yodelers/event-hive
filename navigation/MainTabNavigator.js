@@ -1,29 +1,39 @@
-import React from "react";
+import React from 'react';
 import {
   createStackNavigator,
-  createBottomTabNavigator
-} from "react-navigation";
+  createBottomTabNavigator,
+} from 'react-navigation';
 
-import HomeScreen from "../screens/HomeScreen";
-import SearchScreen from "../screens/SearchScreen";
+import HomeScreen from '../screens/HomeScreen';
+import SearchScreen from '../screens/SearchScreen';
+import CreateEventScreen from '../screens/CreateEventScreen';
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen
+  Home: HomeScreen,
 });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: "Home"
+  tabBarLabel: 'Home',
 };
 
 const SearchStack = createStackNavigator({
-  Search: SearchScreen
+  Search: SearchScreen,
 });
 
 SearchStack.navigationOptions = {
-  tabBarLabel: "Search"
+  tabBarLabel: 'Search',
+};
+
+const CreateEventStack = createStackNavigator({
+  CreateEvent: CreateEventScreen,
+});
+
+CreateEventStack.navigationOptions = {
+  tabBarLabel: 'Create',
 };
 
 export default createBottomTabNavigator({
   HomeStack,
-  SearchStack
+  SearchStack,
+  CreateEventStack,
 });
