@@ -2,10 +2,9 @@ import axios from 'axios';
 import * as firebase from 'firebase';
 import 'firebase/functions';
 import eventBriteToken from '../../secrets';
+import { FirebaseWrapper } from '../../firebase/firebase';
 
 //import * as firebase from 'firebase';
-
-console.log(Object.keys(eventBriteToken));
 
 const eventBriteData = async () => {
   const events = await axios({
@@ -16,4 +15,15 @@ const eventBriteData = async () => {
   return events;
 };
 
-export default eventBriteData;
+const setEventBriteData = async () => {
+  const events = await eventBriteData();
+
+  events.data.events.map(async events => {
+    await FirebaseWrapper.GetInstance().CreateNewEventBriteDocument(
+      'Event',
+      events
+    );
+  });
+};
+
+export default setEventBriteData;

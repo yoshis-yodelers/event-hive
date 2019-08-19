@@ -29,7 +29,6 @@ export default class LoginScreen extends React.Component {
   }
 
   render() {
-    console.log(eventBriteToken);
     return (
       <View>
         <Text>This is the login screen</Text>

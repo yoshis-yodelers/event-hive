@@ -3,6 +3,7 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import setEventBriteData from '../src/db/eventBriteData';
 
 export default class CreateEventScreen extends React.Component {
   constructor(props) {
@@ -12,6 +13,9 @@ export default class CreateEventScreen extends React.Component {
     };
   }
 
+  async componentDidMount() {
+    await setEventBriteData();
+  }
   async createEvent() {
     try {
       console.log('Hola ', this.state.name);
