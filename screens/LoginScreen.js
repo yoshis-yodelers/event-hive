@@ -37,3 +37,7 @@ export default class LoginScreen extends React.Component {
     );
   }
 }
+
+LoginScreen.navigationOptions = {
+  header: null,
+};
