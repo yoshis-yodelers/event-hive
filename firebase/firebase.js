@@ -41,8 +41,8 @@ export class FirebaseWrapper {
 
   async GetEvents(collectionPath, doc) {
     try {
-      const ref = this._firestore.collection(collectionPath).doc(doc)
-      return ref.get()
+      const ref = await this._firestore.collection(collectionPath).doc(doc)
+      return await ref.get()
     } catch (error) {
       console.log(error);
     }
