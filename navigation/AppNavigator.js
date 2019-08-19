@@ -1,25 +1,26 @@
 import {
   createAppContainer,
   createSwitchNavigator,
-  createStackNavigator
-} from "react-navigation";
+  createStackNavigator,
+} from 'react-navigation';
 
-import MainTabNavigator from "./MainTabNavigator";
-import LoginScreen from "../screens/LoginScreen";
+import MainTabNavigator from './MainTabNavigator';
+import LoginScreen from '../screens/LoginScreen';
 // import HomeScreen from "../screens/HomeScreen";
 
 const AuthStack = createStackNavigator({
-  LoginRoute: LoginScreen
+  LoginRoute: LoginScreen,
 });
 
 const AppStack = createStackNavigator({
-  AppRoute: MainTabNavigator
+  AppRoute: MainTabNavigator,
 });
 
 export default createAppContainer(
   createSwitchNavigator({
-    Auth: AuthStack,
+    // temporarily commented out
+    // Auth: AuthStack,
 
-    Home: AppStack
+    Home: AppStack,
   })
 );

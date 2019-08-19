@@ -13,3 +13,4 @@ web-build/
 web-report/
 secrets.js
 node_modules
+.gitignore
