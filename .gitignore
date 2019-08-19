@@ -11,4 +11,6 @@ npm-debug.*
 *.orig.*
 web-build/
 web-report/
-firebase/config.js
+secrets.js
+node_modules
+.gitignore
