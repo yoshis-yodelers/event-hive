@@ -13,6 +13,7 @@
     "expo": "^34.0.1",
     "expo-asset": "^6.0.0",
     "expo-font": "^6.0.1",
+    "expo-google-app-auth": "^6.0.0",
     "express-http-proxy": "^1.5.1",
     "firebase": "^6.4.0",
     "firebase-admin": "^8.3.0",
