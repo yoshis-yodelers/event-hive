@@ -39,6 +39,23 @@ export class FirebaseWrapper {
     }
   }
 
+  async CreateNewEventBriteDocument(collectionPath, doc) {
+    try {
+      const ref = this._firestore.collection(collectionPath).doc(doc.id);
+      return await ref.set({
+        name: doc.name.text,
+        description: doc.description.text,
+        start: doc.start.local,
+        end: doc.end.local,
+        category: doc.category_id,
+        createdBy: 'EventBrite',
+        id: doc.id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async GetEvents(collectionPath, doc) {
     try {
       const ref = await this._firestore.collection(collectionPath).doc(doc)
