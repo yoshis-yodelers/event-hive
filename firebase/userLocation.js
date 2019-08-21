@@ -1,4 +1,3 @@
-import React from 'react';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 
