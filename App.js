@@ -11,56 +11,45 @@ import eventBriteToken from './secrets';
 import * as firebase from 'firebase';
 import axios from 'axios';
 import { EventBrite } from './firebase/eventBriteData';
+import { UserLocation } from './firebase/userLocation';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      latitude: 40.70454,
-      longitude: -74.00947,
+      latitude: 42.3601,
+      longitude: 71.0589,
       errorMessage: null,
     };
   }
 
   async componentDidMount() {
     const app = this;
-    console.log('hi');
-    await this._getLocationAsync(function(latitude, longitude) {
-      const eventBrite = new EventBrite();
-      console.log(app);
-      if (app.state.latitude !== null) {
-        eventBrite.SetEventBriteData(latitude, longitude);
-        app
-          .setState({
-            latitude: latitude,
-            longitude: longitude,
-          })
-          .catch(error => {
-            console.error(`there was an error ${error}`);
-          });
-      } else {
-        console.log(this.app.state.latitude);
+    const userLocation = new UserLocation();
+
+    const _setLocation = (latitude, longitude) => {
+      try {
+        if (app.state.latitude !== null) {
+          const eventBrite = new EventBrite();
+          eventBrite.SetEventBriteData(latitude, longitude);
+          app.setState({ latitude: latitude, longitude: longitude });
+        } else {
+          console.log(this.app.state.latitude);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    });
+    };
+    // get a [latitude, longitude] array
+    const latLong = await userLocation._getLocationAsync();
+    _setLocation(latLong[0], latLong[1]);
   }
-
-  _getLocationAsync = async callback => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
-      this.setState({
-        errorMessage: 'Permission to access location was denied',
-      });
-    } else {
-      let location = await Location.getCurrentPositionAsync({});
-      callback(location.coords.latitude, location.coords.longitude);
-    }
-  };
-
   render() {
     FirebaseWrapper.GetInstance().Initialize(firebaseConfig);
     return <AppNavigator />;
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
