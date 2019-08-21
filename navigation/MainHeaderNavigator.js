@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { ThemeProvider, Header } from 'react-native-elements';
 
-export class HeaderNavigator extends Component {
+export class MainHeaderNavigator extends Component {
   constructor(props) {
     super(props);
     this.state = {};
