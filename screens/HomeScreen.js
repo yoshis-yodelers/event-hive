@@ -56,30 +56,32 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+    const newDate = new Date()
+    const date = newDate.toISOString()
     return (
-      <View>
+      <View style= {{padding: 10}}>
       <View>
         <Text style = {{fontWeight: "bold", fontSize: 20}}>Today's Events</Text>
         <ScrollView>
-        {this.state.events.length > 0 ? this.state.events.map(event => { return(
-          <View key = {event.id}>
+        {this.state.events.length > 0 ? this.state.events.map(event => {
+          if (event.end > date) {return(
+          <View key = {event.id} style = {{paddingBottom: 8}}>
           <Text>{event.name}</Text>
           <Text>{event.start}</Text>
-          <Text> </Text>
           </View>)
-        }): <Text>(no upcoming events)</Text> }
+        }}): <Text>(no upcoming events)</Text> }
         </ScrollView>
       </View>
-      <View>
+      <View style = {{paddingBottom: 300}}>
       <Text style = {{fontWeight: "bold", fontSize: 20}}>Event Feed</Text>
       <ScrollView>
-      {this.state.feed.length > 0 ? this.state.feed.map(event => { return(
-        <View key = {event.id}>
+      {this.state.feed.length > 0 ? this.state.feed.map(event => {
+        if (event.end > date) { return(
+        <View key = {event.id} style = {{paddingBottom: 8}}>
         <Text>{event.name}</Text>
         <Text>{event.start}</Text>
-        <Text> </Text>
         </View>)
-      }): <Text>(no upcoming events)</Text> }
+      }}): <Text>(no upcoming events)</Text> }
         </ScrollView>
       </View>
       </View>
