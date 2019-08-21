@@ -1,8 +1,8 @@
-import React from "react";
-import eventBriteData from "../src/db/eventBriteData";
-import * as Google from "expo-google-app-auth";
-import * as firebase from "firebase";
-import Expo from "expo";
+import React from 'react';
+import eventBriteData from '../src/db/eventBriteData';
+import * as Google from 'expo-google-app-auth';
+import * as firebase from 'firebase';
+import Expo from 'expo';
 // import { GoogleSignin } from "react-native-google-signin";
 
 import {
@@ -10,9 +10,9 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  Button
-} from "react-native";
-import { ExportBundleInfo } from "firebase-functions/lib/providers/analytics";
+  Button,
+} from 'react-native';
+import { ExportBundleInfo } from 'firebase-functions/lib/providers/analytics';
 
 // const fireBaseLogin = () => {
 //   const provider = new firebase.auth.GoogleAuthProvider();
@@ -110,14 +110,14 @@ export default class LoginScreen extends React.Component {
   signInWithGoogleAsync = async () => {
     try {
       const result = await Expo.Google.logInAsync({
-        behavior: "web",
+        behavior: 'web',
         androidClientId:
-          "235168586795-h2ulbo5197h906djjd9hf0vqt8dd84al.apps.googleusercontent.com",
+          '235168586795-h2ulbo5197h906djjd9hf0vqt8dd84al.apps.googleusercontent.com',
         iosClientId:
-          "235168586795-l15n8flgih9mkcjsucous5j837mufpg9.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
+          '235168586795-l15n8flgih9mkcjsucous5j837mufpg9.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
       });
-      if (result.type === "success") {
+      if (result.type === 'success') {
         return result.accessToken;
       } else {
         return { cancelled: true };
@@ -141,13 +141,13 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-end"
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   text: {
     marginBottom: 400,
-    color: "darkturquoise",
-    fontSize: 70
-  }
+    color: 'darkturquoise',
+    fontSize: 70,
+  },
 });
