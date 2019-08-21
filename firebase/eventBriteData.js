@@ -20,9 +20,9 @@ export class EventBrite {
   }
 
   async SetEventBriteData(latitude, longitude) {
-    const events = await this.EventBriteData(latitude, longitude);
+    const foundEvents = await this.EventBriteData(latitude, longitude);
 
-    events.data.events.map(async events => {
+    foundEvents.data.events.map(async events => {
       await FirebaseWrapper.GetInstance().CreateNewEventBriteDocument(
         'Event',
         events

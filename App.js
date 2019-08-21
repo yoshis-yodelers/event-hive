@@ -24,7 +24,6 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    const userLocation = new UserLocation();
     const _setLocation = (latitude, longitude) => {
       try {
         if (this.state.latitude !== null) {
@@ -39,9 +38,15 @@ export default class App extends React.Component {
         console.log(error);
       }
     };
-    // get a [latitude, longitude] array
+
+    const userLocation = new UserLocation();
+    // get a [latitude, longitude] array or pass errorMessage into state
     const latLong = await userLocation._getLocationAsync();
-    _setLocation(latLong[0], latLong[1]);
+    if (typeof latLong === 'string') {
+      this.setState({ errorMessage: latLong });
+    } else {
+      _setLocation(latLong[0], latLong[1]);
+    }
   }
   render() {
     FirebaseWrapper.GetInstance().Initialize(firebaseConfig);
