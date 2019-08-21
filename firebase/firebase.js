@@ -64,4 +64,13 @@ export class FirebaseWrapper {
       console.log(error);
     }
   }
+
+  async GetInterestEvents(code) {
+    try {
+      const ref = await this._firestore.collection('Event').where("category", "==", code)
+      return await ref.get()
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
