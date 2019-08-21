@@ -24,8 +24,10 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     const app = this;
+    console.log('hi');
     await this._getLocationAsync(function(latitude, longitude) {
       const eventBrite = new EventBrite();
+      console.log(app);
       if (app.state.latitude !== null) {
         eventBrite.SetEventBriteData(latitude, longitude);
         app

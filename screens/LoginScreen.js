@@ -1,5 +1,5 @@
 import React from 'react';
-import eventBriteData from '../src/db/eventBriteData';
+// import eventBriteData from '../src/db/eventBriteData';
 import * as Google from 'expo-google-app-auth';
 import * as firebase from 'firebase';
 import Expo from 'expo';
