@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Platform, StatusBar, Text } from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
 import { FirebaseWrapper } from './firebase/firebase';
 import { firebaseConfig } from './firebase/config';
 import * as Permissions from 'expo-permissions';
@@ -23,26 +21,36 @@ export default class App extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    const userLocation = new UserLocation();
-    const _setLocation = (latitude, longitude) => {
-      try {
-        if (this.state.latitude !== null) {
-          const eventBrite = new EventBrite();
-          eventBrite.SetEventBriteData(latitude, longitude);
-          this.setState({ latitude: latitude, longitude: longitude });
-          console.log(this.state);
-        } else {
-          console.log(this.state.latitude);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    // get a [latitude, longitude] array
-    const latLong = await userLocation._getLocationAsync();
-    _setLocation(latLong[0], latLong[1]);
+  componentDidMount() {
+    this._checkUserLocation();
   }
+
+  async _checkUserLocation() {
+    try {
+      const userLocation = new UserLocation();
+      // get a [latitude, longitude] array or pass errorMessage into state
+      const latLong = await userLocation._getLocationAsync();
+      if (typeof latLong === 'string') {
+        this.setState({ errorMessage: latLong });
+      } else {
+        this._setLocation(latLong[0], latLong[1]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  _setLocation(latitude, longitude) {
+    if (this.state.latitude !== null) {
+      const eventBrite = new EventBrite();
+      eventBrite.SetEventBriteData(latitude, longitude);
+      this.setState({ latitude: latitude, longitude: longitude });
+      console.log(this.state);
+    } else {
+      console.log(this.state.latitude);
+    }
+  }
+
   render() {
     FirebaseWrapper.GetInstance().Initialize(firebaseConfig);
     return <AppNavigator />;
