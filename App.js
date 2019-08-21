@@ -24,17 +24,16 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    const app = this;
     const userLocation = new UserLocation();
-
     const _setLocation = (latitude, longitude) => {
       try {
-        if (app.state.latitude !== null) {
+        if (this.state.latitude !== null) {
           const eventBrite = new EventBrite();
           eventBrite.SetEventBriteData(latitude, longitude);
-          app.setState({ latitude: latitude, longitude: longitude });
+          this.setState({ latitude: latitude, longitude: longitude });
+          console.log(this.state);
         } else {
-          console.log(this.app.state.latitude);
+          console.log(this.state.latitude);
         }
       } catch (error) {
         console.log(error);
