@@ -26,12 +26,12 @@ const AppSwitchNavigator = createStackNavigator({
       title: 'Event Hive',
       header: (
         <Header
-          leftComponent={{ icon: 'menu', color: '#fff' }}
+          leftComponent={<Icon name="menu" color="#fff" size={30} />}
           centerComponent={{
             text: 'EventHive',
             style: { color: '#fff', fontSize: 18 },
           }}
-          rightComponent={{ icon: 'home', color: '#fff' }}
+          rightComponent={<Icon name="notifications" color="#fff" size={30} />}
           containerStyle={{
             backgroundColor: '#32A7BE',
             justifyContent: 'space-around',
