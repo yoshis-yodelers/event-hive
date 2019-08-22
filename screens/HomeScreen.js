@@ -1,4 +1,6 @@
 import React from 'react';
+import { ListItem } from 'react-native-elements';
+
 import {
   StyleSheet,
   Text,
@@ -81,35 +83,65 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-    const newDate = new Date()
-    const date = newDate.toISOString()
+    const newDate = new Date();
+    const date = newDate.toISOString();
     return (
-      <View style= {{padding: 10}}>
-      <View>
-        <Text style = {{fontWeight: "bold", fontSize: 20}}>Today's Events</Text>
-        <ScrollView>
-        {this.state.events.length > 0 ? this.state.events.map(event => {
-          if (event.end > date) {return(
-          <View key = {event.id} style = {{paddingBottom: 8}}>
-          <Text>{event.name}</Text>
-          <Text>{event.start}</Text>
-          </View>)
-        }}): <Text>(no upcoming events)</Text> }
-        </ScrollView>
-      </View>
-      <View style = {{paddingBottom: 300}}>
-      <Text style = {{fontWeight: "bold", fontSize: 20}}>Event Feed</Text>
-      <ScrollView>
-      {this.state.feed.length > 0 ? this.state.feed.map(event => {
-        if (event.end > date) { return(
-        <View key = {event.id} style = {{paddingBottom: 8}}>
-        <Text>{event.name}</Text>
-        <Text>{event.start}</Text>
-        </View>)
-      }}): <Text>(no upcoming events)</Text> }
-        </ScrollView>
-      </View>
+      <View style={{ padding: 10 }}>
+        <View>
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+            Today's Events
+          </Text>
+          <ScrollView>
+            {this.state.events.length > 0 ? (
+              this.state.events.map(event => {
+                if (event.end > date) {
+                  return (
+                    // <View key={event.id} style={{ paddingBottom: 8 }}>
+                    //   <Text>{event.name}</Text>
+                    //   <Text>{event.start}</Text>
+                    // </View>
+                    <ListItem
+                      key={event.id}
+                      title={event.name}
+                      subtitle={event.start}
+                    />
+                  );
+                }
+              })
+            ) : (
+              <Text>(no upcoming events)</Text>
+            )}
+          </ScrollView>
+        </View>
+        <View style={{ paddingBottom: 300 }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Event Feed</Text>
+          <ScrollView>
+            {this.state.feed.length > 0 ? (
+              this.state.feed.map(event => {
+                if (event.end > date) {
+                  return (
+                    // <View key={event.id} style={{ paddingBottom: 8 }}>
+                    //   <Text>{event.name}</Text>
+                    //   <Text>{event.start}</Text>
+                    // </View>
+                    <ListItem
+                      key={event.id}
+                      title={event.name}
+                      subtitle={event.start}
+                    />
+                  );
+                }
+              })
+            ) : (
+              <Text>(no upcoming events)</Text>
+            )}
+          </ScrollView>
+        </View>
       </View>
     );
   }
 }
+
+HomeScreen.navigationOptions = {
+  header: null,
+};
