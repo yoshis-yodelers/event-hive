@@ -5,13 +5,13 @@ import { ThemeProvider, Header, Icon } from 'react-native-elements';
 import {
   createAppContainer,
   createSwitchNavigator,
-  createStackNavigator
-} from "react-navigation";
+  createStackNavigator,
+} from 'react-navigation';
 
-import MainTabNavigator from "./MainTabNavigator";
-import LoginScreen from "../screens/LoginScreen";
-import LoadingScreen from "../screens/LoadingScreen";
-import HomeScreen from "../screens/HomeScreen";
+import MainTabNavigator from './MainTabNavigator';
+import LoginScreen from '../screens/LoginScreen';
+import LoadingScreen from '../screens/LoadingScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 // import * as firebase from "firebase";
 // import { firebaseConfig } from "../firebase/firebase";
