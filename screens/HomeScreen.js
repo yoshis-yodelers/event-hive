@@ -138,6 +138,6 @@ export default class HomeScreen extends React.Component {
   }
 }
 
-// HomeScreen.navigationOptions = {
-//   header: null,
-// };
+HomeScreen.navigationOptions = {
+  header: null,
+};
