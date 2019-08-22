@@ -6,7 +6,7 @@ import {
 import { Icon } from 'react-native-elements';
 
 import HomeScreen from '../screens/HomeScreen';
-import SearchScreen from '../screens/SearchScreen';
+import ExploreScreen from '../screens/ExploreScreen';
 import CreateEventScreen from '../screens/CreateEventScreen';
 
 const HomeStack = createStackNavigator({
@@ -17,11 +17,11 @@ HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
 };
 
-const SearchStack = createStackNavigator({
-  Search: SearchScreen,
+const ExploreStack = createStackNavigator({
+  Explore: ExploreScreen,
 });
 
-SearchStack.navigationOptions = {
+ExploreStack.navigationOptions = {
   tabBarLabel: 'Search',
 };
 
@@ -44,12 +44,12 @@ export default createBottomTabNavigator(
         ),
       }),
     },
-    Search: {
-      screen: SearchScreen,
+    Explore: {
+      screen: ExploreScreen,
       navigationOptions: () => ({
         // eslint-disable-next-line react/display-name
         tabBarIcon: ({ tintColor }) => (
-          <Icon name="search" color={tintColor} size={30} />
+          <Icon name="explore" color={tintColor} size={30} />
         ),
       }),
     },
