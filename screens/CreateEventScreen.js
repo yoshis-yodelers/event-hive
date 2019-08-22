@@ -4,6 +4,7 @@ import { Calendar} from 'react-native-calendars'
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { EventBrite } from '../firebase/eventBriteData';
 
 export default class CreateEventScreen extends React.Component {
   constructor(props) {
