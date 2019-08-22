@@ -1,4 +1,6 @@
 import React from 'react';
+import { ListItem } from 'react-native-elements';
+
 import {
   StyleSheet,
   Text,
@@ -94,10 +96,15 @@ export default class HomeScreen extends React.Component {
               this.state.events.map(event => {
                 if (event.end > date) {
                   return (
-                    <View key={event.id} style={{ paddingBottom: 8 }}>
-                      <Text>{event.name}</Text>
-                      <Text>{event.start}</Text>
-                    </View>
+                    // <View key={event.id} style={{ paddingBottom: 8 }}>
+                    //   <Text>{event.name}</Text>
+                    //   <Text>{event.start}</Text>
+                    // </View>
+                    <ListItem
+                      key={event.id}
+                      title={event.name}
+                      subtitle={event.start}
+                    />
                   );
                 }
               })
@@ -113,10 +120,15 @@ export default class HomeScreen extends React.Component {
               this.state.feed.map(event => {
                 if (event.end > date) {
                   return (
-                    <View key={event.id} style={{ paddingBottom: 8 }}>
-                      <Text>{event.name}</Text>
-                      <Text>{event.start}</Text>
-                    </View>
+                    // <View key={event.id} style={{ paddingBottom: 8 }}>
+                    //   <Text>{event.name}</Text>
+                    //   <Text>{event.start}</Text>
+                    // </View>
+                    <ListItem
+                      key={event.id}
+                      title={event.name}
+                      subtitle={event.start}
+                    />
                   );
                 }
               })
