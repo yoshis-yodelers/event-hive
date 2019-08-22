@@ -25,7 +25,6 @@ export default class LoginScreen extends React.Component {
   };
 
   onSignIn = googleUser => {
-    // console.log("Google Auth Response:", googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
     const unsubscribe = firebase.auth().onAuthStateChanged(
       function(firebaseUser) {
@@ -86,7 +85,7 @@ export default class LoginScreen extends React.Component {
         scopes: ["profile", "email"]
       });
       if (result.type === "success") {
-        console.log(result);
+        // console.log(result);
         this.onSignIn(result);
         return result.accessToken;
       } else {
