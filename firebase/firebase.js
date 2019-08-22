@@ -1,5 +1,6 @@
-import * as firebase from 'firebase';
-import 'firebase/firestore';
+import * as firebase from "firebase";
+import "firebase/firestore";
+import { user } from "firebase-functions/lib/providers/auth";
 
 // creates private variables by making a class
 export class FirebaseWrapper {
@@ -15,9 +16,9 @@ export class FirebaseWrapper {
       this._firebaseInstance = firebase.initializeApp(config);
       this._firestore = firebase.firestore();
       this.initialized = true;
-      console.log('just initialized');
+      console.log("just initialized");
     } else {
-      console.log('already initialized');
+      console.log("already initialized");
     }
   }
 
@@ -32,8 +33,8 @@ export class FirebaseWrapper {
 
   async CreateNewDocument(collectionPath, doc) {
     try {
-      const ref = this._firestore.collection(collectionPath).doc();
-      return await ref.set({ ...doc, createdBy: 'Santa Claus', id: ref.id });
+      const ref = this._firestore.collection("collectionPath").doc();
+      return await ref.set({ ...doc, createdBy: "Santa Claus", id: ref.id });
     } catch (error) {
       console.log(error);
     }
@@ -51,6 +52,21 @@ export class FirebaseWrapper {
         createdBy: 'EventBrite',
         id: doc.id,
         venue: doc.venue_id,
+
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async createUser(collectionPath, doc) {
+    try {
+      const ref = this._firestore.collection(collectionPath).doc(doc.user.uid);
+      return await ref.set({
+        email: doc.user.email,
+        profile_picture: doc.additionalUserInfo.profile.picture,
+        first_name: doc.additionalUserInfo.profile.given_name,
+        last_name: doc.additionalUserInfo.profile.family_name,
       });
     } catch (error) {
       console.log(error);
