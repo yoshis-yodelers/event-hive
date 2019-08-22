@@ -9,6 +9,7 @@ import {
   navigationOptions,
 } from 'react-navigation';
 
+import DrawerNavigator from './DrawerNavigator';
 import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import LoadingScreen from '../screens/LoadingScreen';
@@ -21,17 +22,17 @@ const AppSwitchNavigator = createStackNavigator({
   LoadingScreen: LoadingScreen,
   LoginScreen: LoginScreen,
   DashboardScreen: {
-    screen: MainTabNavigator,
+    screen: DrawerNavigator,
     navigationOptions: {
       title: 'Event Hive',
       header: (
         <Header
-          leftComponent={{ icon: 'menu', color: '#fff' }}
+          leftComponent={<Icon name="menu" color="#fff" size={30} />}
           centerComponent={{
             text: 'EventHive',
             style: { color: '#fff', fontSize: 18 },
           }}
-          rightComponent={{ icon: 'home', color: '#fff' }}
+          rightComponent={<Icon name="notifications" color="#fff" size={30} />}
           containerStyle={{
             backgroundColor: '#32A7BE',
             justifyContent: 'space-around',
