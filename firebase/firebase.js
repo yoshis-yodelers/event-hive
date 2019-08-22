@@ -50,6 +50,7 @@ export class FirebaseWrapper {
         category: doc.category_id,
         createdBy: 'EventBrite',
         id: doc.id,
+        venue: doc.venue_id,
       });
     } catch (error) {
       console.log(error);
@@ -58,8 +59,8 @@ export class FirebaseWrapper {
 
   async GetEvents(collectionPath, doc) {
     try {
-      const ref = await this._firestore.collection(collectionPath).doc(doc)
-      return await ref.get()
+      const ref = await this._firestore.collection(collectionPath).doc(doc);
+      return await ref.get();
     } catch (error) {
       console.log(error);
     }
@@ -67,8 +68,42 @@ export class FirebaseWrapper {
 
   async GetInterestEvents(code) {
     try {
-      const ref = await this._firestore.collection('Event').where("category", "==", code)
-      return await ref.get()
+      const ref = await this._firestore
+        .collection('Event')
+        .where('category', '==', code);
+      return await ref.get();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async GetVenueFromFirestore() {
+    try {
+      const ref = await this._firestore.collection('Event');
+      const venueArray = [];
+      return await ref.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          venueArray.push(doc.data().venue);
+        });
+        return venueArray;
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async GetVenues(collectionPath, doc) {
+    try {
+      const ref = await this._firestore.collection(collectionPath).doc(doc.id);
+      return ref.set({
+        id: doc.id,
+        address: doc.address.address_1,
+        city: doc.address.city,
+        state: doc.address.region,
+        zipcode: doc.address.postal_code,
+        latitude: doc.address.latitude,
+        longitude: doc.address.longitude,
+      });
     } catch (error) {
       console.log(error);
     }

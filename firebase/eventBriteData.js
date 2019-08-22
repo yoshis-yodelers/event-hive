@@ -29,4 +29,26 @@ export class EventBrite {
       );
     });
   }
+
+  async GetLocationData(venue) {
+    const location = await axios({
+      method: 'get',
+      url: `https://www.eventbriteapi.com/v3/venues/${venue}/?token=${eventBriteToken}`,
+    });
+    return location.data;
+  }
+
+  async SetLocationData() {
+    try {
+      const venues = await FirebaseWrapper.GetInstance().GetVenueFromFirestore();
+
+      venues.map(async venue => {
+        const locations = await this.GetLocationData(venue);
+
+        await FirebaseWrapper.GetInstance().GetVenues('Venue', locations);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

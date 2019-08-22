@@ -30,6 +30,7 @@ export default class App extends React.Component {
         if (this.state.latitude !== null) {
           const eventBrite = new EventBrite();
           eventBrite.SetEventBriteData(latitude, longitude);
+          eventBrite.SetLocationData();
           this.setState({ latitude: latitude, longitude: longitude });
           console.log(this.state);
         } else {
