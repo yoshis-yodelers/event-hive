@@ -7,7 +7,7 @@ import {
 import MainTabNavigator from "./MainTabNavigator";
 import LoginScreen from "../screens/LoginScreen";
 import LoadingScreen from "../screens/LoadingScreen";
-// import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../screens/HomeScreen";
 // import * as firebase from "firebase";
 // import { firebaseConfig } from "../firebase/firebase";
 // firebase.initializeApp(firebaseConfig);
@@ -15,7 +15,7 @@ import LoadingScreen from "../screens/LoadingScreen";
 const AppSwitchNavigator = createStackNavigator({
   LoadingScreen: LoadingScreen,
   LoginScreen: LoginScreen,
-  DashboardScreen: MainTabNavigator
+  HomeScreen: HomeScreen
 });
 
 // const AppStack = createStackNavigator({
