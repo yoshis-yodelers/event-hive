@@ -27,6 +27,7 @@ export default class App extends React.Component {
 
   _checkUserLocation() {
     const userLocation = new UserLocation();
+
     // get a [latitude, longitude] array or set errorMessage in state
     const latLong = userLocation._getLocationAsync();
     if (typeof latLong === 'string') {
