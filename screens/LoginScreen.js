@@ -65,7 +65,7 @@ export default class LoginScreen extends React.Component {
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
-        // behavior: "web",
+        behavior: "web",
         androidClientId:
           "1008246741429-2t3icr6oiusv8q64stil4m8rv0hfbdle.apps.googleusercontent.com",
         iosClientId:
