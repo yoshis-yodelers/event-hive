@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListItem } from 'react-native-elements';
+import { ListItem, FlatList } from 'react-native-elements';
 
 import {
   StyleSheet,
@@ -94,6 +94,7 @@ export default class HomeScreen extends React.Component {
     const newDate = new Date()
     const date = newDate.toISOString()
     return (
+      // turn into flatlist - https://react-native-training.github.io/react-native-elements/docs/listitem.html
       <View style={{ padding: 10 }}>
         <View>
           <Text style={{ fontWeight: 'bold', fontSize: 20 }}>

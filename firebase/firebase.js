@@ -22,20 +22,6 @@ export class FirebaseWrapper {
     }
   }
 
-  async createUser(collectionPath, doc) {
-    try {
-      const ref = this._firestore.collection(collectionPath).doc();
-      return await ref.set({
-        ...doc,
-        name: user.name,
-        email: user.email,
-        photoUrl: user.photoUrl
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   static GetInstance() {
     // eslint-disable-next-line no-eq-null
     if (null == this._firebaseWrapperInstance) {
@@ -65,6 +51,20 @@ export class FirebaseWrapper {
         category: doc.category_id,
         createdBy: "EventBrite",
         id: doc.id
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async createUser(collectionPath, doc) {
+    try {
+      const ref = this._firestore.collection(collectionPath).doc(doc.user.uid);
+      return await ref.set({
+        email: doc.user.email,
+        profile_picture: doc.additionalUserInfo.profile.picture,
+        first_name: doc.additionalUserInfo.profile.given_name,
+        last_name: doc.additionalUserInfo.profile.family_name
       });
     } catch (error) {
       console.log(error);
