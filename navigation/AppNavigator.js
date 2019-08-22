@@ -18,9 +18,5 @@ const AppSwitchNavigator = createStackNavigator({
   HomeScreen: HomeScreen
 });
 
-// const AppStack = createStackNavigator({
-//   AppRoute: MainTabNavigator
-// });
-
 const AppNavigator = createAppContainer(AppSwitchNavigator);
 export default AppNavigator;
