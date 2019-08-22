@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import {Calendar} from 'react-native-calendars';
+import { ScrollView, InputAccessoryView, DatePickerIOS, StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -8,7 +9,9 @@ export default class CreateEventScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'Yodeler',
+      name: '',
+      description: '',
+      start: new Date()
     };
   }
 
@@ -25,18 +28,47 @@ export default class CreateEventScreen extends React.Component {
 
   render() {
     return (
-      <View
-        // eslint-disable-next-line no-use-before-define
-        style={styles.view}
-      >
-        <Text>This is the Create Event Page</Text>
+      <View>
+      <View>
+        <Text style = {{fontSize:20, fontWeight:"bold"}}>Create Event</Text>
+      </View>
+      <View style={styles.view}>
+        <ScrollView>
+        <Text>Event Name:</Text>
         <TextInput
           // eslint-disable-next-line no-use-before-define
           style={styles.input}
           onChangeText={name => this.setState({ name })}
           value={this.state.name}
         />
+        <Text>Description:</Text>
+        <TextInput
+          // eslint-disable-next-line no-use-before-define
+          style={styles.input}
+          onChangeText={name => this.setState({ description })}
+          value={this.state.description}
+        />
+        <Button title = "Start Date" onPress = {() => this.props.navigation.navigate('MyModal')} />
+        {/* <InputAccessoryView>
+        <DatePickerIOS date = {this.state.start} onChange = {() => this.setState({start})}/>
+        </InputAccessoryView> */}
         <Button title="Create Event" onPress={() => this.createEvent()} />
+        </ScrollView>
+      </View>
+      </View>
+    );
+  }
+}
+
+class ModalScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+        <Button
+          onPress={() => this.props.navigation.goBack()}
+          title="Dismiss"
+        />
       </View>
     );
   }
@@ -44,5 +76,5 @@ export default class CreateEventScreen extends React.Component {
 
 const styles = StyleSheet.create({
   view: { marginTop: 85 },
-  input: { height: 80, borderColor: 'gray', borderWidth: 1 },
+  input: {height: 30, borderColor: 'gray', borderWidth: 1 },
 });
