@@ -15,8 +15,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      latitude: 42.3601,
-      longitude: 71.0589,
+      latitude: 42.3601, // love that dirty water
+      longitude: -71.0589, // boston you're my home
       errorMessage: null,
     };
   }
@@ -25,18 +25,14 @@ export default class App extends React.Component {
     this._checkUserLocation();
   }
 
-  async _checkUserLocation() {
-    try {
-      const userLocation = new UserLocation();
-      // get a [latitude, longitude] array or pass errorMessage into state
-      const latLong = await userLocation._getLocationAsync();
-      if (typeof latLong === 'string') {
-        this.setState({ errorMessage: latLong });
-      } else {
-        this._setLocation(latLong[0], latLong[1]);
-      }
-    } catch (error) {
-      console.log(error);
+  _checkUserLocation() {
+    const userLocation = new UserLocation();
+    // get a [latitude, longitude] array or set errorMessage in state
+    const latLong = userLocation._getLocationAsync();
+    if (typeof latLong === 'string') {
+      this.setState({ errorMessage: latLong });
+    } else {
+      this._setLocation(latLong[0], latLong[1]);
     }
   }
 
@@ -56,12 +52,3 @@ export default class App extends React.Component {
     return <AppNavigator />;
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
