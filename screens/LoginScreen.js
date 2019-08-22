@@ -1,6 +1,5 @@
 import React from "react";
 import Expo from "expo";
-// import Expo from 'expo'
 import firebase from "firebase";
 import * as Google from "expo-google-app-auth";
 import { FirebaseWrapper } from "../firebase/firebase";
@@ -26,7 +25,6 @@ export default class LoginScreen extends React.Component {
   };
 
   onSignIn = googleUser => {
-    // console.log("Google Auth Response", googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
     const unsubscribe = firebase.auth().onAuthStateChanged(
       function(firebaseUser) {
@@ -44,6 +42,19 @@ export default class LoginScreen extends React.Component {
           firebase
             .auth()
             .signInWithCredential(credential)
+            .then(function(result) {
+              console.log("user signed in");
+              if (result.additionalUserInfo.isNewUser) {
+                // console.log("this is the result:", result);
+                // console.log("this is the user email:", result.user.email);
+                // console.log("this is the user id:", result.user.uid);
+
+                // console.log(result.additionalUserInfo.profile.given_name);
+                FirebaseWrapper.GetInstance().createUser("User", result);
+              } else {
+                console.log("user already logged in");
+              }
+            })
             .catch(function(error) {
               // Handle Errors here.
               var errorCode = error.code;
@@ -52,7 +63,7 @@ export default class LoginScreen extends React.Component {
               var email = error.email;
               // The firebase.auth.AuthCredential type that was used.
               var credential = error.credential;
-              console.log("here's theerror", error);
+              console.log("here's the error:", error);
               // ...
             });
         } else {
@@ -91,7 +102,6 @@ export default class LoginScreen extends React.Component {
           title="Sign In With Google"
           onPress={() => {
             this.signInWithGoogleAsync();
-            // console.log("button pressed");
           }}
         />
       </View>
