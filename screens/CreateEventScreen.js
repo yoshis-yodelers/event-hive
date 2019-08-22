@@ -78,3 +78,7 @@ const styles = StyleSheet.create({
   view: { marginTop: 85 },
   input: {height: 30, borderColor: 'gray', borderWidth: 1 },
 });
+
+CreateEventScreen.navigationOptions = {
+  header: null,
+};
