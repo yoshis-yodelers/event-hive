@@ -5,23 +5,21 @@ import { ThemeProvider, Header, Icon } from 'react-native-elements';
 import {
   createAppContainer,
   createSwitchNavigator,
-  createStackNavigator,
-  navigationOptions,
-} from 'react-navigation';
+  createStackNavigator
+} from "react-navigation";
 
-import MainTabNavigator from './MainTabNavigator';
-import LoginScreen from '../screens/LoginScreen';
-import LoadingScreen from '../screens/LoadingScreen';
-import MainHeaderNavigator from '../navigation/MainHeaderNavigator';
+import MainTabNavigator from "./MainTabNavigator";
+import LoginScreen from "../screens/LoginScreen";
+import LoadingScreen from "../screens/LoadingScreen";
+import HomeScreen from "../screens/HomeScreen";
 
-// import HomeScreen from "../screens/HomeScreen";
 // import * as firebase from "firebase";
 // import { firebaseConfig } from "../firebase/firebase";
 // firebase.initializeApp(firebaseConfig);
 
 const AppSwitchNavigator = createStackNavigator({
-  // LoadingScreen: LoadingScreen,
-  // LoginScreen: LoginScreen,
+  LoadingScreen: LoadingScreen,
+  LoginScreen: LoginScreen,
   DashboardScreen: {
     screen: MainTabNavigator,
     navigationOptions: {
