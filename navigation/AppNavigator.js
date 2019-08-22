@@ -6,6 +6,7 @@ import {
   createAppContainer,
   createSwitchNavigator,
   createStackNavigator,
+  navigationOptions,
 } from 'react-navigation';
 
 import DrawerNavigator from './DrawerNavigator';
@@ -13,7 +14,6 @@ import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import HomeScreen from '../screens/HomeScreen';
-
 // import * as firebase from "firebase";
 // import { firebaseConfig } from "../firebase/firebase";
 // firebase.initializeApp(firebaseConfig);
