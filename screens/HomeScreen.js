@@ -31,7 +31,6 @@ export default class HomeScreen extends React.Component {
       const userInfo = await FirebaseWrapper.GetInstance().GetEvents(
         "User",
         user.uid
-        // console.log('is this the user??????????', user.uid)
       );
       //Formats the information from userInfo (events/interests/etc.)
       const eventsArray = await userInfo.data();
