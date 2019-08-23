@@ -25,10 +25,6 @@ export default class HomeScreen extends React.Component {
 
   async componentDidMount() {
     const user = firebase.auth().currentUser;
-    // if (user) {
-    //  const uid = user.uid;
-    //  return uid;
-    // }
 
     try {
       //User information fetched from firebase, including upcomign events & interests(change line 30 to user once OAuth done)
