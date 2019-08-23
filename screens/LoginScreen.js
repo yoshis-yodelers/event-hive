@@ -4,7 +4,7 @@ import firebase from "firebase";
 import * as Google from "expo-google-app-auth";
 import { FirebaseWrapper } from "../firebase/firebase";
 
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, Image } from "react-native";
 
 export default class LoginScreen extends React.Component {
   isUserEqual = (googleUser, firebaseUser) => {
@@ -98,12 +98,20 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button
-          title="Sign In With Google"
-          onPress={() => {
-            this.signInWithGoogleAsync();
-          }}
-        />
+        <View>
+          <Image
+            style={styles.logoImage}
+            source={require("../assets/images/logo.png")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Sign In With Google"
+            onPress={() => {
+              this.signInWithGoogleAsync();
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -113,12 +121,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-end"
+    alignItems: "center"
   },
-  text: {
-    marginBottom: 400,
-    color: "darkturquoise",
-    fontSize: 70
+  logoImage: {
+    justifyContent: "flex-end",
+    alignSelf: "center",
+    resizeMode: "stretch",
+    marginTop: 250,
+    width: 250,
+    height: 250
+  },
+  buttonContainer: {
+    marginTop: 100
   }
 });
