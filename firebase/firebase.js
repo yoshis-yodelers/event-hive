@@ -53,6 +53,7 @@ export class FirebaseWrapper {
         id: doc.id,
         venue: doc.venue_id,
         imageUrl: doc.logo.url,
+
       });
     } catch (error) {
       console.log(error);
@@ -88,6 +89,21 @@ export class FirebaseWrapper {
         .collection('Event')
         .where('category', '==', code);
       return await ref.get();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async GetAllCategories() {
+    try {
+      const ref = await this._firestore.collection('Categories');
+      const categoryArray = [];
+      return await ref.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          categoryArray.push({ key: doc.data().Type });
+        });
+        return categoryArray;
+      });
     } catch (error) {
       console.log(error);
     }
