@@ -119,15 +119,6 @@ export default class HomeScreen extends React.Component {
                 if (event.end > date) {
                   return (
                     <View key={event.id} style={styles.carousel}>
-                      {/* <Divider style={styles.divider} /> */}
-
-                      {/* <ListItem
-                        key={event.id}
-                        leftAvatar={{ source: { uri: event.imageUrl } }}
-                        title={event.name}
-                        subtitle={event.start}
-                      /> */}
-
                       <Image
                         source={{ uri: event.imageUrl }}
                         style={{ height: imageHeight, width }}
