@@ -1,5 +1,5 @@
 import React from 'react';
-import { KeyboardAvoidingView, Picker, ScrollView, StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { Platform, KeyboardAvoidingView, Picker, ScrollView, StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import { Calendar} from 'react-native-calendars'
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
@@ -42,12 +42,13 @@ export default class CreateEventScreen extends React.Component {
   }
 
   render() {
+    console.log(Platform.OS)
     return (
       <View>
       <View>
         <Text style = {{fontWeight: "bold", fontSize: 20}}>Create New Event</Text>
       </View>
-      <KeyboardAvoidingView>
+      {/* <KeyboardAvoidingView>
       <ScrollView>
       <View style={styles.view}>
         <Text>Event Name:</Text>
@@ -66,7 +67,7 @@ export default class CreateEventScreen extends React.Component {
         {this.state.show && this.state.start.length <= 2 ?
         <Calendar current = {new Date().toISOString()} minDate = {new Date().toISOString()} onDayPress={(day) => {this.showCalendar("start",day.dateString)}}
          />
-        :<TextInput style = {styles.input} value = {this.state.start} onFocus = {() => this.showCalendar("start")}/>}
+        : <TextInput style = {styles.input} value = {this.state.start} onFocus = {() => this.showCalendar("start")}/>}
         <Text>End Date:</Text>
         {this.state.show && this.state.start.length > 2 ?
         <Calendar current = {this.state.start} minDate = {this.state.start} onDayPress={(day) => {this.showCalendar("end", day.dateString)}}
@@ -75,11 +76,17 @@ export default class CreateEventScreen extends React.Component {
         </View>
         <Button title="Create Event" onPress={() => this.createEvent()} />
         </ScrollView>
-        </KeyboardAvoidingView>
-        {/* <Picker>
+        </KeyboardAvoidingView> */}
+        <View>
+        <Picker>
           <Picker.Item label="Java" value="java" />
           <Picker.Item label="JavaScript" value="js" />
-        </Picker> */}
+        </Picker>
+        <Picker>
+          <Picker.Item label="Test" value ="test" />
+          <Picker.Item label="Text2" value = "test2"/>
+        </Picker>
+      </View>
       </View>
     );
   }
