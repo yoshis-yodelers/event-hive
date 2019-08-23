@@ -52,6 +52,8 @@ export class FirebaseWrapper {
         createdBy: 'EventBrite',
         id: doc.id,
         venue: doc.venue_id,
+        imageUrl: doc.logo.url,
+
       });
     } catch (error) {
       console.log(error);
