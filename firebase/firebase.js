@@ -33,8 +33,8 @@ export class FirebaseWrapper {
 
   async CreateNewDocument(collectionPath, doc) {
     try {
-      const ref = this._firestore.collection('collectionPath').doc();
-      return await ref.set({ ...doc, createdBy: 'Santa Claus', id: ref.id });
+      const ref = this._firestore.collection(collectionPath).doc();
+      return await ref.set({ ...doc});
     } catch (error) {
       console.log(error);
     }
