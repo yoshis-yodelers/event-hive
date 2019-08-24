@@ -53,7 +53,6 @@ export class FirebaseWrapper {
         id: doc.id,
         venue: doc.venue_id,
         imageUrl: doc.logo.url,
-
       });
     } catch (error) {
       console.log(error);
@@ -100,7 +99,7 @@ export class FirebaseWrapper {
       const categoryArray = [];
       return await ref.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          categoryArray.push({ key: doc.data().Type });
+          categoryArray.push({ key: doc.id, type: doc.data().Type });
         });
         return categoryArray;
       });

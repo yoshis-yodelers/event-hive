@@ -46,7 +46,7 @@ export default class ExploreScreen extends React.Component {
     }
     return (
       <View style={styles.item}>
-        <Text style={styles.itemText}>{item.key}</Text>
+        <Text style={styles.itemText}>{item.type}</Text>
       </View>
     );
   };
