@@ -1,8 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
+import AppNavigator from '../navigation/AppNavigator';
 import { FirebaseWrapper } from '../firebase/firebase';
+import NavigationService from '../navigation/NavigationService';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+// import {  } from 'react-native-gesture-handler';
+import SingleCategoryScreen from './SingleCategoryScreen';
 
 const correctColumns = (data, numColumns) => {
   const numTotalFullRows = Math.floor(data.length / numColumns);
@@ -16,7 +27,6 @@ const correctColumns = (data, numColumns) => {
 };
 
 // 'https://images.unsplash.com/photo-1521412644187-c49fa049e84d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
-
 const numColumns = 3;
 
 export default class ExploreScreen extends React.Component {
@@ -38,14 +48,18 @@ export default class ExploreScreen extends React.Component {
   }
 
   // makes FlatList's grid
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item }) => {
     // makes square invisible if empty (no key)
     if (item.empty === true) {
       return <View style={[styles.item, styles.itemInvisible]} />;
     }
     return (
       <View style={styles.item}>
-        <Text style={styles.itemText}>{item.key}</Text>
+        <TouchableOpacity
+          onPress={() => NavigationService.navigate('SingleCategory', item)}
+        >
+          <Text style={styles.itemText}>{item.type}</Text>
+        </TouchableOpacity>
       </View>
     );
   };

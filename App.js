@@ -3,6 +3,7 @@ import { StyleSheet, View, Platform, StatusBar, Text } from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
 import { FirebaseWrapper } from './firebase/firebase';
 import { firebaseConfig } from './firebase/config';
+import NavigationService from './navigation/NavigationService';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import eventBriteToken from './secrets';
@@ -53,6 +54,12 @@ export default class App extends React.Component {
 
   render() {
     FirebaseWrapper.GetInstance().Initialize(firebaseConfig);
-    return <AppNavigator />;
+    return (
+      <AppNavigator
+        ref={navigatorRef => {
+          NavigationService.setTopLevelNavigator(navigatorRef);
+        }}
+      />
+    );
   }
 }
