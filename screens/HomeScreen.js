@@ -1,5 +1,6 @@
 import React from 'react';
-import { ListItem, FlatList } from 'react-native-elements';
+import { ListItem, FlatList, Divider } from 'react-native-elements';
+
 import {
   StyleSheet,
   Text,
@@ -7,11 +8,18 @@ import {
   View,
   Button,
   ScrollView,
+  Image,
+  Dimensions,
 } from 'react-native';
+import { Constants } from 'expo';
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+// import console = require('console');
 
+const { width } = Dimensions.get('window');
+const imageHeight = width * 0.3;
+const height = width * 0.5;
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +33,7 @@ export default class HomeScreen extends React.Component {
     const user = firebase.auth().currentUser;
 
     try {
-      //User information fetched from firebase, including upcomign events & interests(change line 30 to user once OAuth done)
+      //User information fetched from firebase, including upcomign events & interests(change line 31 to user once OAuth done)
       const userInfo = await FirebaseWrapper.GetInstance().GetEvents(
         'User',
         user.uid
@@ -103,20 +111,24 @@ export default class HomeScreen extends React.Component {
           <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
             Today's Events
           </Text>
-          <ScrollView>
+          <ScrollView
+            sytle={styles.subscribed}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+          >
             {this.state.events.length > 0 ? (
               this.state.events.map(event => {
                 if (event.end > date) {
                   return (
-                    // <View key={event.id} style={{ paddingBottom: 8 }}>
-                    //   <Text>{event.name}</Text>
-                    //   <Text>{event.start}</Text>
-                    // </View>
-                    <ListItem
-                      key={event.id}
-                      title={event.name}
-                      subtitle={event.start}
-                    />
+                    <View key={event.id} style={styles.carousel}>
+                      <Image
+                        source={{ uri: event.imageUrl }}
+                        style={{ height: imageHeight, width }}
+                      />
+                      <Text style={styles.eventName}>{event.name}</Text>
+                      <Text style={styles.eventTime}>{event.start}</Text>
+                    </View>
                   );
                 }
               })
@@ -127,20 +139,21 @@ export default class HomeScreen extends React.Component {
         </View>
         <View style={{ paddingBottom: 300 }}>
           <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Event Feed</Text>
-          <ScrollView>
+          <ScrollView style={styles.interested}>
             {this.state.feed.length > 0 ? (
               this.state.feed.map(event => {
                 if (event.end > date) {
                   return (
-                    // <View key={event.id} style={{ paddingBottom: 8 }}>
-                    //   <Text>{event.name}</Text>
-                    //   <Text>{event.start}</Text>
-                    // </View>
-                    <ListItem
-                      key={event.id}
-                      title={event.name}
-                      subtitle={event.start}
-                    />
+                    <View key={event.id} style={styles.listItemParent}>
+                      <Divider style={styles.divider} />
+                      <ListItem
+                        style={styles.listItem}
+                        key={event.id}
+                        leftAvatar={{ source: { uri: event.imageUrl } }}
+                        title={event.name}
+                        subtitle={event.start}
+                      />
+                    </View>
                   );
                 }
               })
@@ -153,6 +166,35 @@ export default class HomeScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  listItem: {
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+  listItemParent: {
+    borderStyle: 'solid',
+    borderColor: 'grey',
+  },
+  divder: {
+    backgroundColor: 'grey',
+    height: 10,
+    flex: 1,
+  },
+  interested: {},
+  subscribed: {
+    height,
+    width,
+  },
+  carousel: {
+    height,
+    width,
+  },
+  eventName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+});
 
 HomeScreen.navigationOptions = {
   header: null,

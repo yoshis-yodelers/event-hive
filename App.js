@@ -26,15 +26,15 @@ export default class App extends React.Component {
     this._checkUserLocation();
   }
 
-  _checkUserLocation() {
+  async _checkUserLocation() {
     const userLocation = new UserLocation();
 
     // get a [latitude, longitude] array or set errorMessage in state
-    const latLong = userLocation._getLocationAsync();
+    const latLong = await userLocation._getLocationAsync();
     if (typeof latLong === 'string') {
       this.setState({ errorMessage: latLong });
     } else {
-      this._setLocation(latLong[0], latLong[1]);
+      await this._setLocation(latLong[0], latLong[1]);
     }
   }
 
@@ -43,7 +43,6 @@ export default class App extends React.Component {
       const eventBrite = new EventBrite();
       eventBrite.SetEventBriteData(latitude, longitude);
       this.setState({ latitude: latitude, longitude: longitude });
-      console.log(this.state);
     } else {
       console.log(this.state.latitude);
     }
