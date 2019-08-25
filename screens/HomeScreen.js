@@ -77,7 +77,7 @@ export default class HomeScreen extends React.Component {
 
         return 0;
       });
-      //Consolidate all the upcomign event promises returned from above.
+      //Consolidate all the upcoming event promises returned from above.
       const events = await Promise.all(eventsInfo);
       //Sort through array of event objects by start date/time
       const eventsSorted = events.sort(function(event, event2) {
@@ -101,6 +101,9 @@ export default class HomeScreen extends React.Component {
     //Get most recent date, and format it into date that can be compared with firebase dates
     const newDate = new Date();
     const date = newDate.toISOString();
+    console.log('events', this.state.events);
+    console.log('feed', this.state.feed);
+
     return (
       // turn into flatlist - https://react-native-training.github.io/react-native-elements/docs/listitem.html
       <View style={{ padding: 10 }}>

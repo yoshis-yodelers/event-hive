@@ -100,7 +100,7 @@ export class FirebaseWrapper {
       const categoryArray = [];
       return await ref.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          categoryArray.push({ key: doc.data().Type });
+          categoryArray.push({ type: doc.data().Type, id: doc.id });
         });
         return categoryArray;
       });
