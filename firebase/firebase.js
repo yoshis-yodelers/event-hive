@@ -34,7 +34,7 @@ export class FirebaseWrapper {
   async CreateNewDocument(collectionPath, doc) {
     try {
       const ref = this._firestore.collection(collectionPath).doc();
-      return await ref.set({ ...doc});
+      return await ref.set({ ...doc });
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +53,6 @@ export class FirebaseWrapper {
         id: doc.id,
         venue: doc.venue_id,
         imageUrl: doc.logo.url,
-
       });
     } catch (error) {
       console.log(error);
@@ -100,7 +99,7 @@ export class FirebaseWrapper {
       const categoryArray = [];
       return await ref.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          categoryArray.push({ type: doc.data().Type, id: doc.id });
+          categoryArray.push({ type: doc.data().Type, key: doc.id });
         });
         return categoryArray;
       });

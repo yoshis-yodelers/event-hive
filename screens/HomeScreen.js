@@ -1,5 +1,12 @@
 import React from 'react';
-import { ListItem, FlatList, Divider } from 'react-native-elements';
+import {
+  ListItem,
+  FlatList,
+  Divider,
+  Header,
+  Icon,
+  ThemeProvider,
+} from 'react-native-elements';
 
 import {
   StyleSheet,
@@ -11,10 +18,13 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import MainHeader from '../navigation/MainHeader';
 import { Constants } from 'expo';
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import NavigationService from '../navigation/NavigationService';
+
 // import console = require('console');
 
 const { width } = Dimensions.get('window');
@@ -28,6 +38,10 @@ export default class HomeScreen extends React.Component {
       feed: [],
     };
   }
+
+  static navigationOptions = navigation => {
+    return <MainHeader />;
+  };
 
   async componentDidMount() {
     const user = firebase.auth().currentUser;
@@ -195,7 +209,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-HomeScreen.navigationOptions = {
-  header: null,
-};
