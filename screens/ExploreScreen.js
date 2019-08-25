@@ -31,7 +31,6 @@ export default class ExploreScreen extends React.Component {
     try {
       //User information fetched from firebase, including upcomign events & interests(change line 30 to user once OAuth done)
       const allCategories = await FirebaseWrapper.GetInstance().GetAllCategories();
-      console.log(allCategories);
       this.setState({ allCategories: allCategories });
     } catch (error) {
       console.log(error);

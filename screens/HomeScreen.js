@@ -15,6 +15,7 @@ import { Constants } from 'expo';
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import InterestModal from './InterestModal';
 // import console = require('console');
 
 const { width } = Dimensions.get('window');
@@ -26,6 +27,7 @@ export default class HomeScreen extends React.Component {
     this.state = {
       events: [],
       feed: [],
+      user: {},
     };
   }
 
@@ -91,7 +93,11 @@ export default class HomeScreen extends React.Component {
         return 0;
       });
       //Set the upcoming events state & interest feed state
-      this.setState({ events: eventsSorted, feed: ffevents });
+      this.setState({
+        events: eventsSorted,
+        feed: ffevents,
+        user: userInfo.data(),
+      });
     } catch (error) {
       console.log(error);
     }
@@ -101,9 +107,18 @@ export default class HomeScreen extends React.Component {
     //Get most recent date, and format it into date that can be compared with firebase dates
     const newDate = new Date();
     const date = newDate.toISOString();
+    console.log(this.state.user.interests);
+    // if (
+    //   Object.keys(this.state.user).length !== 0 &&
+    //   !this.state.user.interests
+    // ) {
+    //   return <InterestModal />;
+    // } else
     return (
       // turn into flatlist - https://react-native-training.github.io/react-native-elements/docs/listitem.html
+
       <View style={{ padding: 10 }}>
+        <InterestModal />
         <View>
           <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
             Today's Events
