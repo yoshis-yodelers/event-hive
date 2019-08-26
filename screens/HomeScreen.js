@@ -60,7 +60,7 @@ export default class HomeScreen extends React.Component {
         user.uid
       );
       //Formats the information from userInfo (events/interests/etc.)
-      const eventsArray = await userInfo.data();
+      const userInfoArray = await userInfo.data();
       //Map through the events array in User and fetching event info from Events collection & formatting the data
       const eventsInfo = await eventsArray.events.map(async function(event) {
         const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
@@ -84,6 +84,7 @@ export default class HomeScreen extends React.Component {
         this.timeSort(event, event2)
       );
       //Set the upcoming events state & interest feed state
+      console.log('ffevents', ffevents);
       this.setState({ events: eventsSorted, feed: ffevents });
     } catch (error) {
       console.log(error);
@@ -97,7 +98,6 @@ export default class HomeScreen extends React.Component {
     if (event.start > event2.start) {
       return 1;
     }
-
     return 0;
   }
 
