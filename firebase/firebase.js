@@ -137,6 +137,16 @@ export class FirebaseWrapper {
     }
   }
 
+  async AddUserInterest(doc, interests) {
+    const ref = await this._firestore.collection('User').doc(doc);
+    await ref.set(
+      {
+        interests: interests,
+      },
+      { merge: true }
+    );
+  }
+
   async GetVenues(collectionPath, doc) {
     try {
       const ref = await this._firestore.collection(collectionPath).doc(doc.id);

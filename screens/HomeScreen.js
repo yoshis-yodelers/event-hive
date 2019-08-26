@@ -23,9 +23,10 @@ import { Constants } from 'expo';
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import InterestModal from './InterestModal';
+import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 import NavigationService from '../navigation/NavigationService';
 
-// import console = require('console');
 
 const { width } = Dimensions.get('window');
 const imageHeight = width * 0.3;
@@ -36,12 +37,14 @@ export default class HomeScreen extends React.Component {
     this.state = {
       events: [],
       feed: [],
+      user: {},
+      refreshing: false,
+      modalVisible: true,
     };
   }
 
-
-  componentDidMount() {
-    this.createFeeds();
+  async componentDidMount() {
+    await this.createFeeds();
   }
 
   async interestFeedFn(interest) {
@@ -95,12 +98,20 @@ export default class HomeScreen extends React.Component {
         this.timeSort(event, event2)
       );
       //Set the upcoming events state & interest feed state
-      console.log('ffevents', ffevents);
-      this.setState({ events: eventsSorted, feed: ffevents });
+      this.setState({
+        events: eventsSorted,
+        feed: ffevents,
+        user: userInfo.data(),
+      });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  dismissModal = async () => {
+    this.setState({ modalVisible: false });
+    await this.createFeeds();
+  };
 
   timeSort(event, event2) {
     if (event.start < event2.start) {
@@ -117,11 +128,10 @@ export default class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const newDate = new Date();
     const date = newDate.toISOString();
-    console.log('events', this.state.events);
-    console.log('feed', this.state.feed);
 
     return (
       // turn into flatlist - https://react-native-training.github.io/react-native-elements/docs/listitem.html
+
       <View style={{ padding: 10 }}>
         <View>
           <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
@@ -164,7 +174,6 @@ export default class HomeScreen extends React.Component {
                       <Divider style={styles.divider} />
                       <ListItem
                         style={styles.listItem}
-                        key={event.id}
                         leftAvatar={{ source: { uri: event.imageUrl } }}
                         title={event.name}
                         subtitle={event.start}
@@ -186,6 +195,10 @@ export default class HomeScreen extends React.Component {
               <Text>(no upcoming events)</Text>
             )}
           </ScrollView>
+          <InterestModal
+            modalVisible={this.state.modalVisible}
+            dismissModal={this.dismissModal}
+          />
         </View>
       </View>
     );
