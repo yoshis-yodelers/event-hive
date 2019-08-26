@@ -8,7 +8,7 @@ import { Icon } from "react-native-elements";
 import HomeScreen from "../screens/HomeScreen";
 import ExploreScreen from "../screens/ExploreScreen";
 import CreateEventScreen from "../screens/CreateEventScreen";
-import SingleEventScreen from "../screens/SingleEventScreen";
+import ExploreNavigator from "../navigation/ExploreNavigator";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -20,11 +20,11 @@ HomeStack.navigationOptions = {
 };
 
 const ExploreStack = createStackNavigator({
-  Explore: ExploreScreen
+  Explore: ExploreNavigator
 });
 
 ExploreStack.navigationOptions = {
-  tabBarLabel: "Search"
+  tabBarLabel: "Explore"
 };
 
 const CreateEventStack = createStackNavigator({
@@ -47,7 +47,7 @@ export default createBottomTabNavigator(
       })
     },
     Explore: {
-      screen: ExploreScreen,
+      screen: ExploreNavigator,
       navigationOptions: () => ({
         // eslint-disable-next-line react/display-name
         tabBarIcon: ({ tintColor }) => (

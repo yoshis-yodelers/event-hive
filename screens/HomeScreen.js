@@ -35,7 +35,7 @@ export default class HomeScreen extends React.Component {
     const user = firebase.auth().currentUser;
     // console.log("this is the user id>>>>>>>>>", user.uid);
     try {
-      //User information fetched from firebase, including upcomign events & interests(change line 30 to user once OAuth done)
+      //User information fetched from firebase, including upcomign events & interests(change line 31 to user once OAuth done)
       const userInfo = await FirebaseWrapper.GetInstance().GetEvents(
         "User",
         user.uid
@@ -79,7 +79,7 @@ export default class HomeScreen extends React.Component {
 
         return 0;
       });
-      //Consolidate all the upcomign event promises returned from above.
+      //Consolidate all the upcoming event promises returned from above.
       const events = await Promise.all(eventsInfo);
       //Sort through array of event objects by start date/time
       const eventsSorted = events.sort(function(event, event2) {
@@ -104,6 +104,9 @@ export default class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const newDate = new Date();
     const date = newDate.toISOString();
+    console.log('events', this.state.events);
+    console.log('feed', this.state.feed);
+
     return (
       // turn into flatlist - https://react-native-training.github.io/react-native-elements/docs/listitem.html
       <View style={{ padding: 10 }}>
