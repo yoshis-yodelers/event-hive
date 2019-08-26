@@ -14,6 +14,7 @@ import MainTabNavigator from "./MainTabNavigator";
 import LoginScreen from "../screens/LoginScreen";
 import LoadingScreen from "../screens/LoadingScreen";
 import HomeScreen from "../screens/HomeScreen";
+import SingleEventScreen from "../screens/SingleEventScreen";
 // import * as firebase from "firebase";
 // import { firebaseConfig } from "../firebase/firebase";
 // firebase.initializeApp(firebaseConfig);
@@ -40,7 +41,8 @@ const AppSwitchNavigator = createSwitchNavigator({
         />
       )
     }
-  }
+  },
+  SingleEventScreen: SingleEventScreen
 });
 
 const AppNavigator = createAppContainer(AppSwitchNavigator);
