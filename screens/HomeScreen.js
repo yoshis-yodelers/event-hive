@@ -1,6 +1,13 @@
 import React from 'react';
-import { ListItem, FlatList, Divider } from 'react-native-elements';
-
+import Modal from 'react-native-modal';
+import {
+  ListItem,
+  FlatList,
+  Divider,
+  Header,
+  Icon,
+  ThemeProvider,
+} from 'react-native-elements';
 import {
   StyleSheet,
   Text,
@@ -11,10 +18,13 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import MainHeader from '../navigation/MainHeader';
 import { Constants } from 'expo';
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import NavigationService from '../navigation/NavigationService';
+
 // import console = require('console');
 
 const { width } = Dimensions.get('window');
@@ -28,6 +38,7 @@ export default class HomeScreen extends React.Component {
       feed: [],
     };
   }
+
 
   componentDidMount() {
     this.createFeeds();
@@ -103,6 +114,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     //Get most recent date, and format it into date that can be compared with firebase dates
+    const { navigate } = this.props.navigation;
     const newDate = new Date();
     const date = newDate.toISOString();
     console.log('events', this.state.events);
@@ -156,7 +168,16 @@ export default class HomeScreen extends React.Component {
                         leftAvatar={{ source: { uri: event.imageUrl } }}
                         title={event.name}
                         subtitle={event.start}
+                        onPress={() =>
+                          navigate('SingleEventScreen', {
+                            eventId: event.id,
+                            imgUrl: event.imageUrl,
+                            eventName: event.name,
+                            description: event.description,
+                          })
+                        }
                       />
+                      <View />
                     </View>
                   );
                 }
@@ -200,6 +221,6 @@ const styles = StyleSheet.create({
   },
 });
 
-HomeScreen.navigationOptions = {
-  header: null,
-};
+// HomeScreen.navigationOptions = {
+//   header: null
+// };

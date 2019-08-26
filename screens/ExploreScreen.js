@@ -3,11 +3,13 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
   FlatList,
   Dimensions,
   TouchableOpacity,
+  Header,
+  Icon,
 } from 'react-native';
-import AppNavigator from '../navigation/AppNavigator';
 import { FirebaseWrapper } from '../firebase/firebase';
 import NavigationService from '../navigation/NavigationService';
 import * as firebase from 'firebase';
@@ -67,6 +69,7 @@ export default class ExploreScreen extends React.Component {
   render() {
     return (
       // search bar ref- https://www.freecodecamp.org/news/how-to-build-a-react-native-flatlist-with-realtime-searching-ability-81ad100f6699/
+
       <FlatList
         data={correctColumns(this.state.allCategories, numColumns)}
         style={styles.container}
