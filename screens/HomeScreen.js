@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from 'react-native-modal';
 import {
   ListItem,
   FlatList,
@@ -27,7 +26,6 @@ import InterestModal from './InterestModal';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 import NavigationService from '../navigation/NavigationService';
 
-
 const { width } = Dimensions.get('window');
 const imageHeight = width * 0.3;
 const height = width * 0.5;
@@ -45,6 +43,9 @@ export default class HomeScreen extends React.Component {
 
   async componentDidMount() {
     await this.createFeeds();
+    if (this.state.user && this.state.user.interests !== undefined) {
+      this.setState({ modalVisible: false });
+    }
   }
 
   async interestFeedFn(interest) {
@@ -55,8 +56,9 @@ export default class HomeScreen extends React.Component {
         interest
       );
       //Push events found into an array after formatting the data.
+
       interestCollection.forEach(async event => {
-        interestArray.push(await event.data());
+        interestArray.push(await event);
       });
       //Return array of events
       return interestArray;
@@ -74,7 +76,7 @@ export default class HomeScreen extends React.Component {
         user.uid
       );
       //Formats the information from userInfo (events/interests/etc.)
-      const userInfoArray = await userInfo.data();
+      const eventsArray = await userInfo.data();
       //Map through the events array in User and fetching event info from Events collection & formatting the data
       const eventsInfo = await eventsArray.events.map(async function(event) {
         const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
@@ -106,7 +108,7 @@ export default class HomeScreen extends React.Component {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   dismissModal = async () => {
     this.setState({ modalVisible: false });

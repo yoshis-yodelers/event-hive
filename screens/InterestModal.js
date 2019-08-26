@@ -49,7 +49,6 @@ export default class InterestModal extends React.Component {
       const userData = await userInfo();
 
       if (userData && userData.interests !== undefined) {
-        console.log(userData.interests);
         this.setState({ modalVisible: false });
       }
       const allCategories = await FirebaseWrapper.GetInstance().GetAllCategories();
@@ -89,12 +88,13 @@ export default class InterestModal extends React.Component {
                 this.state.allCategories.map(category => {
                   return (
                     // <View style={styles.buttonContainer} key={category.id}>
+
                     <TouchableOpacity
                       style={styles.touchableContainer}
-                      key={category.id}
-                      onPress={() => this.addInterest(category.id)}
+                      key={category.key}
+                      onPress={() => this.addInterest(category.key)}
                     >
-                      <Text style={styles.buttons}>{category.id}</Text>
+                      <Text style={styles.buttons}>{category.type}</Text>
                     </TouchableOpacity>
                   );
                 })}
