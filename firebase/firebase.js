@@ -87,7 +87,21 @@ export class FirebaseWrapper {
       const ref = await this._firestore
         .collection('Event')
         .where('category', '==', code);
-      return await ref.get();
+      const categoryArray = [];
+      return await ref.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          categoryArray.push({
+            id: doc.id,
+            imageUrl: doc.data().imageUrl,
+            start: doc.data().start,
+            end: doc.data().end,
+            name: doc.data().name,
+            category: doc.data().category,
+            description: doc.data().description,
+          });
+        });
+        return categoryArray;
+      });
     } catch (error) {
       console.log(error);
     }
@@ -99,7 +113,7 @@ export class FirebaseWrapper {
       const categoryArray = [];
       return await ref.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          categoryArray.push({ type: doc.data().Type, id: doc.id });
+          categoryArray.push({ type: doc.data().Type, key: doc.id });
         });
         return categoryArray;
       });
