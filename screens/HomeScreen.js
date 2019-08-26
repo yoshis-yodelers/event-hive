@@ -16,6 +16,7 @@ import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import InterestModal from './InterestModal';
+import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 // import console = require('console');
 
 const { width } = Dimensions.get('window');
@@ -28,11 +29,14 @@ export default class HomeScreen extends React.Component {
       events: [],
       feed: [],
       user: {},
+      refreshing: false,
+      modalVisible: true,
     };
   }
-
-  async componentDidMount() {
+  retrieveData = async () => {
     const user = firebase.auth().currentUser;
+    console.log('component did mount');
+    console.log('events', this.state.events);
 
     try {
       //User information fetched from firebase, including upcomign events & interests(change line 31 to user once OAuth done)
@@ -98,33 +102,29 @@ export default class HomeScreen extends React.Component {
         feed: ffevents,
         user: userInfo.data(),
       });
+      console.log('userinfo', userInfo.data());
     } catch (error) {
       console.log(error);
     }
+  };
+
+  async componentDidMount() {
+    await this.retrieveData();
   }
+  dismissModal = async () => {
+    this.setState({ modalVisible: false });
+    await this.retrieveData();
+  };
 
   render() {
     //Get most recent date, and format it into date that can be compared with firebase dates
     const newDate = new Date();
     const date = newDate.toISOString();
-<<<<<<< HEAD
-    console.log(this.state.user.interests);
-    // if (
-    //   Object.keys(this.state.user).length !== 0 &&
-    //   !this.state.user.interests
-    // ) {
-    //   return <InterestModal />;
-    // } else
-=======
-    console.log('events', this.state.events);
-    console.log('feed', this.state.feed);
 
->>>>>>> master
     return (
       // turn into flatlist - https://react-native-training.github.io/react-native-elements/docs/listitem.html
 
       <View style={{ padding: 10 }}>
-        <InterestModal />
         <View>
           <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
             Today's Events
@@ -166,7 +166,6 @@ export default class HomeScreen extends React.Component {
                       <Divider style={styles.divider} />
                       <ListItem
                         style={styles.listItem}
-                        key={event.id}
                         leftAvatar={{ source: { uri: event.imageUrl } }}
                         title={event.name}
                         subtitle={event.start}
@@ -179,6 +178,10 @@ export default class HomeScreen extends React.Component {
               <Text>(no upcoming events)</Text>
             )}
           </ScrollView>
+          <InterestModal
+            modalVisible={this.state.modalVisible}
+            dismissModal={this.dismissModal}
+          />
         </View>
       </View>
     );

@@ -34,7 +34,7 @@ export class FirebaseWrapper {
   async CreateNewDocument(collectionPath, doc) {
     try {
       const ref = this._firestore.collection(collectionPath).doc();
-      return await ref.set({ ...doc});
+      return await ref.set({ ...doc });
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +53,6 @@ export class FirebaseWrapper {
         id: doc.id,
         venue: doc.venue_id,
         imageUrl: doc.logo.url,
-
       });
     } catch (error) {
       console.log(error);
@@ -122,6 +121,16 @@ export class FirebaseWrapper {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async AddUserInterest(doc, interests) {
+    const ref = await this._firestore.collection('User').doc(doc);
+    await ref.set(
+      {
+        interests: interests,
+      },
+      { merge: true }
+    );
   }
 
   async GetVenues(collectionPath, doc) {
