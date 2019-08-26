@@ -1,4 +1,5 @@
 import React from 'react';
+import Modal from 'react-native-modal';
 import {
   ListItem,
   FlatList,
@@ -7,7 +8,6 @@ import {
   Icon,
   ThemeProvider,
 } from 'react-native-elements';
-
 import {
   StyleSheet,
   Text,
@@ -45,7 +45,7 @@ export default class HomeScreen extends React.Component {
 
   async componentDidMount() {
     const user = firebase.auth().currentUser;
-
+    // console.log("this is the user id>>>>>>>>>", user.uid);
     try {
       //User information fetched from firebase, including upcomign events & interests(change line 31 to user once OAuth done)
       const userInfo = await FirebaseWrapper.GetInstance().GetEvents(
@@ -113,6 +113,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     //Get most recent date, and format it into date that can be compared with firebase dates
+    const { navigate } = this.props.navigation;
     const newDate = new Date();
     const date = newDate.toISOString();
     console.log('events', this.state.events);
@@ -166,7 +167,16 @@ export default class HomeScreen extends React.Component {
                         leftAvatar={{ source: { uri: event.imageUrl } }}
                         title={event.name}
                         subtitle={event.start}
+                        onPress={() =>
+                          navigate('SingleEventScreen', {
+                            eventId: event.id,
+                            imgUrl: event.imageUrl,
+                            eventName: event.name,
+                            description: event.description,
+                          })
+                        }
                       />
+                      <View />
                     </View>
                   );
                 }
@@ -209,3 +219,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+// HomeScreen.navigationOptions = {
+//   header: null
+// };
