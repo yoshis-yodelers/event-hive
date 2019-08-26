@@ -34,7 +34,7 @@ export class FirebaseWrapper {
   async CreateNewDocument(collectionPath, doc) {
     try {
       const ref = this._firestore.collection(collectionPath).doc();
-      return await ref.set({ ...doc});
+      return await ref.set({ ...doc });
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +53,6 @@ export class FirebaseWrapper {
         id: doc.id,
         venue: doc.venue_id,
         imageUrl: doc.logo.url,
-
       });
     } catch (error) {
       console.log(error);
@@ -88,7 +87,21 @@ export class FirebaseWrapper {
       const ref = await this._firestore
         .collection('Event')
         .where('category', '==', code);
-      return await ref.get();
+      const categoryArray = [];
+      return await ref.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          categoryArray.push({
+            id: doc.id,
+            imageUrl: doc.data().imageUrl,
+            start: doc.data().start,
+            end: doc.data().end,
+            name: doc.data().name,
+            category: doc.data().category,
+            description: doc.data().description,
+          });
+        });
+        return categoryArray;
+      });
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +113,7 @@ export class FirebaseWrapper {
       const categoryArray = [];
       return await ref.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          categoryArray.push({ type: doc.data().Type, id: doc.id });
+          categoryArray.push({ type: doc.data().Type, key: doc.id });
         });
         return categoryArray;
       });
@@ -122,6 +135,16 @@ export class FirebaseWrapper {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async AddUserInterest(doc, interests) {
+    const ref = await this._firestore.collection('User').doc(doc);
+    await ref.set(
+      {
+        interests: interests,
+      },
+      { merge: true }
+    );
   }
 
   async GetVenues(collectionPath, doc) {

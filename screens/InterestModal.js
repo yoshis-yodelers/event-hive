@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 import {
   TouchableHighlight,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native-gesture-handler';
 
 const { width } = Dimensions.get('window');
@@ -30,12 +31,27 @@ export default class InterestModal extends React.Component {
     this.state = {
       allCategories: [],
       modalVisible: true,
+      userInterests: [],
     };
   }
 
   async componentDidMount() {
     try {
       //set categories available to users into state
+      const user = firebase.auth().currentUser;
+      const userInfo = async () => {
+        const userData = await FirebaseWrapper.GetInstance().GetEvents(
+          'User',
+          user.uid
+        );
+        return userData.data();
+      };
+      const userData = await userInfo();
+
+      if (userData && userData.interests !== undefined) {
+        console.log(userData.interests);
+        this.setState({ modalVisible: false });
+      }
       const allCategories = await FirebaseWrapper.GetInstance().GetAllCategories();
       this.setState({ allCategories: allCategories });
     } catch (error) {
@@ -43,29 +59,53 @@ export default class InterestModal extends React.Component {
     }
   }
 
+  addInterest = key => {
+    this.state.userInterests.push(key);
+    console.log(key);
+  };
+
+  addInterestToUser = async () => {
+    const user = firebase.auth().currentUser;
+    if (this.state.userInterests.length !== 0) {
+      await FirebaseWrapper.GetInstance().AddUserInterest(
+        user.uid,
+        this.state.userInterests
+      );
+      console.log(this.state.userInterests);
+    }
+    this.props.dismissModal();
+  };
+
   render() {
     return (
       <View>
-        <Modal visible={this.state.modalVisible}>
-          <View styles={styles.viewContainer}>
-            {this.state.allCategories &&
-              this.state.allCategories.map(category => {
-                return (
-                  <View style={styles.buttonContainer} key={category.key}>
+        <Modal visible={this.props.modalVisible}>
+          <ScrollView
+            contentContainerStyle={styles.contentContainer}
+            style={styles.scrollContainer}
+          >
+            <View styles={styles.viewContainer}>
+              {this.state.allCategories &&
+                this.state.allCategories.map(category => {
+                  return (
+                    // <View style={styles.buttonContainer} key={category.id}>
                     <TouchableOpacity
                       style={styles.touchableContainer}
-                      key={category.key}
+                      key={category.id}
+                      onPress={() => this.addInterest(category.id)}
                     >
-                      <Text style={styles.buttons}>{category.key}</Text>
+                      <Text style={styles.buttons}>{category.id}</Text>
                     </TouchableOpacity>
-                  </View>
-                );
-              })}
+                  );
+                })}
 
-            <Button title={'hello'} style={{ paddingTop: 50 }}>
-              Hello
-            </Button>
-          </View>
+              <Button
+                title={'Submit Interests'}
+                style={styles.submitButton}
+                onPress={this.addInterestToUser}
+              />
+            </View>
+          </ScrollView>
         </Modal>
       </View>
     );
@@ -82,14 +122,25 @@ const styles = StyleSheet.create({
   },
   buttons: {
     alignItems: 'center',
-    width: buttonWidth,
-    backgroundColor: color,
     paddingTop: 5,
     paddingBottom: 5,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   touchableContainer: {
+    flex: 1,
+    margin: 2,
+    width: Dimensions.get('window').width / 2 - 6,
+    height: 200,
+    backgroundColor: color,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  viewContainer: {
+    flex: 1,
     flexDirection: 'row',
+  },
+  submitButton: {
+    paddingBottom: 50,
+    paddingTop: 50,
+    marginBottom: 50,
   },
 });

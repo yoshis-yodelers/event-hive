@@ -30,11 +30,15 @@ export default class App extends React.Component {
     const userLocation = new UserLocation();
 
     // get a [latitude, longitude] array or set errorMessage in state
-    const latLong = await userLocation._getLocationAsync();
-    if (typeof latLong === 'string') {
-      this.setState({ errorMessage: latLong });
-    } else {
-      await this._setLocation(latLong[0], latLong[1]);
+    try {
+      const latLong = await userLocation._getLocationAsync();
+      if (typeof latLong === 'string') {
+        this.setState({ errorMessage: latLong });
+      } else {
+        await this._setLocation(latLong[0], latLong[1]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
