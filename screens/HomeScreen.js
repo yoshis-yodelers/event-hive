@@ -1,5 +1,6 @@
 import React from "react";
 import { ListItem, FlatList, Divider } from "react-native-elements";
+import Modal from "react-native-modal";
 
 import {
   StyleSheet,
@@ -9,13 +10,14 @@ import {
   Button,
   ScrollView,
   Image,
-  Dimensions
+  Dimensions,
+  TouchableHighlight
 } from "react-native";
 import { Constants } from "expo";
 import { FirebaseWrapper } from "../firebase/firebase";
 import * as firebase from "firebase";
 import "firebase/firestore";
-// import console = require('console');
+import SingleEventScreen from "../screens/SingleEventScreen";
 
 const { width } = Dimensions.get("window");
 const imageHeight = width * 0.3;
@@ -31,7 +33,7 @@ export default class HomeScreen extends React.Component {
 
   async componentDidMount() {
     const user = firebase.auth().currentUser;
-    console.log(user);
+    // console.log("this is the user id>>>>>>>>>", user.uid);
     try {
       //User information fetched from firebase, including upcomign events & interests(change line 30 to user once OAuth done)
       const userInfo = await FirebaseWrapper.GetInstance().GetEvents(
@@ -99,6 +101,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     //Get most recent date, and format it into date that can be compared with firebase dates
+    const { navigate } = this.props.navigation;
     const newDate = new Date();
     const date = newDate.toISOString();
     return (
@@ -149,7 +152,16 @@ export default class HomeScreen extends React.Component {
                         leftAvatar={{ source: { uri: event.imageUrl } }}
                         title={event.name}
                         subtitle={event.start}
+                        onPress={() =>
+                          navigate("SingleEventScreen", {
+                            eventId: event.id,
+                            imgUrl: event.imageUrl,
+                            eventName: event.name,
+                            description: event.description
+                          })
+                        }
                       />
+                      <View />
                     </View>
                   );
                 }
@@ -193,6 +205,6 @@ const styles = StyleSheet.create({
   }
 });
 
-HomeScreen.navigationOptions = {
-  header: null
-};
+// HomeScreen.navigationOptions = {
+//   header: null
+// };
