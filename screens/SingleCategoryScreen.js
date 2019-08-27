@@ -39,13 +39,16 @@ export default class SingleCategoryScreen extends React.Component {
   // Can we refactor this and homescreen, so we repeat less code?
   async componentDidMount() {
     try {
-      const categoryCode = this.props.navigation.state.params.id;
+      // is there a better way?
+      const categoryCode = this.props.navigation.state.params.key;
 
-      console.log(categoryCode);
+      console.log('categoryCode', categoryCode);
       //Fetched from firebase, including upcoming events in an interest
       const categoryCollection = await FirebaseWrapper.GetInstance().GetInterestEvents(
         categoryCode
       );
+
+      console.log('hi', categoryCollection);
       // //Map through the events and fetching event info from Events collection & formatting the data
       // const eventsInfo = await userInfoArray.events.map(async function(event) {
       //   const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
