@@ -42,10 +42,11 @@ export default class App extends React.Component {
     }
   }
 
-  _setLocation(latitude, longitude) {
+  async _setLocation(latitude, longitude) {
     if (this.state.latitude !== null) {
       const eventBrite = new EventBrite();
       eventBrite.SetEventBriteData(latitude, longitude);
+      await eventBrite.SetLocationData();
       this.setState({ latitude: latitude, longitude: longitude });
     } else {
       console.log(this.state.latitude);

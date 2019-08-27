@@ -15,6 +15,7 @@ import LoadingScreen from '../screens/LoadingScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SingleEventScreen from '../screens/SingleEventScreen';
 import MainHeader from '../navigation/MainHeader';
+import UserProfileScreen from '../screens/UserProfileScreen';
 // import * as firebase from "firebase";
 // import { firebaseConfig } from "../firebase/firebase";
 // firebase.initializeApp(firebaseConfig);
