@@ -1,19 +1,18 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
   Dimensions,
-  TouchableOpacity,
-} from 'react-native';
-import AppNavigator from '../navigation/AppNavigator';
-import { FirebaseWrapper } from '../firebase/firebase';
-import NavigationService from '../navigation/NavigationService';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
+  TouchableOpacity
+} from "react-native";
+import { FirebaseWrapper } from "../firebase/firebase";
+import NavigationService from "../navigation/NavigationService";
+import * as firebase from "firebase";
+import "firebase/firestore";
 // import {  } from 'react-native-gesture-handler';
-import SingleCategoryScreen from './SingleCategoryScreen';
+import SingleCategoryScreen from "./SingleCategoryScreen";
 
 const correctColumns = (data, numColumns) => {
   const numTotalFullRows = Math.floor(data.length / numColumns);
@@ -33,7 +32,7 @@ export default class ExploreScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      allCategories: [],
+      allCategories: []
     };
   }
 
@@ -56,7 +55,7 @@ export default class ExploreScreen extends React.Component {
     return (
       <View style={styles.item}>
         <TouchableOpacity
-          onPress={() => NavigationService.navigate('SingleCategory', item)}
+          onPress={() => NavigationService.navigate("SingleCategory", item)}
         >
           <Text style={styles.itemText}>{item.type}</Text>
         </TouchableOpacity>
@@ -80,24 +79,24 @@ export default class ExploreScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 20,
+    marginVertical: 20
   },
   item: {
-    backgroundColor: '#32A7BE',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#32A7BE",
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
     margin: 1,
-    height: Dimensions.get('window').width / numColumns, // creates a square
+    height: Dimensions.get("window").width / numColumns // creates a square
   },
   itemInvisible: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent"
   },
   itemText: {
-    color: '#fff',
-  },
+    color: "#fff"
+  }
 });
 
 ExploreScreen.navigationOptions = {
-  header: null,
+  header: null
 };

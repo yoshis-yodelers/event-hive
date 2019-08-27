@@ -38,18 +38,13 @@ export default class LoginScreen extends React.Component {
             googleUser.accessToken
           );
           // Sign in with credential from the Google user.
-          // console.log("credential:", credential);
+
           firebase
             .auth()
             .signInWithCredential(credential)
             .then(function(result) {
               console.log("user signed in");
               if (result.additionalUserInfo.isNewUser) {
-                // console.log("this is the result:", result);
-                // console.log("this is the user email:", result.user.email);
-                // console.log("this is the user id:", result.user.uid);
-
-                // console.log(result.additionalUserInfo.profile.given_name);
                 FirebaseWrapper.GetInstance().createUser("User", result);
               } else {
                 console.log("user already logged in");
