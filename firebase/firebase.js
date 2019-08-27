@@ -100,6 +100,7 @@ export class FirebaseWrapper {
             description: doc.data().description,
           });
         });
+        console.log('categoryArray', categoryArray);
         return categoryArray;
       });
     } catch (error) {
