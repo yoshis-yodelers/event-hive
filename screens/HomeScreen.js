@@ -1,7 +1,12 @@
-import React from "react";
-import { ListItem, FlatList, Divider } from "react-native-elements";
-import Modal from "react-native-modal";
-
+import React from 'react';
+import {
+  ListItem,
+  FlatList,
+  Divider,
+  Header,
+  Icon,
+  ThemeProvider,
+} from 'react-native-elements';
 import {
   StyleSheet,
   Text,
@@ -11,15 +16,17 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  TouchableHighlight
-} from "react-native";
-import { Constants } from "expo";
-import { FirebaseWrapper } from "../firebase/firebase";
-import * as firebase from "firebase";
-import "firebase/firestore";
-import SingleEventScreen from "../screens/SingleEventScreen";
+} from 'react-native';
+import MainHeader from '../navigation/MainHeader';
+import { Constants } from 'expo';
+import { FirebaseWrapper } from '../firebase/firebase';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import InterestModal from './InterestModal';
+import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
+import NavigationService from '../navigation/NavigationService';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 const imageHeight = width * 0.3;
 const height = width * 0.5;
 export default class HomeScreen extends React.Component {
@@ -27,17 +34,45 @@ export default class HomeScreen extends React.Component {
     super(props);
     this.state = {
       events: [],
-      feed: []
+      feed: [],
+      user: {},
+      refreshing: false,
+      modalVisible: true,
     };
   }
 
   async componentDidMount() {
-    const user = firebase.auth().currentUser;
-    // console.log("this is the user id>>>>>>>>>", user.uid);
+    await this.createFeeds();
+    if (this.state.user && this.state.user.interests !== undefined) {
+      this.setState({ modalVisible: false });
+    }
+  }
+
+  async interestFeedFn(interest) {
     try {
+      const interestArray = [];
+      // Get events base on interest
+      const interestCollection = await FirebaseWrapper.GetInstance().GetInterestEvents(
+        interest
+      );
+      //Push events found into an array after formatting the data.
+
+      interestCollection.forEach(async event => {
+        interestArray.push(await event);
+      });
+      //Return array of events
+      return interestArray;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async createFeeds() {
+    try {
+      const user = firebase.auth().currentUser;
       //User information fetched from firebase, including upcomign events & interests(change line 31 to user once OAuth done)
       const userInfo = await FirebaseWrapper.GetInstance().GetEvents(
-        "User",
+        'User',
         user.uid
       );
       //Formats the information from userInfo (events/interests/etc.)
@@ -45,58 +80,49 @@ export default class HomeScreen extends React.Component {
       //Map through the events array in User and fetching event info from Events collection & formatting the data
       const eventsInfo = await eventsArray.events.map(async function(event) {
         const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
-          "Event",
+          'Event',
           event
         );
         return eventCollection.data();
       });
       //Map through interest array, and find events in Events collection that match interest code. Returns an array of arrays (each array is for each interest code)
-      const interestFeed = await eventsArray.interests.map(async function(
-        interest
-      ) {
-        const interestArray = [];
-        const interestCollection = await FirebaseWrapper.GetInstance().GetInterestEvents(
-          interest
-        );
-        //Push events found into an array after formatting the data.
-        interestCollection.forEach(async event => {
-          interestArray.push(await event.data());
-        });
-        //Return array of events
-        return interestArray;
-      });
-
+      const interestFeed = await eventsArray.interests.map(this.interestFeedFn);
       //Consolidate all the interest event promises returned from above.
       const fevents = await Promise.all(interestFeed);
       //Flatten the array of events arrays into an array of event objects for all interests, and sort them based on the date & time.
-      const ffevents = fevents.flat().sort(function(event, event2) {
-        if (event.start < event2.start) {
-          return -1;
-        }
-        if (event.start > event2.start) {
-          return 1;
-        }
-
-        return 0;
-      });
+      const ffevents = fevents
+        .flat()
+        .sort((event, event2) => this.timeSort(event, event2));
       //Consolidate all the upcoming event promises returned from above.
       const events = await Promise.all(eventsInfo);
       //Sort through array of event objects by start date/time
-      const eventsSorted = events.sort(function(event, event2) {
-        if (event.start < event2.start) {
-          return -1;
-        }
-        if (event.start > event2.start) {
-          return 1;
-        }
-
-        return 0;
-      });
+      const eventsSorted = events.sort((event, event2) =>
+        this.timeSort(event, event2)
+      );
       //Set the upcoming events state & interest feed state
-      this.setState({ events: eventsSorted, feed: ffevents });
+      this.setState({
+        events: eventsSorted,
+        feed: ffevents,
+        user: userInfo.data(),
+      });
     } catch (error) {
       console.log(error);
     }
+  }
+
+  dismissModal = async () => {
+    this.setState({ modalVisible: false });
+    await this.createFeeds();
+  };
+
+  timeSort(event, event2) {
+    if (event.start < event2.start) {
+      return -1;
+    }
+    if (event.start > event2.start) {
+      return 1;
+    }
+    return 0;
   }
 
   render() {
@@ -104,14 +130,13 @@ export default class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const newDate = new Date();
     const date = newDate.toISOString();
-    console.log('events', this.state.events);
-    console.log('feed', this.state.feed);
 
     return (
       // turn into flatlist - https://react-native-training.github.io/react-native-elements/docs/listitem.html
+
       <View style={{ padding: 10 }}>
         <View>
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
             Today's Events
           </Text>
           <ScrollView
@@ -141,7 +166,7 @@ export default class HomeScreen extends React.Component {
           </ScrollView>
         </View>
         <View style={{ paddingBottom: 300 }}>
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>Event Feed</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Event Feed</Text>
           <ScrollView style={styles.interested}>
             {this.state.feed.length > 0 ? (
               this.state.feed.map(event => {
@@ -151,16 +176,15 @@ export default class HomeScreen extends React.Component {
                       <Divider style={styles.divider} />
                       <ListItem
                         style={styles.listItem}
-                        key={event.id}
                         leftAvatar={{ source: { uri: event.imageUrl } }}
                         title={event.name}
                         subtitle={event.start}
                         onPress={() =>
-                          navigate("SingleEventScreen", {
+                          navigate('SingleEventScreen', {
                             eventId: event.id,
                             imgUrl: event.imageUrl,
                             eventName: event.name,
-                            description: event.description
+                            description: event.description,
                           })
                         }
                       />
@@ -173,6 +197,10 @@ export default class HomeScreen extends React.Component {
               <Text>(no upcoming events)</Text>
             )}
           </ScrollView>
+          <InterestModal
+            modalVisible={this.state.modalVisible}
+            dismissModal={this.dismissModal}
+          />
         </View>
       </View>
     );
@@ -182,30 +210,30 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   listItem: {
     paddingTop: 5,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   listItemParent: {
-    borderStyle: "solid",
-    borderColor: "grey"
+    borderStyle: 'solid',
+    borderColor: 'grey',
   },
   divder: {
-    backgroundColor: "grey",
+    backgroundColor: 'grey',
     height: 10,
-    flex: 1
+    flex: 1,
   },
   interested: {},
   subscribed: {
     height,
-    width
+    width,
   },
   carousel: {
     height,
-    width
+    width,
   },
   eventName: {
     fontSize: 14,
-    fontWeight: "bold"
-  }
+    fontWeight: 'bold',
+  },
 });
 
 // HomeScreen.navigationOptions = {

@@ -1,7 +1,13 @@
-import React from "react";
-import { ListItem, FlatList, withTheme } from "react-native-elements";
-import { Button, ThemeProvider, Card } from "react-native-elements";
-import LinearGradient from "react-native-linear-gradient";
+import React from 'react';
+import {
+  Button,
+  ThemeProvider,
+  Card,
+  ListItem,
+  FlatList,
+  withTheme,
+} from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {
   StyleSheet,
@@ -10,11 +16,11 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  Flatlist
-} from "react-native";
-import "firebase/firestore";
+  Flatlist,
+} from 'react-native';
+import 'firebase/firestore';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 const imageWidth = width;
 const height = width * 0.6;
 
@@ -27,13 +33,13 @@ export default class SingleEventScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
-    const eventId = navigation.getParam("eventId", "NO-ID");
-    const imgUrl = navigation.getParam("imgUrl", "Event Image");
+    const eventId = navigation.getParam('eventId', 'NO-ID');
+    const imgUrl = navigation.getParam('imgUrl', 'Event Image');
     const eventDescription = navigation.getParam(
-      "description",
-      "Event Description"
+      'description',
+      'Event Description'
     );
-    const eventName = navigation.getParam("eventName", "Event Description");
+    const eventName = navigation.getParam('eventName', 'Event Description');
 
     return (
       <View style={styles.eventContainer}>
@@ -48,7 +54,7 @@ export default class SingleEventScreen extends React.Component {
           <Image
             style={styles.image}
             source={{
-              uri: imgUrl
+              uri: imgUrl,
             }}
           />
         </View>
@@ -56,7 +62,7 @@ export default class SingleEventScreen extends React.Component {
           <ThemeProvider theme={theme}>
             <Button
               title="Dashboard"
-              onPress={() => navigate("MainTabNavigator")}
+              onPress={() => navigate('MainTabNavigator')}
             />
           </ThemeProvider>
         </View>
@@ -68,26 +74,26 @@ export default class SingleEventScreen extends React.Component {
 const theme = {
   Button: {
     raised: true,
-    color: "white",
+    color: 'white',
     buttonStyle: {
-      backgroundColor: "#32A7BE",
+      backgroundColor: '#32A7BE',
       height: 60,
-      width: width
-    }
-  }
+      width: width,
+    },
+  },
 };
 
 const styles = StyleSheet.create({
   eventContainer: {
     paddingTop: 65,
     flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "center"
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   eventDetailsHeader: {
     fontSize: 18,
     paddingBottom: 5,
-    paddingLeft: 4
+    paddingLeft: 4,
   },
   eventName: {
     paddingRight: 4,
@@ -95,30 +101,30 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginBottom: 5,
     fontSize: 17,
-    color: "#32A7BE"
+    color: '#32A7BE',
   },
   eventDescription: {
     paddingRight: 4,
     paddingLeft: 4,
     marginTop: 5,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingBottom: 0,
-    marginBottom: 0
+    marginBottom: 0,
   },
   eventScrollView: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingTop: 0,
     paddingBottom: 50,
     marginTop: 0,
-    marginBottom: 50
+    marginBottom: 50,
   },
   imageContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingTop: 0,
     paddingBottom: 0,
     marginTop: 0,
     marginBottom: 0,
-    alignContent: "center"
+    alignContent: 'center',
   },
   image: {
     width: imageWidth,
@@ -127,9 +133,9 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     marginTop: 0,
     marginBottom: 0,
-    alignContent: "center"
+    alignContent: 'center',
   },
   buttonContainer: {
-    alignContent: "center"
-  }
+    alignContent: 'center',
+  },
 });

@@ -6,10 +6,9 @@ import {
 import { Icon } from "react-native-elements";
 
 import HomeScreen from "../screens/HomeScreen";
-import ExploreScreen from "../screens/ExploreScreen";
+import SingleEventScreen from "../screens/SingleEventScreen";
 import CreateEventScreen from "../screens/CreateEventScreen";
 import ExploreNavigator from "../navigation/ExploreNavigator";
-import SingleEventScreen from "../screens/SingleEventScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
