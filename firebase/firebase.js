@@ -100,7 +100,6 @@ export class FirebaseWrapper {
             description: doc.data().description,
           });
         });
-        console.log('categoryArray', categoryArray);
         return categoryArray;
       });
     } catch (error) {
@@ -150,16 +149,24 @@ export class FirebaseWrapper {
 
   async GetVenues(collectionPath, doc) {
     try {
-      const ref = await this._firestore.collection(collectionPath).doc(doc.id);
-      return ref.set({
-        id: doc.id,
-        address: doc.address.address_1,
-        city: doc.address.city,
-        state: doc.address.region,
-        zipcode: doc.address.postal_code,
-        latitude: doc.address.latitude,
-        longitude: doc.address.longitude,
-      });
+      if (doc) {
+        const ref = await this._firestore
+          .collection(collectionPath)
+          .doc(doc.id);
+        if (doc.id) {
+          return ref.set({
+            id: doc.id,
+            address: doc.address.address_1,
+            city: doc.address.city,
+            state: doc.address.region,
+            zipcode: doc.address.postal_code,
+            latitude: doc.address.latitude,
+            longitude: doc.address.longitude,
+          });
+        } else {
+          console.log(doc);
+        }
+      }
     } catch (error) {
       console.log(error);
     }

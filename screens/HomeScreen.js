@@ -36,15 +36,14 @@ export default class HomeScreen extends React.Component {
       events: [],
       feed: [],
       user: {},
-      refreshing: false,
-      modalVisible: true,
+      modalVisible: false,
     };
   }
 
   async componentDidMount() {
     await this.createFeeds();
-    if (this.state.user && this.state.user.interests !== undefined) {
-      this.setState({ modalVisible: false });
+    if (this.state.user && this.state.user.interests === undefined) {
+      this.setState({ modalVisible: true });
     }
   }
 
