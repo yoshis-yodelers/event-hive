@@ -66,7 +66,7 @@ export default class ExploreScreen extends React.Component {
               height: Dimensions.get('window').width / numColumns - 4,
               width: Dimensions.get('window').width / numColumns - 4,
             }}
-            imageStyle={{ borderRadius: 8 }}
+            imageStyle={{ borderRadius: 12 }}
           >
             <Text style={styles.item}>{item.type}</Text>
           </ImageBackground>
