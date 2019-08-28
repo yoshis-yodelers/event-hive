@@ -1,13 +1,10 @@
 import React from "react";
-<<<<<<< HEAD
-=======
 import Geocode from "react-geocode";
 import googleMapsKey from "../secrets";
 import { FirebaseWrapper } from "../firebase/firebase";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 
->>>>>>> 0e003f7c80023779d8d5342225ffdfc5b54341a2
 import {
   Button,
   ThemeProvider,
@@ -16,11 +13,8 @@ import {
   FlatList,
   withTheme
 } from "react-native-elements";
-<<<<<<< HEAD
 
 import ActionButton from "react-native-action-button";
-=======
->>>>>>> 0e003f7c80023779d8d5342225ffdfc5b54341a2
 
 import {
   StyleSheet,
@@ -32,10 +26,7 @@ import {
   Flatlist
 } from "react-native";
 import "firebase/firestore";
-<<<<<<< HEAD
-=======
 import * as firebase from "firebase";
->>>>>>> 0e003f7c80023779d8d5342225ffdfc5b54341a2
 
 const { width } = Dimensions.get("window");
 const imageWidth = width;
@@ -71,23 +62,16 @@ export default class SingleEventScreen extends React.Component {
     console.log(this.state.venueInfo);
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
-<<<<<<< HEAD
-    const eventId = navigation.getParam("eventId", "NO-ID");
-    const imgUrl = navigation.getParam("imgUrl", "Event Image");
-=======
     const imgUrl = navigation.getParam("imgUrl", "Event Image");
     // const lat = this.state.venueInfo.latitude;
     // const long = this.state.venueInfo.longitude;
     // console.log("this is the lat>>>>>>>>>>>>", lat);
     // console.log("this is the long>>>>>>>>>>>>", long);
->>>>>>> 0e003f7c80023779d8d5342225ffdfc5b54341a2
     const eventDescription = navigation.getParam(
       "description",
       "Event Description"
     );
     const eventName = navigation.getParam("eventName", "Event Description");
-<<<<<<< HEAD
-=======
 
     // Geocode.setApiKey(googleMapsKey);
     // Geocode.enableDebug();
@@ -100,7 +84,6 @@ export default class SingleEventScreen extends React.Component {
     //     console.error(error);
     //   }
     // );
->>>>>>> 0e003f7c80023779d8d5342225ffdfc5b54341a2
 
     return (
       <View style={styles.eventContainer}>
