@@ -52,7 +52,6 @@ export default class ExploreScreen extends React.Component {
     if (item.empty === true) {
       return <View style={[styles.item, styles.itemInvisible]} />;
     }
-    console.log(item);
     return (
       <View style={styles.item}>
         <TouchableOpacity
@@ -101,7 +100,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     margin: 1,
-    height: Dimensions.get('window').width / numColumns, // creates a square
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: "white",
+    padding: 5,
+    textShadowColor: "black",
+    textShadowRadius: 5,
+    // backgroundColor: "blue",
+    height: Dimensions.get('window').width / numColumns// creates a square
   },
   itemInvisible: {
     backgroundColor: 'transparent',
