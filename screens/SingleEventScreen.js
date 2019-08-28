@@ -1,9 +1,9 @@
-import React from "react";
-import Geocode from "react-geocode";
-import googleMapsKey from "../secrets";
-import { FirebaseWrapper } from "../firebase/firebase";
-import ActionButton from "react-native-action-button";
-import Icon from "react-native-vector-icons/Ionicons";
+import React from 'react';
+import Geocode from 'react-geocode';
+import googleMapsKey from '../secrets';
+import { FirebaseWrapper } from '../firebase/firebase';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import {
   Button,
@@ -11,8 +11,8 @@ import {
   Card,
   ListItem,
   FlatList,
-  withTheme
-} from "react-native-elements";
+  withTheme,
+} from 'react-native-elements';
 
 import {
   StyleSheet,
@@ -21,12 +21,12 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  Flatlist
-} from "react-native";
-import "firebase/firestore";
-import * as firebase from "firebase";
+  Flatlist,
+} from 'react-native';
+import 'firebase/firestore';
+import * as firebase from 'firebase';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 const imageWidth = width;
 const height = width * 0.6;
 
@@ -34,23 +34,54 @@ export default class SingleEventScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      venueInfo: ""
+      venueInfo: '',
+      user: {},
     };
   }
+
+  _getUserInfo = async () => {
+    const user = firebase.auth().currentUser;
+    const userInfo = async () => {
+      const userData = await FirebaseWrapper.GetInstance().GetEvents(
+        'User',
+        user.uid
+      );
+      return userData;
+    };
+    const userData = await userInfo();
+    this.setState({
+      ...this.state,
+      user: userData.data(),
+    });
+  };
+
+  _addUserEvent = async () => {
+    const { navigation } = this.props;
+    const eventId = navigation.getParam('eventId', 'NO-ID');
+    await FirebaseWrapper.GetInstance().AddUserEvent(
+      eventId,
+      this.state.user.id
+    );
+    await FirebaseWrapper.GetInstance().AddEventAttendee(
+      eventId,
+      this.state.user.id
+    );
+  };
   async componentDidMount() {
     const { navigation } = this.props;
-    const eventId = navigation.getParam("eventId", "NO-ID");
-    const venueId = navigation.getParam("venueId", "Venue ID");
+    const eventId = navigation.getParam('eventId', 'NO-ID');
+    const venueId = navigation.getParam('venueId', 'Venue ID');
 
     const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
-      "Venue",
+      'Venue',
       venueId
     );
 
     const boop = await eventCollection.data();
     this.setState({ venueInfo: await eventCollection.data() });
+    await this._getUserInfo();
     // console.log("this is this.state.venueInfo", this.state.venueInfo);
-    console.log("this is the venue id", venueId);
+    console.log('this is the venue id', venueId);
     // console.log("eventCollection.data", await eventCollection.data());
     // console.log("event collection:", typeof (await eventCollection.data()));
     // eventCollection.map(e => console.log(e.data()));
@@ -60,16 +91,16 @@ export default class SingleEventScreen extends React.Component {
     console.log(this.state.venueInfo);
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
-    const imgUrl = navigation.getParam("imgUrl", "Event Image");
+    const imgUrl = navigation.getParam('imgUrl', 'Event Image');
     // const lat = this.state.venueInfo.latitude;
     // const long = this.state.venueInfo.longitude;
     // console.log("this is the lat>>>>>>>>>>>>", lat);
     // console.log("this is the long>>>>>>>>>>>>", long);
     const eventDescription = navigation.getParam(
-      "description",
-      "Event Description"
+      'description',
+      'Event Description'
     );
-    const eventName = navigation.getParam("eventName", "Event Description");
+    const eventName = navigation.getParam('eventName', 'Event Description');
 
     // Geocode.setApiKey(googleMapsKey);
     // Geocode.enableDebug();
@@ -96,7 +127,7 @@ export default class SingleEventScreen extends React.Component {
           <Image
             style={styles.image}
             source={{
-              uri: imgUrl
+              uri: imgUrl,
             }}
           />
         </View>
@@ -104,7 +135,7 @@ export default class SingleEventScreen extends React.Component {
           <ThemeProvider theme={theme}>
             <Button
               title="Dashboard"
-              onPress={() => navigate("MainTabNavigator")}
+              onPress={() => navigate('MainTabNavigator')}
             />
           </ThemeProvider>
         </View>
@@ -116,26 +147,26 @@ export default class SingleEventScreen extends React.Component {
 const theme = {
   Button: {
     raised: true,
-    color: "white",
+    color: 'white',
     buttonStyle: {
-      backgroundColor: "#32A7BE",
+      backgroundColor: '#32A7BE',
       height: 60,
-      width: width
-    }
-  }
+      width: width,
+    },
+  },
 };
 
 const styles = StyleSheet.create({
   eventContainer: {
     paddingTop: 65,
     flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "center"
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   eventDetailsHeader: {
     fontSize: 18,
     paddingBottom: 5,
-    paddingLeft: 4
+    paddingLeft: 4,
   },
   eventName: {
     paddingRight: 4,
@@ -143,30 +174,30 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginBottom: 5,
     fontSize: 17,
-    color: "#32A7BE"
+    color: '#32A7BE',
   },
   eventDescription: {
     paddingRight: 4,
     paddingLeft: 4,
     marginTop: 5,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingBottom: 0,
-    marginBottom: 0
+    marginBottom: 0,
   },
   eventScrollView: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingTop: 0,
     paddingBottom: 50,
     marginTop: 0,
-    marginBottom: 50
+    marginBottom: 50,
   },
   imageContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingTop: 0,
     paddingBottom: 0,
     marginTop: 0,
     marginBottom: 0,
-    alignContent: "center"
+    alignContent: 'center',
   },
   image: {
     width: imageWidth,
@@ -175,9 +206,9 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     marginTop: 0,
     marginBottom: 0,
-    alignContent: "center"
+    alignContent: 'center',
   },
   buttonContainer: {
-    alignContent: "center"
-  }
+    alignContent: 'center',
+  },
 });
