@@ -67,6 +67,7 @@ export class FirebaseWrapper {
         profile_picture: doc.additionalUserInfo.profile.picture,
         first_name: doc.additionalUserInfo.profile.given_name,
         last_name: doc.additionalUserInfo.profile.family_name,
+        events: [],
       });
     } catch (error) {
       console.log(error);
