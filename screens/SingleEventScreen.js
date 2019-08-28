@@ -14,6 +14,7 @@ import {
   withTheme
 } from "react-native-elements";
 
+
 import {
   StyleSheet,
   Text,
@@ -24,7 +25,9 @@ import {
   Flatlist
 } from "react-native";
 import "firebase/firestore";
+
 import * as firebase from "firebase";
+
 
 const { width } = Dimensions.get("window");
 const imageWidth = width;
@@ -60,16 +63,21 @@ export default class SingleEventScreen extends React.Component {
     console.log(this.state.venueInfo);
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
+
+    const eventId = navigation.getParam("eventId", "NO-ID");
+
     const imgUrl = navigation.getParam("imgUrl", "Event Image");
     // const lat = this.state.venueInfo.latitude;
     // const long = this.state.venueInfo.longitude;
     // console.log("this is the lat>>>>>>>>>>>>", lat);
     // console.log("this is the long>>>>>>>>>>>>", long);
+
     const eventDescription = navigation.getParam(
       "description",
       "Event Description"
     );
     const eventName = navigation.getParam("eventName", "Event Description");
+
 
     // Geocode.setApiKey(googleMapsKey);
     // Geocode.enableDebug();
@@ -82,6 +90,7 @@ export default class SingleEventScreen extends React.Component {
     //     console.error(error);
     //   }
     // );
+
 
     return (
       <View style={styles.eventContainer}>
@@ -108,6 +117,35 @@ export default class SingleEventScreen extends React.Component {
             />
           </ThemeProvider>
         </View>
+        <View style={{ flex: 1, backgroundColor: "#f3f3f3" }}>
+          {/* Rest of the app comes ABOVE the action button component !*/}
+          <ActionButton buttonColor="rgba(231,76,60,1)">
+            <ActionButton.Item
+              buttonColor="#9b59b6"
+              title="New Task"
+              onPress={() => console.log("notes tapped!")}
+            >
+              <Icon name="md-create" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item
+              buttonColor="#3498db"
+              title="Notifications"
+              onPress={() => {}}
+            >
+              <Icon
+                name="md-notifications-off"
+                style={styles.actionButtonIcon}
+              />
+            </ActionButton.Item>
+            <ActionButton.Item
+              buttonColor="#1abc9c"
+              title="All Tasks"
+              onPress={() => {}}
+            >
+              <Icon name="md-done-all" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
+        </View>
       </View>
     );
   }
@@ -130,7 +168,9 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     flex: 1,
     alignItems: "flex-start",
+
     justifyContent: "center",
+
   },
   eventDetailsHeader: {
     fontSize: 18,
@@ -142,8 +182,11 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
     paddingBottom: 5,
     marginBottom: 5,
-    fontSize: 20,
+
+    fontSize: 17,
+
     fontWeight: "bold",
+
     color: "#32A7BE"
   },
   eventDescription: {
