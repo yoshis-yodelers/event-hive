@@ -8,7 +8,8 @@ import { Icon } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen';
 import SingleEventScreen from '../screens/SingleEventScreen';
 import CreateEventScreen from '../screens/CreateEventScreen';
-import ExploreNavigator from '../navigation/ExploreNavigator';
+import ExploreScreen from '../screens/ExploreScreen';
+import SingleCategoryScreen from '../screens/SingleCategoryScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -20,7 +21,9 @@ HomeStack.navigationOptions = {
 };
 
 const ExploreStack = createStackNavigator({
-  Explore: ExploreNavigator,
+  Explore: { screen: ExploreScreen },
+  SingleCategory: { screen: SingleCategoryScreen },
+  SingleEventScreen: SingleEventScreen,
 });
 
 ExploreStack.navigationOptions = {
@@ -47,7 +50,7 @@ export default createBottomTabNavigator(
       }),
     },
     Explore: {
-      screen: ExploreNavigator,
+      screen: ExploreScreen,
       navigationOptions: () => ({
         // eslint-disable-next-line react/display-name
         tabBarIcon: ({ tintColor }) => (
