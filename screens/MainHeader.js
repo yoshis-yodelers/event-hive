@@ -1,24 +1,12 @@
 import React from 'react';
-import {
-  ListItem,
-  FlatList,
-  Divider,
-  Header,
-  Icon,
-  ThemeProvider,
-} from 'react-native-elements';
+import { Header, Icon } from 'react-native-elements';
+import { SettingsScreen } from '../navigation/DrawerNavigator';
 
 export default class MainHeader extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
-    console.log(this.props);
     return (
       <Header
-        leftComponent={<Icon name="menu" color="#fff" size={30} />}
+        leftComponent={<SettingsScreen />}
         centerComponent={{
           text: 'EventHive',
           style: { color: '#fff', fontSize: 18 },

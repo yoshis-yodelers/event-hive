@@ -17,7 +17,6 @@ import {
   Image,
   Dimensions
 } from "react-native";
-import MainHeader from "../navigation/MainHeader";
 import { Constants } from "expo";
 import { FirebaseWrapper } from "../firebase/firebase";
 import * as firebase from "firebase";
@@ -36,15 +35,14 @@ export default class HomeScreen extends React.Component {
       events: [],
       feed: [],
       user: {},
-      refreshing: false,
-      modalVisible: true
+      modalVisible: false
     };
   }
 
   async componentDidMount() {
     await this.createFeeds();
-    if (this.state.user && this.state.user.interests !== undefined) {
-      this.setState({ modalVisible: false });
+    if (this.state.user && this.state.user.interests === undefined) {
+      this.setState({ modalVisible: true });
     }
   }
 
@@ -238,7 +236,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 });
-
-// HomeScreen.navigationOptions = {
-//   header: null
-// };

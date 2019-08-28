@@ -47,7 +47,7 @@ export default createBottomTabNavigator(
       })
     },
     Explore: {
-      screen: ExploreNavigator,
+      screen: ExploreScreen,
       navigationOptions: () => ({
         // eslint-disable-next-line react/display-name
         tabBarIcon: ({ tintColor }) => (
