@@ -3,12 +3,10 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   FlatList,
   Dimensions,
   TouchableOpacity,
-  Header,
-  Icon,
+  ImageBackground,
 } from 'react-native';
 import { FirebaseWrapper } from '../firebase/firebase';
 import NavigationService from '../navigation/NavigationService';
@@ -60,7 +58,19 @@ export default class ExploreScreen extends React.Component {
         <TouchableOpacity
           onPress={() => NavigationService.navigate('SingleCategory', item)}
         >
-          <Text style={styles.itemText}>{item.type}</Text>
+          <ImageBackground
+            source={{
+              uri:
+                'https://thumbs.dreamstime.com/z/small-river-flow-forest-sunrise-mist-long-exposure-100073283.jpg',
+            }}
+            style={{
+              height: Dimensions.get('window').width / numColumns - 4,
+              width: Dimensions.get('window').width / numColumns - 4,
+            }}
+            imageStyle={{ borderRadius: 8 }}
+          >
+            <Text style={styles.item}>{item.type}</Text>
+          </ImageBackground>
         </TouchableOpacity>
       </View>
     );
@@ -86,7 +96,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   item: {
-    backgroundColor: '#32A7BE',
+    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -99,6 +109,7 @@ const styles = StyleSheet.create({
   itemText: {
     color: '#fff',
   },
+  image: {},
 });
 
 ExploreScreen.navigationOptions = {
