@@ -24,6 +24,7 @@ import "firebase/firestore";
 import InterestModal from "./InterestModal";
 import { fetchUpdateAsync } from "expo/build/Updates/Updates";
 import NavigationService from "../navigation/NavigationService";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { width } = Dimensions.get("window");
 const imageHeight = width * 0.3;
@@ -132,13 +133,13 @@ export default class HomeScreen extends React.Component {
     return (
       // turn into flatlist - https://react-native-training.github.io/react-native-elements/docs/listitem.html
 
-      <View style={{ padding: 10 }}>
+      <View style={{ padding: 10, paddingBottom: 170}}>
         <View>
           <Text style={{ fontWeight: "bold", fontSize: 20 }}>
             Today's Events
           </Text>
           <ScrollView
-            sytle={styles.subscribed}
+            style={styles.subscribed}
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
@@ -148,12 +149,22 @@ export default class HomeScreen extends React.Component {
                 if (event.end > date) {
                   return (
                     <View key={event.id} style={styles.carousel}>
+                      <TouchableOpacity onPress={() =>
+                          navigate("SingleEventScreen", {
+                            eventId: event.id,
+                            imgUrl: event.imageUrl,
+                            eventName: event.name,
+                            description: event.description,
+                            venueId: event.venue
+                          })
+                        }>
                       <Image
                         source={{ uri: event.imageUrl }}
                         style={{ height: imageHeight, width }}
                       />
                       <Text style={styles.eventName}>{event.name}</Text>
-                      <Text style={styles.eventTime}>{event.start}</Text>
+                      <Text style={styles.eventTime}>{event.start.split("T")}</Text>
+                      </TouchableOpacity>
                     </View>
                   );
                 }
@@ -169,8 +180,6 @@ export default class HomeScreen extends React.Component {
             {this.state.feed.length > 0 ? (
               this.state.feed.map(event => {
                 if (event.end > date) {
-                  console.log("this is event", event);
-
                   return (
                     <View key={event.id} style={styles.listItemParent}>
                       <Divider style={styles.divider} />

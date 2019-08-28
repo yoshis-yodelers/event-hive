@@ -62,8 +62,8 @@ export default class SingleCategoryScreen extends React.Component {
     const date = newDate.toISOString();
 
     return (
-      <View style={{ paddingBottom: 300 }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Event Feed</Text>
+      <View style={{ paddingBottom: 300}}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 10}}>{this.props.navigation.state.params.type + " Feed"}</Text>
         <ScrollView style={styles.interested}>
           {this.state.eventFeed.length > 0 ? (
             this.state.eventFeed.map(event => {
