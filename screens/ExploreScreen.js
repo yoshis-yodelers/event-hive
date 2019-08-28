@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -32,7 +32,7 @@ export default class ExploreScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      allCategories: []
+      allCategories: [],
     };
   }
 
@@ -56,7 +56,7 @@ export default class ExploreScreen extends React.Component {
     return (
       <View style={styles.item}>
         <TouchableOpacity
-          onPress={() => NavigationService.navigate("SingleCategory", item)}
+          onPress={() => NavigationService.navigate('SingleCategory', item)}
         >
           <ImageBackground
             source={{
@@ -68,7 +68,7 @@ export default class ExploreScreen extends React.Component {
             }}
             imageStyle={{ borderRadius: 12 }}
           >
-            <Text style={styles.item}>{item.type}</Text>
+            <Text style={styles.itemText}>{item.type}</Text>
           </ImageBackground>
         </TouchableOpacity>
       </View>
@@ -92,7 +92,8 @@ export default class ExploreScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 20
+    marginVertical: 20,
+    bottom: 10,
   },
   item: {
     position: 'relative',
@@ -100,19 +101,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     margin: 1,
-    fontSize: 12,
-    fontWeight: 'bold',
     height: Dimensions.get('window').width / numColumns, // creates a square
   },
   itemInvisible: {
-    backgroundColor: "transparent"
+    backgroundColor: 'transparent',
   },
   itemText: {
-    color: '#fff',
+    color: 'black',
+    backgroundColor: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   image: {},
 });
 
 ExploreScreen.navigationOptions = {
-  header: null
+  header: null,
 };

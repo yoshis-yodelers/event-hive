@@ -5,6 +5,7 @@ import { createAppContainer, createDrawerNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import NavigationService from './NavigationService';
 import UserProfileScreen from '../screens/UserProfileScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 export class SettingsScreen extends React.Component {
   render() {
@@ -19,8 +20,18 @@ export class SettingsScreen extends React.Component {
 const DrawerNavigator = createDrawerNavigator(
   {
     MainTabNavigator: MainTabNavigator,
-    Settings: SettingsScreen,
-    UserProfileScreen: UserProfileScreen,
+    HomeScreen: {
+      screen: HomeScreen,
+      navigationOptions: {
+        drawerLabel: 'Home',
+      },
+    },
+    UserProfileScreen: {
+      screen: UserProfileScreen,
+      navigationOptions: {
+        drawerLabel: 'User Profile',
+      },
+    },
   },
   {
     hideStatusBar: true,
