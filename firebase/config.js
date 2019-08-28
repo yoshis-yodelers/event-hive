@@ -13,11 +13,11 @@
 //eventHive 2
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyDN8LHVmWY5UNbVWk-yd-hqit_evwSxdBk",
-  authDomain: "event-hive-2-6626a.firebaseapp.com",
-  databaseURL: "https://event-hive-2-6626a.firebaseio.com",
-  projectId: "event-hive-2-6626a",
-  storageBucket: "",
-  messagingSenderId: "231464456947",
-  appId: "1:231464456947:web:0c453507fa0b6f43"
+  apiKey: 'AIzaSyDN8LHVmWY5UNbVWk-yd-hqit_evwSxdBk',
+  authDomain: 'event-hive-2-6626a.firebaseapp.com',
+  databaseURL: 'https://event-hive-2-6626a.firebaseio.com',
+  projectId: 'event-hive-2-6626a',
+  storageBucket: 'event-hive-2-6626a.appspot.com',
+  messagingSenderId: '231464456947',
+  appId: '1:231464456947:web:0c453507fa0b6f43',
 };
