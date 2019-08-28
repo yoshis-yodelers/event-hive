@@ -234,7 +234,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-// HomeScreen.navigationOptions = {
-//   header: null
-// };

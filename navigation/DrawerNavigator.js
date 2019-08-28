@@ -2,17 +2,16 @@ import React from 'react';
 import MainTabNavigator from './MainTabNavigator';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { createAppContainer, createDrawerNavigator } from 'react-navigation';
+import { Icon } from 'react-native-elements';
+import NavigationService from './NavigationService';
 import UserProfileScreen from '../screens/UserProfileScreen';
 
-class SettingsScreen extends React.Component {
+export class SettingsScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <TouchableOpacity onPress={this.props.navigation.openDrawer}>
-          <Text>Open Drawer</Text>
-        </TouchableOpacity>
-        <Text style={{ fontWeight: 'bold', marginTop: 20 }}>Settings</Text>
-      </View>
+      <TouchableOpacity onPress={() => NavigationService.toggleDrawer()}>
+        <Icon name="menu" color="#fff" size={30} />
+      </TouchableOpacity>
     );
   }
 }
