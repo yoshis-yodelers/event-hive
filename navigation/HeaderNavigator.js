@@ -10,7 +10,7 @@ import {
 import { View } from 'react-native';
 import NavigationService, { TopLevelNavigator } from './NavigationService';
 
-export default class MainHeader extends React.Component {
+export default class HeaderNavigator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};

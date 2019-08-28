@@ -17,7 +17,6 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import MainHeader from '../navigation/MainHeader';
 import { Constants } from 'expo';
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
