@@ -21,6 +21,7 @@ const AppSwitchNavigator = createStackNavigator({
       header: <MainHeader />,
     },
   },
+  SingleEventScreen: SingleEventScreen,
 });
 
 const AppNavigator = createAppContainer(AppSwitchNavigator);
