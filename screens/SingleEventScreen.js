@@ -27,6 +27,7 @@ import "firebase/firestore";
 import * as firebase from "firebase";
 
 const { width } = Dimensions.get("window");
+
 const imageWidth = width;
 const height = width * 0.6;
 
@@ -34,9 +35,39 @@ export default class SingleEventScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      venueInfo: ""
+      venueInfo: "",
+      user: {}
     };
   }
+
+  _getUserInfo = async () => {
+    const user = firebase.auth().currentUser;
+    const userInfo = async () => {
+      const userData = await FirebaseWrapper.GetInstance().GetEvents(
+        "User",
+        user.uid
+      );
+      return userData;
+    };
+    const userData = await userInfo();
+    this.setState({
+      ...this.state,
+      user: userData.data()
+    });
+  };
+
+  _addUserEvent = async () => {
+    const { navigation } = this.props;
+    const eventId = navigation.getParam("eventId", "NO-ID");
+    await FirebaseWrapper.GetInstance().AddUserEvent(
+      eventId,
+      this.state.user.id
+    );
+    await FirebaseWrapper.GetInstance().AddEventAttendee(
+      eventId,
+      this.state.user.id
+    );
+  };
   async componentDidMount() {
     const { navigation } = this.props;
     const eventId = navigation.getParam("eventId", "NO-ID");
@@ -49,8 +80,9 @@ export default class SingleEventScreen extends React.Component {
 
     const boop = await eventCollection.data();
     this.setState({ venueInfo: await eventCollection.data() });
+    await this._getUserInfo();
     // console.log("this is this.state.venueInfo", this.state.venueInfo);
-    console.log("this is the venue id", venueId);
+
     // console.log("eventCollection.data", await eventCollection.data());
     // console.log("event collection:", typeof (await eventCollection.data()));
     // eventCollection.map(e => console.log(e.data()));
@@ -60,7 +92,11 @@ export default class SingleEventScreen extends React.Component {
     console.log(this.state.venueInfo);
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
+
+    const eventId = navigation.getParam("eventId", "NO-ID");
+
     const imgUrl = navigation.getParam("imgUrl", "Event Image");
+
     // const lat = this.state.venueInfo.latitude;
     // const long = this.state.venueInfo.longitude;
     // console.log("this is the lat>>>>>>>>>>>>", lat);
@@ -85,7 +121,7 @@ export default class SingleEventScreen extends React.Component {
 
     return (
       <View style={styles.eventContainer}>
-        <Text style={styles.eventDetailsHeader}>Event Details</Text>
+        {/* <Text style={styles.eventDetailsHeader}>Event Details</Text> */}
 
         <Text style={styles.eventName}>{eventName}</Text>
         <ScrollView>
@@ -135,8 +171,9 @@ const theme = {
 
 const styles = StyleSheet.create({
   eventContainer: {
-    paddingTop: 65,
+    paddingTop: 5,
     flex: 1,
+
     alignItems: "flex-start",
     justifyContent: "center"
   },
@@ -150,7 +187,11 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
     paddingBottom: 5,
     marginBottom: 5,
+
     fontSize: 17,
+
+    fontWeight: "bold",
+
     color: "#32A7BE"
   },
   eventDescription: {
