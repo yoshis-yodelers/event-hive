@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Button,
-  ScrollView,
-} from 'react-native';
-import { ListItem, FlatList, Divider } from 'react-native-elements';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { ListItem, Divider } from 'react-native-elements';
 import { FirebaseWrapper } from '../firebase/firebase';
 
 export default class SingleCategoryScreen extends React.Component {
@@ -64,36 +57,43 @@ export default class SingleCategoryScreen extends React.Component {
 
   render() {
     //Get most recent date, and format it into date that can be compared with firebase dates
+    const { navigate } = this.props.navigation;
     const newDate = new Date();
     const date = newDate.toISOString();
 
     return (
-      <View style={{ padding: 10 }}>
-        <View style={{ paddingBottom: 300 }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Event Feed</Text>
-          <ScrollView style={styles.interested}>
-            {this.state.eventFeed.length > 0 ? (
-              this.state.eventFeed.map(event => {
-                if (event.end > date) {
-                  return (
-                    <View key={event.id} style={styles.listItemParent}>
-                      <Divider style={styles.divider} />
-                      <ListItem
-                        style={styles.listItem}
-                        key={event.id}
-                        leftAvatar={{ source: { uri: event.imageUrl } }}
-                        title={event.name}
-                        subtitle={event.start}
-                      />
-                    </View>
-                  );
-                }
-              })
-            ) : (
-              <Text>(no upcoming events)</Text>
-            )}
-          </ScrollView>
-        </View>
+      <View style={{ paddingBottom: 300 }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Event Feed</Text>
+        <ScrollView style={styles.interested}>
+          {this.state.eventFeed.length > 0 ? (
+            this.state.eventFeed.map(event => {
+              if (event.end > date) {
+                return (
+                  <View key={event.id} style={styles.listItemParent}>
+                    <Divider style={styles.divider} />
+                    <ListItem
+                      style={styles.listItem}
+                      leftAvatar={{ source: { uri: event.imageUrl } }}
+                      title={event.name}
+                      subtitle={event.start}
+                      onPress={() =>
+                        navigate('SingleEventScreen', {
+                          eventId: event.id,
+                          imgUrl: event.imageUrl,
+                          eventName: event.name,
+                          description: event.description,
+                        })
+                      }
+                    />
+                    <View />
+                  </View>
+                );
+              }
+            })
+          ) : (
+            <Text>(no upcoming events)</Text>
+          )}
+        </ScrollView>
       </View>
     );
   }
@@ -112,9 +112,10 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: 'grey',
   },
-  divider: {
+  // fix this
+  divder: {
     backgroundColor: 'grey',
-    height: 3,
+    height: 2,
     flex: 1,
   },
   eventName: {

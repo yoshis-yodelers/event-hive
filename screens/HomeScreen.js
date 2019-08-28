@@ -214,12 +214,12 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: 'grey',
   },
+  // fix this
   divder: {
     backgroundColor: 'grey',
-    height: 10,
+    height: 2,
     flex: 1,
   },
-  interested: {},
   subscribed: {
     height,
     width,
