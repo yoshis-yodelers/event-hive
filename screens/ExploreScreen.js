@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -32,7 +32,7 @@ export default class ExploreScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      allCategories: [],
+      allCategories: []
     };
   }
 
@@ -56,7 +56,7 @@ export default class ExploreScreen extends React.Component {
     return (
       <View style={styles.item}>
         <TouchableOpacity
-          onPress={() => NavigationService.navigate('SingleCategory', item)}
+          onPress={() => NavigationService.navigate("SingleCategory", item)}
         >
           <ImageBackground
             source={{
@@ -92,7 +92,7 @@ export default class ExploreScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 20,
+    marginVertical: 20
   },
   item: {
     position: 'relative',
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').width / numColumns, // creates a square
   },
   itemInvisible: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent"
   },
   itemText: {
     color: '#fff',
@@ -114,5 +114,5 @@ const styles = StyleSheet.create({
 });
 
 ExploreScreen.navigationOptions = {
-  header: null,
+  header: null
 };

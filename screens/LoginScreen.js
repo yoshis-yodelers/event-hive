@@ -38,18 +38,13 @@ export default class LoginScreen extends React.Component {
             googleUser.accessToken
           );
           // Sign in with credential from the Google user.
-          // console.log("credential:", credential);
+
           firebase
             .auth()
             .signInWithCredential(credential)
             .then(function(result) {
               console.log("user signed in");
               if (result.additionalUserInfo.isNewUser) {
-                // console.log("this is the result:", result);
-                // console.log("this is the user email:", result.user.email);
-                // console.log("this is the user id:", result.user.uid);
-
-                // console.log(result.additionalUserInfo.profile.given_name);
                 FirebaseWrapper.GetInstance().createUser("User", result);
               } else {
                 console.log("user already logged in");
@@ -76,12 +71,20 @@ export default class LoginScreen extends React.Component {
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
+        // //event-hive
+        //     behavior: "web",
+        //     androidClientId:
+        //       "1008246741429-2t3icr6oiusv8q64stil4m8rv0hfbdle.apps.googleusercontent.com",
+        //     iosClientId:
+        //       "1008246741429-trgs03tg4mdbnbv0f18e7gqonat0suip.apps.googleusercontent.com",
+        //   scopes: ["profile", "email"]
+        // });
+        // event hive 2
         behavior: "web",
         androidClientId:
-          "1008246741429-2t3icr6oiusv8q64stil4m8rv0hfbdle.apps.googleusercontent.com",
+          "231464456947-dslj33o74k57lubdticmuin7vdomeltt.apps.googleusercontent.com",
         iosClientId:
-          "1008246741429-trgs03tg4mdbnbv0f18e7gqonat0suip.apps.googleusercontent.com",
-
+          "231464456947-g0tdhp6jsdrmprvlr15opjnonq16dlb7.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
       if (result.type === "success") {
