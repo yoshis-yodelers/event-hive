@@ -50,7 +50,7 @@ export default class SingleEventScreen extends React.Component {
     const boop = await eventCollection.data();
     this.setState({ venueInfo: await eventCollection.data() });
     // console.log("this is this.state.venueInfo", this.state.venueInfo);
-    console.log("this is the venue id", venueId);
+    // console.log("this is the venue id", venueId);
     // console.log("eventCollection.data", await eventCollection.data());
     // console.log("event collection:", typeof (await eventCollection.data()));
     // eventCollection.map(e => console.log(e.data()));
@@ -85,7 +85,7 @@ export default class SingleEventScreen extends React.Component {
 
     return (
       <View style={styles.eventContainer}>
-        <Text style={styles.eventDetailsHeader}>Event Details</Text>
+        {/* <Text style={styles.eventDetailsHeader}>Event Details</Text> */}
 
         <Text style={styles.eventName}>{eventName}</Text>
         <ScrollView>
@@ -127,10 +127,10 @@ const theme = {
 
 const styles = StyleSheet.create({
   eventContainer: {
-    paddingTop: 65,
+    paddingTop: 5,
     flex: 1,
     alignItems: "flex-start",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   eventDetailsHeader: {
     fontSize: 18,
@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
     paddingBottom: 5,
     marginBottom: 5,
-    fontSize: 17,
+    fontSize: 20,
+    fontWeight: "bold",
     color: "#32A7BE"
   },
   eventDescription: {
