@@ -1,10 +1,10 @@
-import React from "react";
-import Expo from "expo";
-import firebase from "firebase";
-import * as Google from "expo-google-app-auth";
-import { FirebaseWrapper } from "../firebase/firebase";
+import React from 'react';
+import Expo from 'expo';
+import firebase from 'firebase';
+import * as Google from 'expo-google-app-auth';
+import { FirebaseWrapper } from '../firebase/firebase';
 
-import { View, Text, StyleSheet, Button, Image } from "react-native";
+import { View, Text, StyleSheet, Button, Image } from 'react-native';
 
 export default class LoginScreen extends React.Component {
   isUserEqual = (googleUser, firebaseUser) => {
@@ -38,21 +38,16 @@ export default class LoginScreen extends React.Component {
             googleUser.accessToken
           );
           // Sign in with credential from the Google user.
-          // console.log("credential:", credential);
+
           firebase
             .auth()
             .signInWithCredential(credential)
             .then(function(result) {
-              console.log("user signed in");
+              console.log('user signed in');
               if (result.additionalUserInfo.isNewUser) {
-                // console.log("this is the result:", result);
-                // console.log("this is the user email:", result.user.email);
-                // console.log("this is the user id:", result.user.uid);
-
-                // console.log(result.additionalUserInfo.profile.given_name);
-                FirebaseWrapper.GetInstance().createUser("User", result);
+                FirebaseWrapper.GetInstance().createUser('User', result);
               } else {
-                console.log("user already logged in");
+                console.log('user already logged in');
               }
             })
             .catch(function(error) {
@@ -67,7 +62,7 @@ export default class LoginScreen extends React.Component {
               // ...
             });
         } else {
-          console.log("User already signed-in Firebase.");
+          console.log('User already signed-in Firebase.');
         }
       }.bind(this)
     );
@@ -76,15 +71,23 @@ export default class LoginScreen extends React.Component {
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
-        behavior: "web",
-        androidClientId:
-          "1008246741429-2t3icr6oiusv8q64stil4m8rv0hfbdle.apps.googleusercontent.com",
-        iosClientId:
-          "1008246741429-trgs03tg4mdbnbv0f18e7gqonat0suip.apps.googleusercontent.com",
-
-        scopes: ["profile", "email"]
-      });
-      if (result.type === "success") {
+        // //event-hive
+            behavior: "web",
+            androidClientId:
+              "1008246741429-2t3icr6oiusv8q64stil4m8rv0hfbdle.apps.googleusercontent.com",
+            iosClientId:
+              "1008246741429-trgs03tg4mdbnbv0f18e7gqonat0suip.apps.googleusercontent.com",
+          scopes: ["profile", "email"]
+        });
+        // event hive 2
+      //   behavior: 'web',
+      //   androidClientId:
+      //     '231464456947-dslj33o74k57lubdticmuin7vdomeltt.apps.googleusercontent.com',
+      //   iosClientId:
+      //     '231464456947-g0tdhp6jsdrmprvlr15opjnonq16dlb7.apps.googleusercontent.com',
+      //   scopes: ['profile', 'email'],
+      // });
+      if (result.type === 'success') {
         // console.log(result);
         this.onSignIn(result);
         return result.accessToken;
@@ -101,7 +104,7 @@ export default class LoginScreen extends React.Component {
         <View>
           <Image
             style={styles.logoImage}
-            source={require("../assets/images/logo.png")}
+            source={require('../assets/images/logo.png')}
           />
         </View>
         <View style={styles.buttonContainer}>
@@ -120,18 +123,22 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center"
+    backgroundColor: '#fff',
+    alignItems: 'center',
   },
   logoImage: {
-    justifyContent: "flex-end",
-    alignSelf: "center",
-    resizeMode: "stretch",
+    justifyContent: 'flex-end',
+    alignSelf: 'center',
+    resizeMode: 'stretch',
     marginTop: 250,
     width: 250,
-    height: 250
+    height: 250,
   },
   buttonContainer: {
-    marginTop: 100
-  }
+    marginTop: 100,
+  },
 });
+
+LoginScreen.navigationOptions = {
+  header: null,
+};
