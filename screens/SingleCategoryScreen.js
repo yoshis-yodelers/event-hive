@@ -41,14 +41,11 @@ export default class SingleCategoryScreen extends React.Component {
     try {
       // is there a better way?
       const categoryCode = this.props.navigation.state.params.key;
-
-      console.log('categoryCode', categoryCode);
       //Fetched from firebase, including upcoming events in an interest
       const categoryCollection = await FirebaseWrapper.GetInstance().GetInterestEvents(
         categoryCode
       );
 
-      console.log('hi', categoryCollection);
       // //Map through the events and fetching event info from Events collection & formatting the data
       // const eventsInfo = await userInfoArray.events.map(async function(event) {
       //   const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
@@ -70,7 +67,6 @@ export default class SingleCategoryScreen extends React.Component {
     const newDate = new Date();
     const date = newDate.toISOString();
 
-    console.log(this.state.eventFeed);
     return (
       <View style={{ padding: 10 }}>
         <View style={{ paddingBottom: 300 }}>

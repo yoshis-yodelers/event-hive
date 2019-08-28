@@ -5,7 +5,11 @@ import DrawerNavigator from './DrawerNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import SingleEventScreen from '../screens/SingleEventScreen';
-import MainHeader from '../screens/MainHeader';
+import MainHeader from '../navigation/MainHeader';
+import UserProfileScreen from '../screens/UserProfileScreen';
+// import * as firebase from "firebase";
+// import { firebaseConfig } from "../firebase/firebase";
+// firebase.initializeApp(firebaseConfig);
 
 const AppSwitchNavigator = createStackNavigator({
   LoadingScreen: LoadingScreen,

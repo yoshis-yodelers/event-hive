@@ -37,11 +37,17 @@ export class EventBrite {
   }
 
   async GetLocationData(venue) {
-    const location = await axios({
-      method: 'get',
-      url: `https://www.eventbriteapi.com/v3/venues/${venue}/?token=${eventBriteToken}`,
-    });
-    return location.data;
+    try {
+      if (venue) {
+        const location = await axios({
+          method: 'get',
+          url: `https://www.eventbriteapi.com/v3/venues/${venue}/?token=${eventBriteToken}`,
+        });
+        return location.data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async SetLocationData() {

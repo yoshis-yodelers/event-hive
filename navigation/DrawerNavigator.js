@@ -4,6 +4,7 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import { createAppContainer, createDrawerNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import NavigationService from './NavigationService';
+import UserProfileScreen from '../screens/UserProfileScreen';
 
 export class SettingsScreen extends React.Component {
   render() {
@@ -19,6 +20,7 @@ const DrawerNavigator = createDrawerNavigator(
   {
     MainTabNavigator: MainTabNavigator,
     Settings: SettingsScreen,
+    UserProfileScreen: UserProfileScreen,
   },
   {
     hideStatusBar: true,
