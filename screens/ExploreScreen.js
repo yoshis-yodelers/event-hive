@@ -13,7 +13,6 @@ import NavigationService from '../navigation/NavigationService';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 // import {  } from 'react-native-gesture-handler';
-import SingleCategoryScreen from './SingleCategoryScreen';
 
 const correctColumns = (data, numColumns) => {
   const numTotalFullRows = Math.floor(data.length / numColumns);
@@ -53,6 +52,7 @@ export default class ExploreScreen extends React.Component {
     if (item.empty === true) {
       return <View style={[styles.item, styles.itemInvisible]} />;
     }
+    console.log(item);
     return (
       <View style={styles.item}>
         <TouchableOpacity
@@ -60,8 +60,7 @@ export default class ExploreScreen extends React.Component {
         >
           <ImageBackground
             source={{
-              uri:
-                'https://thumbs.dreamstime.com/z/small-river-flow-forest-sunrise-mist-long-exposure-100073283.jpg',
+              uri: item.imageUrl,
             }}
             style={{
               height: Dimensions.get('window').width / numColumns - 4,
@@ -101,6 +100,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     margin: 1,
+    fontSize: 12,
+    fontWeight: 'bold',
     height: Dimensions.get('window').width / numColumns, // creates a square
   },
   itemInvisible: {

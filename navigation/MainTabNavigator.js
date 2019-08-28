@@ -10,6 +10,7 @@ import SingleEventScreen from '../screens/SingleEventScreen';
 import CreateEventScreen from '../screens/CreateEventScreen';
 import ExploreScreen from '../screens/ExploreScreen';
 import SingleCategoryScreen from '../screens/SingleCategoryScreen';
+import ExploreNavigator from './ExploreNavigator';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -21,9 +22,7 @@ HomeStack.navigationOptions = {
 };
 
 const ExploreStack = createStackNavigator({
-  Explore: { screen: ExploreScreen },
-  SingleCategory: { screen: SingleCategoryScreen },
-  SingleEventScreen: SingleEventScreen,
+  Explore: ExploreNavigator,
 });
 
 ExploreStack.navigationOptions = {
@@ -50,7 +49,7 @@ export default createBottomTabNavigator(
       }),
     },
     Explore: {
-      screen: ExploreScreen,
+      screen: ExploreNavigator,
       navigationOptions: () => ({
         // eslint-disable-next-line react/display-name
         tabBarIcon: ({ tintColor }) => (
