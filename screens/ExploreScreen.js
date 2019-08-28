@@ -100,23 +100,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     margin: 1,
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: "white",
-    padding: 5,
-    textShadowColor: "black",
-    textShadowRadius: 5,
+
     // backgroundColor: "blue",
-    height: Dimensions.get('window').width / numColumns// creates a square
+    height: Dimensions.get('window').width / numColumns, // creates a square
   },
   itemInvisible: {
     backgroundColor: 'transparent',
   },
   itemText: {
-    color: 'black',
-    backgroundColor: 'white',
-    fontSize: 12,
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
+    color: 'white',
+    padding: 5,
+    textShadowColor: 'black',
+    textShadowRadius: 5,
   },
   image: {},
 });
