@@ -137,7 +137,11 @@ export class FirebaseWrapper {
       const categoryArray = [];
       return await ref.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          categoryArray.push({ type: doc.data().Type, key: doc.id });
+          categoryArray.push({
+            type: doc.data().Type,
+            key: doc.id,
+            imageUrl: doc.data().imageUrl,
+          });
         });
         return categoryArray;
       });
