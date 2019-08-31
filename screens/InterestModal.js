@@ -109,18 +109,15 @@ export default class InterestModal extends React.Component {
         user.uid,
         this.state.userInterests
       );
-      console.log(this.state.userInterests);
     }
     this.props.dismissModal();
   };
 
   addInterest = key => {
     this.state.userInterests.push(key);
-    console.log(key);
   };
 
   render() {
-    console.log(this.state.allCategories);
     return (
       <View>
         <Modal visible={this.props.modalVisible}>
