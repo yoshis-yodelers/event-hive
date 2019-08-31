@@ -72,6 +72,8 @@ export default class UserProfileScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    const month = ["January", "February", "March", "April", "May", "June", "July", "August",
+                  "September", "October", "November", "December"]
     return (
       <View style={styles.container}>
         <Text style={styles.name}>Hey, {this.state.user.first_name}!</Text>
@@ -82,6 +84,25 @@ export default class UserProfileScreen extends React.Component {
         <Text style = {{fontSize: 20, fontWeight: "bold", paddingBottom: 10, paddingTop: 20}}>Upcoming Events:</Text>
         <ScrollView style={styles.event}>
           {this.state.events.map(event => {
+            const startDateArray = event.start.split("T").join().split(/[-:,]/).map(num => parseInt(num))
+            startDateArray[3] > 11 ?
+            startDateArray.push("PM")
+            :startDateArray.push("AM")
+
+            const endDateArray = event.end.split("T").join().split(/[-:,]/).map(num => parseInt(num))
+            endDateArray[3] > 11 ?
+            endDateArray.push("PM")
+            :endDateArray.push("AM")
+
+            const startTime = (startDateArray[3] >= 12 ? (startDateArray[3]=== 12 ? 12 : (startDateArray[3]-12))
+            : startDateArray[3])+ ":" + (startDateArray[4]=== 0 ? '00' : startDateArray[4])+ startDateArray[6]
+
+            const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
+            : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
+
+            const startDate = month[startDateArray[1]]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
+
+            const endDate = month[endDateArray[1]]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
             return (
               <View key={event.id} style={styles.listItemParent}>
                 <Divider style={styles.divider} />
@@ -89,13 +110,20 @@ export default class UserProfileScreen extends React.Component {
                   style={styles.listItem}
                   leftAvatar={{ source: { uri: event.imageUrl } }}
                   title={event.name}
-                  subtitle={event.start}
+                  subtitle={event.start ? startDate + ' ' + startTime + " - " +
+                  (startDate === endDate ? endTime : endDate + ' ' + endTime)
+                  :''}
                   onPress={() =>
                     navigate('SingleEventScreen', {
                       eventId: event.id,
                       imgUrl: event.imageUrl,
                       eventName: event.name,
                       description: event.description,
+                      addButton: false,
+                      startDate: startDate,
+                      startTime: startTime,
+                      endDate: endDate,
+                      endTime: endTime
                     })
                   }
                 />
@@ -112,7 +140,9 @@ const { width } = Dimensions.get('window');
 const imageHeight = width * 0.4;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    paddingBottom: 250
+  },
   image: {
     height: imageHeight,
     width,

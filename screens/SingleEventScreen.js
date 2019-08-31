@@ -16,7 +16,6 @@ import {
   withTheme,
 } from 'react-native-elements';
 
-
 import {
   StyleSheet,
   Text,
@@ -26,9 +25,6 @@ import {
   Dimensions,
   Flatlist
 } from "react-native";
-import "firebase/firestore";
-import 'firebase/firestore';
-import * as firebase from 'firebase';
 
 const { width } = Dimensions.get('window');
 
@@ -64,17 +60,27 @@ export default class SingleEventScreen extends React.Component {
   };
 
   _addUserEvent = async () => {
-    const { navigation } = this.props;
-    const eventId = navigation.getParam('eventId', 'NO-ID');
     await FirebaseWrapper.GetInstance().AddUserEvent(
-      eventId,
-      this.state.user.id
+      this.state.eventId,
+      this.state.user.uid
     );
-    await FirebaseWrapper.GetInstance().AddEventAttendee(
-      eventId,
-      this.state.user.id
-    );
+    // await FirebaseWrapper.GetInstance().AddEventAttendee(
+    //   eventId,
+    //   this.state.user.uid
+    // );
+    this.setState({add: false})
   };
+
+  async addEvent() {
+    const userInfo = await FirebaseWrapper.GetInstance().UserAddEvent(this.state.user.uid, this.state.eventId)
+    this.setState({add: false})
+  }
+
+  async removeEvent() {
+    const userInfo = await FirebaseWrapper.GetInstance().UserDelEvent(this.state.user.uid, this.state.eventId)
+    this.setState({add: true})
+  }
+
   async componentDidMount() {
     const { navigation } = this.props;
     const eventId = navigation.getParam("eventId", "NO-ID");
@@ -96,39 +102,25 @@ export default class SingleEventScreen extends React.Component {
     // eventCollection.map(e => console.log(e.data()));
   }
 
-  async addEvent() {
-    // const { navigation } = this.props;
-    // const { navigate } = this.props.navigation;
-    // const user = firebase.auth().currentUser;
-    // const eventId = navigation.getParam("eventId", "NO-ID");
-    // console.log(user, eventId)
-    const userInfo = await FirebaseWrapper.GetInstance().UserAddEvent(this.state.user.uid, this.state.eventId)
-    this.setState({add: false})
-  }
-
-  async removeEvent() {
-    const userInfo = await FirebaseWrapper.GetInstance().UserDelEvent(this.state.user.uid, this.state.eventId)
-    this.setState({add: true})
-  }
-
   render() {
     // console.log(this.state.venueInfo);
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
-    const eventId = navigation.getParam("eventId", "NO-ID");
-    const imgUrl = navigation.getParam("imgUrl", "Event Image");
-
-    // const lat = this.state.venueInfo.latitude;
-    // const long = this.state.venueInfo.longitude;
-    // console.log("this is the lat>>>>>>>>>>>>", lat);
-    // console.log("this is the long>>>>>>>>>>>>", long);
-
     const eventDescription = navigation.getParam(
       'description',
       'Event Description'
     );
     const eventName = navigation.getParam('eventName', 'Event Description');
+    const imgUrl = navigation.getParam("imgUrl", "Event Image");
+    const startDate = navigation.getParam("startDate", "")
+    const startTime = navigation.getParam("startTime", "")
+    const endTime = navigation.getParam("endTime", "")
+    const endDate = navigation.getParam("startDate", "")
 
+    // const lat = this.state.venueInfo.latitude;
+    // const long = this.state.venueInfo.longitude;
+    // console.log("this is the lat>>>>>>>>>>>>", lat);
+    // console.log("this is the long>>>>>>>>>>>>", long);
 
     // Geocode.setApiKey(googleMapsKey);
     // Geocode.enableDebug();
@@ -142,14 +134,13 @@ export default class SingleEventScreen extends React.Component {
     //   }
     // );
 
-
     return (
       <View style={styles.eventContainer}>
         {/* <Text style={styles.eventDetailsHeader}>Event Details</Text> */}
         <Text style={styles.eventName}>{eventName}</Text>
-        {this.state.add === true ?
-        <Button style = {{backgroundColor: "blue"}}title= "Add Event" onPress = {() => {this.addEvent()}}/>
-        : <Button style = {{backgroundColor: "red"}}title= "Remove from List" onPress = {() => {this.removeEvent()}}/>}
+        <Text style={styles.eventDate}>{startDate + ' ' + startTime + " - " +
+                        (startDate === endDate ? endTime : endDate + ' ' + endTime)
+                        }</Text>
         <ScrollView>
           <Text style={styles.eventDescription}>{eventDescription.trim()}</Text>
         </ScrollView>
@@ -172,17 +163,25 @@ export default class SingleEventScreen extends React.Component {
         </View>
         <View style={{ flex: 1, backgroundColor: "#f3f3f3" }}>
           {/* Rest of the app comes ABOVE the action button component !*/}
-          <ActionButton buttonColor="rgba(231,76,60,1)">
+          <ActionButton buttonColor="#32A7BE">
+            {this.state.add === true ?
             <ActionButton.Item
-              buttonColor="#9b59b6"
-              title="New Task"
-              onPress={() => console.log("notes tapped!")}
+              buttonColor="#1abc9c"
+              title="Add Event"
+              onPress={() => this._addUserEvent()}
             >
-              <Icon name="md-create" style={styles.actionButtonIcon} />
-            </ActionButton.Item>
+              <Icon name="md-add" style={styles.actionButtonIcon} />
+            </ActionButton.Item> :
+            <ActionButton.Item
+              buttonColor="red"
+              title="Remove Event"
+              onPress={() => this.removeEvent()}
+            >
+              <Icon name="md-remove" style={styles.actionButtonIcon} />
+            </ActionButton.Item>}
             <ActionButton.Item
               buttonColor="#3498db"
-              title="Notifications"
+              title="Empty"
               onPress={() => {}}
             >
               <Icon
@@ -191,8 +190,8 @@ export default class SingleEventScreen extends React.Component {
               />
             </ActionButton.Item>
             <ActionButton.Item
-              buttonColor="#1abc9c"
-              title="All Tasks"
+              buttonColor="#9b59b6"
+              title="Empty"
               onPress={() => {}}
             >
               <Icon name="md-done-all" style={styles.actionButtonIcon} />
@@ -228,8 +227,7 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
   },
   eventName: {
-    paddingRight: 4,
-    paddingLeft: 4,
+    paddingHorizontal: 5,
     paddingBottom: 5,
     marginBottom: 5,
 
@@ -276,4 +274,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignContent: 'center',
   },
+  eventDate: {
+    paddingHorizontal: 7,
+    fontWeight:"bold"
+  }
 });

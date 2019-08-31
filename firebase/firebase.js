@@ -200,17 +200,6 @@ export class FirebaseWrapper {
     }
   }
 
-  async UserAddEvent (user, eventId) {
-    try {
-      const ref = await this._firestore.collection("User").doc(user)
-      await ref.update({
-        events: firebase.firestore.FieldValue.arrayUnion(eventId)
-    });
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   async UserDelEvent (user, eventId) {
     try {
       const ref = await this._firestore.collection("User").doc(user)
