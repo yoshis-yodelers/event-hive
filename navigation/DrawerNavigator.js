@@ -18,9 +18,9 @@ export class SettingsScreen extends React.Component {
 
 const DrawerNavigator = createDrawerNavigator(
   {
-    MainTabNavigator: MainTabNavigator,
+    Home: MainTabNavigator,
+    Profile: UserProfileScreen,
     Settings: SettingsScreen,
-    UserProfileScreen: UserProfileScreen,
   },
   {
     hideStatusBar: true,

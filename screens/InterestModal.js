@@ -32,6 +32,7 @@ export default class InterestModal extends React.Component {
       allCategories: [],
       modalVisible: true,
       userInterests: [],
+      opacity: 1
     };
   }
 
@@ -94,7 +95,9 @@ export default class InterestModal extends React.Component {
                       key={category.key}
                       onPress={() => this.addInterest(category.key)}
                     >
+                      {/* <TouchableHighlight> */}
                       <Text style={styles.buttons}>{category.type}</Text>
+                      {/* </TouchableHighlight> */}
                     </TouchableOpacity>
                   );
                 })}

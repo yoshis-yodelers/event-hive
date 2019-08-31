@@ -50,7 +50,6 @@ export default class UserProfileScreen extends React.Component {
             event
           );
           const eventUser = eventData.data();
-          console.log('eventUser', eventUser);
           return eventUser;
         });
 
@@ -73,19 +72,16 @@ export default class UserProfileScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    console.log(this.state.events);
     return (
       <View style={styles.container}>
-        <View style={styles.textPadding}>
-          <Text style={styles.name}>Hey, {this.state.user.first_name}!</Text>
-        </View>
+        <Text style={styles.name}>Hey, {this.state.user.first_name}!</Text>
         <Image
           source={{ uri: this.state.user.profile_picture }}
           style={styles.image}
         />
+        <Text style = {{fontSize: 20, fontWeight: "bold", paddingBottom: 10, paddingTop: 20}}>Upcoming Events:</Text>
         <ScrollView style={styles.event}>
           {this.state.events.map(event => {
-            console.log(event);
             return (
               <View key={event.id} style={styles.listItemParent}>
                 <Divider style={styles.divider} />
@@ -135,10 +131,11 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
   },
   name: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10
   },
   textPadding: {
     paddingTop: 25,

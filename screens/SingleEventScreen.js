@@ -1,7 +1,9 @@
 import React from "react";
 import Geocode from "react-geocode";
 import googleMapsKey from "../secrets";
-import { FirebaseWrapper } from "../firebase/firebase";
+import { FirebaseWrapper } from '../firebase/firebase';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -24,7 +26,7 @@ import {
   Flatlist
 } from "react-native";
 import "firebase/firestore";
-import * as firebase from "firebase";
+// import * as firebase from "firebase";
 
 const { width } = Dimensions.get("window");
 const imageWidth = width;
@@ -34,21 +36,27 @@ export default class SingleEventScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      venueInfo: ""
+      venueInfo: "",
+      eventId: '',
+      venuId: '',
+      user: {},
+      add: ''
     };
   }
   async componentDidMount() {
     const { navigation } = this.props;
     const eventId = navigation.getParam("eventId", "NO-ID");
     const venueId = navigation.getParam("venueId", "Venue ID");
+    const addButton = navigation.getParam("addButton", true)
+    const user = firebase.auth().currentUser;
 
-    const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
-      "Venue",
-      venueId
-    );
-
-    const boop = await eventCollection.data();
-    this.setState({ venueInfo: await eventCollection.data() });
+    this.setState({eventId: eventId, venuId: venueId, user: user, add: addButton})
+    // const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
+    //   "Venue",
+    //   venueId
+    // );
+    // const boop = await eventCollection.data();
+    // this.setState({ venueInfo: await eventCollection.data() });
     // console.log("this is this.state.venueInfo", this.state.venueInfo);
     // console.log("this is the venue id", venueId);
     // console.log("eventCollection.data", await eventCollection.data());
@@ -56,10 +64,26 @@ export default class SingleEventScreen extends React.Component {
     // eventCollection.map(e => console.log(e.data()));
   }
 
+  async addEvent() {
+    // const { navigation } = this.props;
+    // const { navigate } = this.props.navigation;
+    // const user = firebase.auth().currentUser;
+    // const eventId = navigation.getParam("eventId", "NO-ID");
+    // console.log(user, eventId)
+    const userInfo = await FirebaseWrapper.GetInstance().UserAddEvent(this.state.user.uid, this.state.eventId)
+    this.setState({add: false})
+  }
+
+  async removeEvent() {
+    const userInfo = await FirebaseWrapper.GetInstance().UserDelEvent(this.state.user.uid, this.state.eventId)
+    this.setState({add: true})
+  }
+
   render() {
-    console.log(this.state.venueInfo);
+    // console.log(this.state.venueInfo);
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
+    const eventId = navigation.getParam("eventId", "NO-ID");
     const imgUrl = navigation.getParam("imgUrl", "Event Image");
     // const lat = this.state.venueInfo.latitude;
     // const long = this.state.venueInfo.longitude;
@@ -86,8 +110,10 @@ export default class SingleEventScreen extends React.Component {
     return (
       <View style={styles.eventContainer}>
         {/* <Text style={styles.eventDetailsHeader}>Event Details</Text> */}
-
         <Text style={styles.eventName}>{eventName}</Text>
+        {this.state.add === true ?
+        <Button style = {{backgroundColor: "blue"}}title= "Add Event" onPress = {() => {this.addEvent()}}/>
+        : <Button style = {{backgroundColor: "red"}}title= "Remove from List" onPress = {() => {this.removeEvent()}}/>}
         <ScrollView>
           <Text style={styles.eventDescription}>{eventDescription.trim()}</Text>
         </ScrollView>
@@ -100,14 +126,14 @@ export default class SingleEventScreen extends React.Component {
             }}
           />
         </View>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <ThemeProvider theme={theme}>
             <Button
               title="Dashboard"
               onPress={() => navigate("MainTabNavigator")}
             />
           </ThemeProvider>
-        </View>
+        </View> */}
       </View>
     );
   }
@@ -118,9 +144,8 @@ const theme = {
     raised: true,
     color: "white",
     buttonStyle: {
-      backgroundColor: "#32A7BE",
+      // backgroundColor: "#32A7BE",
       height: 60,
-      width: width
     }
   }
 };
@@ -152,7 +177,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: "white",
     paddingBottom: 0,
-    marginBottom: 0
+    marginBottom: 0,
   },
   eventScrollView: {
     backgroundColor: "white",
