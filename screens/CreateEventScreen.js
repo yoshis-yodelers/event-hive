@@ -52,12 +52,12 @@ export default class CreateEventScreen extends React.Component {
         createdBy: firebase.auth().currentUser.uid,
         start:
           this.state.sampm === 'AM'
-            ? this.state.start + 'T' + boop + ':' + this.state.sminute
-            : this.state.start + 'T' + (boop + 12) + ':' + this.state.sminute,
+            ? this.state.start + 'T' + boop + ':' + this.state.sminute + "00"
+            : this.state.start + 'T' + (boop + 12) + ':' + this.state.sminute + "00",
         end:
           this.state.eampm === 'AM'
-            ? this.state.end + 'T' + beep + ':' + this.state.eminute
-            : this.state.end + 'T' + (beep + 12) + ':' + this.state.eminute,
+            ? this.state.end + 'T' + beep + ':' + this.state.eminute + "00"
+            : this.state.end + 'T' + (beep + 12) + ':' + this.state.eminute + "00",
       });
     } catch (error) {
       console.log(error);
@@ -80,6 +80,27 @@ export default class CreateEventScreen extends React.Component {
                 value={this.state.category}
               />
               <Modal visible={this.state.categoryshow}>
+              <View style = {{paddingTop: 20}}>
+              <View
+                    style={{
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 10,
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <Button
+                      title="Back"
+                      onPress={() => {
+                        this.setState({ categoryshow: false });
+                      }}
+                    />
+                    <Button
+                      title="Done"
+                      onPress={() => {
+                        this.setState({ categoryshow: false });
+                      }}
+                    />
+                  </View>
                 <Picker
                   selectedValue={this.state.category}
                   onValueChange={itemValue =>
@@ -109,6 +130,7 @@ export default class CreateEventScreen extends React.Component {
                   <Picker.Item label="Larping" value="121" />
                   <Picker.Item label="Other" value="199" />
                 </Picker>
+                </View>
               </Modal>
               <Text style={styles.text}>Event Name:</Text>
               <TextInput

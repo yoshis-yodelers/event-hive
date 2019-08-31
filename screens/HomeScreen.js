@@ -10,9 +10,7 @@ import {
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
-  Button,
   ScrollView,
   Image,
 
@@ -35,6 +33,7 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      eventIds: [],
       events: [],
       feed: [],
       user: {},
@@ -70,21 +69,28 @@ export default class HomeScreen extends React.Component {
 
   async createFeeds() {
     try {
+      //Firebase- Gets the userId of the current user
       const user = firebase.auth().currentUser;
-      //User information fetched from firebase, including upcomign events & interests(change line 31 to user once OAuth done)
+      //Firebase- User information fetched from Firebase(including events & interests array)
       const userInfo = await FirebaseWrapper.GetInstance().GetEvents(
         'User',
         user.uid
       );
-      //Formats the information from userInfo (events/interests/etc.)
+      //Formats information from Firebase from line above
       const eventsArray = await userInfo.data();
-      //Map through the events array in User and fetching event info from Events collection & formatting the data
+      //Sets local state to array of events (Upcoming events) from line above
+      this.setState({eventIds: eventsArray.events})
+
       const eventsInfo = await eventsArray.events.map(async function(event) {
-        const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
-          'Event',
-          event
-        );
-        return eventCollection.data();
+        try {
+          const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
+            "Event",
+            event
+          );
+          return eventCollection.data();
+          } catch (error) {
+            console.log(error)
+          }
       });
       //Map through interest array, and find events in Events collection that match interest code. Returns an array of arrays (each array is for each interest code)
       const interestFeed = await eventsArray.interests.map(this.interestFeedFn);
@@ -127,17 +133,19 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-    //Get most recent date, and format it into date that can be compared with firebase dates
     const { navigate } = this.props.navigation;
+    //Get most recent date, and format it into date that can be compared with firebase dates
     const newDate = new Date();
     const date = newDate.toISOString();
+    const month = ["January", "February", "March", "April", "May", "June", "July", "August",
+                  "September", "October", "November", "December"]
 
     return (
       // turn into flatlist - https://react-native-training.github.io/react-native-elements/docs/listitem.html
 
-      <View style={{ padding: 10, paddingBottom: 170}}>
+      <View style={{paddingBottom: 270}}>
         <View>
-          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+          <Text style={styles.eventTitle}>
             Today's Events
           </Text>
           <ScrollView
@@ -149,6 +157,27 @@ export default class HomeScreen extends React.Component {
             {this.state.events.length > 0 ? (
               this.state.events.map(event => {
                 if (event.end > date) {
+                  const startDateArray = event.start.split("T").join().split(/[-:,]/).map(num =>
+                  parseInt(num))
+                  startDateArray[3] > 11 ?
+                  startDateArray.push("PM")
+                  :startDateArray.push("AM")
+
+                  const endDateArray = event.end.split("T").join().split(/[-:,]/).map(num => parseInt(num))
+                  endDateArray[3] > 11 ?
+                  endDateArray.push("PM")
+                  :endDateArray.push("AM")
+
+                  const startTime =(startDateArray[3] >= 12 ? (startDateArray[3]=== 12 ? 12 :(startDateArray[3]-12))
+                  :startDateArray[3])+ ":" +(startDateArray[4]=== 0 ? '00' :startDateArray[4]) + startDateArray[6]
+
+                  const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
+                  : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
+
+                  const startDate = month[startDateArray[1]]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
+
+                  const endDate = month[endDateArray[1]]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
+
                   return (
                     <View key={event.id} style={styles.carousel}>
                       <TouchableOpacity onPress={() =>
@@ -157,15 +186,23 @@ export default class HomeScreen extends React.Component {
                             imgUrl: event.imageUrl,
                             eventName: event.name,
                             description: event.description,
-                            venueId: event.venue
+                            venueId: event.venue,
+                            addButton: false,
+                            startDate: startDate,
+                            startTime: startTime,
+                            endDate: endDate,
+                            endTime: endTime
                           })
                         }>
                       <Image
-                        source={{ uri: event.imageUrl }}
+                        source={{ uri: (event.imageUrl.length > 2 ? event.imageUrl : 'https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiMpZfNmKvkAhUMmeAKHYFNCpcQjRx6BAgBEAQ&url=https%3A%2F%2Ffreedomguidedogs.org%2Fspecial-event-icon%2F&psig=AOvVaw1ioYyEHgl-2j6TCmbhMXyX&ust=1567274938644487') }}
                         style={{ height: imageHeight, width }}
                       />
                       <Text style={styles.eventName}>{event.name}</Text>
-                      <Text style={styles.eventTime}>{event.start.split("T")}</Text>
+                      <Text style={styles.eventTime}>
+                      {event.start ? startDate + ' ' + startTime + " - " +
+                      (startDate === endDate ? endTime : endDate + ' ' + endTime)
+                      : ''}</Text>
                       </TouchableOpacity>
                     </View>
                   );
@@ -177,11 +214,31 @@ export default class HomeScreen extends React.Component {
           </ScrollView>
         </View>
         <View style={{ paddingBottom: 300 }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Event Feed</Text>
+          <Text style={styles.eventTitle}>Event Feed</Text>
           <ScrollView style={styles.interested}>
             {this.state.feed.length > 0 ? (
               this.state.feed.map(event => {
-                if (event.end > date) {
+                if (event.end > date && !this.state.eventIds.includes(event.id)) {
+
+                  const startDateArray = event.start.split("T").join().split(/[-:,]/).map(num => parseInt(num))
+                  startDateArray[3] > 11 ?
+                  startDateArray.push("PM")
+                  :startDateArray.push("AM")
+
+                  const endDateArray = event.end.split("T").join().split(/[-:,]/).map(num => parseInt(num))
+                  endDateArray[3] > 11 ?
+                  endDateArray.push("PM")
+                  :endDateArray.push("AM")
+
+                  const startTime = (startDateArray[3] >= 12 ? (startDateArray[3]=== 12 ? 12 : (startDateArray[3]-12))
+                  : startDateArray[3])+ ":" + (startDateArray[4]=== 0 ? '00' : startDateArray[4])+ startDateArray[6]
+
+                  const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
+                  : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
+
+                  const startDate = month[startDateArray[1]]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
+
+                  const endDate = month[endDateArray[1]]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
 
                   return (
                     <View key={event.id} style={styles.listItemParent}>
@@ -190,7 +247,9 @@ export default class HomeScreen extends React.Component {
                         style={styles.listItem}
                         leftAvatar={{ source: { uri: event.imageUrl } }}
                         title={event.name}
-                        subtitle={event.start}
+                        subtitle={event.start ? startDate + ' ' + startTime + " - " +
+                        (startDate === endDate ? endTime : endDate + ' ' + endTime)
+                        :''}
                         onPress={() =>
                           navigate('SingleEventScreen', {
                             eventId: event.id,
@@ -198,6 +257,11 @@ export default class HomeScreen extends React.Component {
                             eventName: event.name,
                             description: event.description,
                             venueId: event.venue,
+                            addButton: true,
+                            startDate: startDate,
+                            startTime: startTime,
+                            endDate: endDate,
+                            endTime: endTime
                           })
                         }
                       />
@@ -246,5 +310,20 @@ const styles = StyleSheet.create({
   eventName: {
     fontSize: 14,
     fontWeight: 'bold',
+    paddingHorizontal: 10,
+    paddingTop: 5
   },
+
+  eventTime: {
+    paddingHorizontal: 10
+  },
+
+  eventTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    padding: 10
+  },
+
+  interested: {
+  }
 });

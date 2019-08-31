@@ -49,6 +49,7 @@ export default class InterestModal extends React.Component {
       allCategories: [],
       modalVisible: true,
       userInterests: [],
+      opacity: 1
     };
   }
 
@@ -108,18 +109,15 @@ export default class InterestModal extends React.Component {
         user.uid,
         this.state.userInterests
       );
-      console.log(this.state.userInterests);
     }
     this.props.dismissModal();
   };
 
   addInterest = key => {
     this.state.userInterests.push(key);
-    console.log(key);
   };
 
   render() {
-    console.log(this.state.allCategories);
     return (
       <View>
         <Modal visible={this.props.modalVisible}>
@@ -127,17 +125,30 @@ export default class InterestModal extends React.Component {
             contentContainerStyle={styles.contentContainer}
             style={styles.scrollContainer}
           >
-            <FlatList
-              data={correctColumns(this.state.allCategories, numColumns)}
-              style={styles.container}
-              renderItem={this.renderItem}
-              numColumns={numColumns}
-            />
-            <Button
-              title="Submit Interests"
-              style={styles.submitButton}
-              onPress={this.addInterestToUser}
-            />
+            <View styles={styles.viewContainer}>
+              {this.state.allCategories &&
+                this.state.allCategories.map(category => {
+                  return (
+                    // <View style={styles.buttonContainer} key={category.id}>
+
+                    <TouchableOpacity
+                      style={styles.touchableContainer}
+                      key={category.key}
+                      onPress={() => this.addInterest(category.key)}
+                    >
+                      {/* <TouchableHighlight> */}
+                      <Text style={styles.buttons}>{category.type}</Text>
+                      {/* </TouchableHighlight> */}
+                    </TouchableOpacity>
+                  );
+                })}
+
+              <Button
+                title={'Submit Interests'}
+                style={styles.submitButton}
+                onPress={this.addInterestToUser}
+              />
+            </View>
           </ScrollView>
         </Modal>
       </View>

@@ -33,14 +33,21 @@ export default class ExploreScreen extends React.Component {
     super(props);
     this.state = {
       allCategories: [],
+      interests: []
     };
   }
 
   async componentDidMount() {
     try {
       //User information fetched from firebase, including upcomign events & interests(change line 30 to user once OAuth done)
+      const user = firebase.auth().currentUser;
       const allCategories = await FirebaseWrapper.GetInstance().GetAllCategories();
-      this.setState({ allCategories: allCategories });
+      const interest = await FirebaseWrapper.GetInstance().GetEvents(
+        "User",
+        user.uid
+      );
+      const interests = interest.data()
+      this.setState({ allCategories: allCategories, interests: interests.interests});
     } catch (error) {
       console.log(error);
     }
@@ -48,6 +55,7 @@ export default class ExploreScreen extends React.Component {
 
   // makes FlatList's grid
   renderItem = ({ item }) => {
+    const { navigate } = this.props.navigation;
     // makes square invisible if empty (no key)
     if (item.empty === true) {
       return <View style={[styles.item, styles.itemInvisible]} />;
@@ -55,8 +63,7 @@ export default class ExploreScreen extends React.Component {
     return (
       <View style={styles.item}>
         <TouchableOpacity
-          onPress={() => NavigationService.navigate('SingleCategory', item)}
-        >
+          onPress={() => NavigationService.navigate("SingleCategory", {item: item, favorite: this.state.interests.includes(item.key.toString())})}>
           <ImageBackground
             source={{
               uri: item.imageUrl,
@@ -64,8 +71,9 @@ export default class ExploreScreen extends React.Component {
             style={{
               height: Dimensions.get('window').width / numColumns - 4,
               width: Dimensions.get('window').width / numColumns - 4,
+
             }}
-            imageStyle={{ borderRadius: 12 }}
+            imageStyle={{ borderRadius: 12}}
           >
             <Text style={styles.itemText}>{item.type}</Text>
           </ImageBackground>
