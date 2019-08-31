@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { ListItem, Divider, Icon} from 'react-native-elements';
+
 import { FirebaseWrapper } from '../firebase/firebase';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
@@ -19,6 +20,22 @@ export default class SingleCategoryScreen extends React.Component {
     this.removeInterest = this.removeInterest.bind(this)
   }
 
+  categoryData = async () => {
+    try {
+      //Get interest category information from firebase
+      const interestCat = await FirebaseWrapper.GetInstance().GetEvents(
+        'Categories',
+        interest
+      );
+
+      const categoryInfo = await interestCat.data();
+
+      return categoryInfo;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   async interestFeedFn(interest) {
     try {
       const interestArray = [];
@@ -26,6 +43,7 @@ export default class SingleCategoryScreen extends React.Component {
       const interestCollection = await FirebaseWrapper.GetInstance().GetInterestEvents(
         interest
       );
+
       //Push events found into an array after formatting the data.
       interestCollection.forEach(async event => {
         interestArray.push(await event.data());
@@ -59,6 +77,8 @@ export default class SingleCategoryScreen extends React.Component {
       );
       const user = firebase.auth().currentUser;
 
+      const categoryData = await this.categoryData();
+
       // //Map through the events and fetching event info from Events collection & formatting the data
       // const eventsInfo = await userInfoArray.events.map(async function(event) {
       //   const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
@@ -69,7 +89,7 @@ export default class SingleCategoryScreen extends React.Component {
       // });
 
       //Set the upcoming events state & interest feed state
-      this.setState({ category: categoryItem, eventFeed: categoryCollection, user: user, favorite: favoriteStatus});
+      this.setState({ category: categoryItem, eventFeed: categoryCollection, user: user, favorite: favoriteStatus})
     } catch (error) {
       console.log(error);
     }
@@ -130,11 +150,17 @@ export default class SingleCategoryScreen extends React.Component {
   }
 }
 
+const { width } = Dimensions.get('window');
+
 SingleCategoryScreen.navigationOptions = {
   header: null,
 };
 
 const styles = StyleSheet.create({
+  image: {
+    width,
+    height: width * 0.3,
+  },
   listItem: {
     paddingTop: 5,
     paddingBottom: 5,
