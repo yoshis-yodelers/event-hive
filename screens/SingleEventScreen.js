@@ -1,9 +1,9 @@
 import React from "react";
 import Geocode from "react-geocode";
 import googleMapsKey from "../secrets";
-import { FirebaseWrapper } from '../firebase/firebase';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
+import { FirebaseWrapper } from "../firebase/firebase";
+import * as firebase from "firebase";
+import "firebase/firestore";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -13,8 +13,8 @@ import {
   Card,
   ListItem,
   FlatList,
-  withTheme,
-} from 'react-native-elements';
+  withTheme
+} from "react-native-elements";
 
 import {
   StyleSheet,
@@ -26,7 +26,7 @@ import {
   Flatlist
 } from "react-native";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 const imageWidth = width;
 const height = width * 0.6;
@@ -36,10 +36,10 @@ export default class SingleEventScreen extends React.Component {
     super(props);
     this.state = {
       venueInfo: "",
-      eventId: '',
-      venuId: '',
+      eventId: "",
+      venuId: "",
       user: {},
-      add: ''
+      add: ""
     };
   }
 
@@ -47,7 +47,7 @@ export default class SingleEventScreen extends React.Component {
     const user = firebase.auth().currentUser;
     const userInfo = async () => {
       const userData = await FirebaseWrapper.GetInstance().GetEvents(
-        'User',
+        "User",
         user.uid
       );
       return userData;
@@ -55,11 +55,13 @@ export default class SingleEventScreen extends React.Component {
     const userData = await userInfo();
     this.setState({
       ...this.state,
-      user: userData.data(),
+      user: userData.data()
     });
   };
 
   _addUserEvent = async () => {
+    const { navigation } = this.props;
+    const eventId = navigation.getParam("eventId", "NO-ID");
     await FirebaseWrapper.GetInstance().AddUserEvent(
       this.state.eventId,
       this.state.user.uid
@@ -68,27 +70,38 @@ export default class SingleEventScreen extends React.Component {
     //   eventId,
     //   this.state.user.uid
     // );
-    this.setState({add: false})
+    this.setState({ add: false });
   };
 
   async addEvent() {
-    const userInfo = await FirebaseWrapper.GetInstance().UserAddEvent(this.state.user.uid, this.state.eventId)
-    this.setState({add: false})
+    const userInfo = await FirebaseWrapper.GetInstance().UserAddEvent(
+      this.state.user.uid,
+      this.state.eventId
+    );
+    this.setState({ add: false });
   }
 
   async removeEvent() {
-    const userInfo = await FirebaseWrapper.GetInstance().UserDelEvent(this.state.user.uid, this.state.eventId)
-    this.setState({add: true})
+    const userInfo = await FirebaseWrapper.GetInstance().UserDelEvent(
+      this.state.user.uid,
+      this.state.eventId
+    );
+    this.setState({ add: true });
   }
 
   async componentDidMount() {
     const { navigation } = this.props;
     const eventId = navigation.getParam("eventId", "NO-ID");
     const venueId = navigation.getParam("venueId", "Venue ID");
-    const addButton = navigation.getParam("addButton", true)
+    const addButton = navigation.getParam("addButton", true);
     const user = firebase.auth().currentUser;
 
-    this.setState({eventId: eventId, venuId: venueId, user: user, add: addButton})
+    this.setState({
+      eventId: eventId,
+      venuId: venueId,
+      user: user,
+      add: addButton
+    });
     // const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
     //   "Venue",
     //   venueId
@@ -106,16 +119,19 @@ export default class SingleEventScreen extends React.Component {
     // console.log(this.state.venueInfo);
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
+
+    const eventId = navigation.getParam("eventId", "NO-ID");
+
     const eventDescription = navigation.getParam(
-      'description',
-      'Event Description'
+      "description",
+      "Event Description"
     );
-    const eventName = navigation.getParam('eventName', 'Event Description');
+    const eventName = navigation.getParam("eventName", "Event Description");
     const imgUrl = navigation.getParam("imgUrl", "Event Image");
-    const startDate = navigation.getParam("startDate", "")
-    const startTime = navigation.getParam("startTime", "")
-    const endTime = navigation.getParam("endTime", "")
-    const endDate = navigation.getParam("startDate", "")
+    const startDate = navigation.getParam("startDate", "");
+    const startTime = navigation.getParam("startTime", "");
+    const endTime = navigation.getParam("endTime", "");
+    const endDate = navigation.getParam("startDate", "");
 
     // const lat = this.state.venueInfo.latitude;
     // const long = this.state.venueInfo.longitude;
@@ -138,9 +154,13 @@ export default class SingleEventScreen extends React.Component {
       <View style={styles.eventContainer}>
         {/* <Text style={styles.eventDetailsHeader}>Event Details</Text> */}
         <Text style={styles.eventName}>{eventName}</Text>
-        <Text style={styles.eventDate}>{startDate + ' ' + startTime + " - " +
-                        (startDate === endDate ? endTime : endDate + ' ' + endTime)
-                        }</Text>
+        <Text style={styles.eventDate}>
+          {startDate +
+            " " +
+            startTime +
+            " - " +
+            (startDate === endDate ? endTime : endDate + " " + endTime)}
+        </Text>
         <ScrollView>
           <Text style={styles.eventDescription}>{eventDescription.trim()}</Text>
         </ScrollView>
@@ -149,7 +169,7 @@ export default class SingleEventScreen extends React.Component {
           <Image
             style={styles.image}
             source={{
-              uri: imgUrl,
+              uri: imgUrl
             }}
           />
         </View>
@@ -157,47 +177,46 @@ export default class SingleEventScreen extends React.Component {
           <ThemeProvider theme={theme}>
             <Button
               title="Dashboard"
-              onPress={() => navigate('MainTabNavigator')}
+              onPress={() => navigate("MainTabNavigator")}
             />
           </ThemeProvider>
         </View>
         <View style={{ flex: 1, backgroundColor: "#f3f3f3" }}>
           {/* Rest of the app comes ABOVE the action button component !*/}
-          <ActionButton buttonColor="#32A7BE">
-            {this.state.add === true ?
+        <ActionButton buttonColor="#32A7BE">
+          {this.state.add === true ? (
             <ActionButton.Item
               buttonColor="#1abc9c"
               title="Add Event"
               onPress={() => this._addUserEvent()}
             >
               <Icon name="md-add" style={styles.actionButtonIcon} />
-            </ActionButton.Item> :
+            </ActionButton.Item>
+          ) : (
             <ActionButton.Item
               buttonColor="red"
               title="Remove Event"
               onPress={() => this.removeEvent()}
             >
               <Icon name="md-remove" style={styles.actionButtonIcon} />
-            </ActionButton.Item>}
-            <ActionButton.Item
-              buttonColor="#3498db"
-              title="Empty"
-              onPress={() => {}}
-            >
-              <Icon
-                name="md-notifications-off"
-                style={styles.actionButtonIcon}
-              />
             </ActionButton.Item>
-            <ActionButton.Item
-              buttonColor="#9b59b6"
-              title="Empty"
-              onPress={() => {}}
-            >
-              <Icon name="md-done-all" style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-          </ActionButton>
-        </View>
+          )}
+          <ActionButton.Item
+            buttonColor="#3498db"
+            title="Empty"
+            onPress={() => {}}
+          >
+            <Icon name="md-notifications-off" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor="#9b59b6"
+            title="Empty"
+            onPress={() => {}}
+          >
+            <Icon name="md-done-all" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
+      </View>
     );
   }
 }
@@ -205,9 +224,9 @@ export default class SingleEventScreen extends React.Component {
 const theme = {
   Button: {
     raised: true,
-    color: 'white',
+    color: "white",
     buttonStyle: {
-      height: 60,
+      height: 60
     }
   }
 };
@@ -217,14 +236,13 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     flex: 1,
 
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-
+    alignItems: "flex-start",
+    justifyContent: "center"
   },
   eventDetailsHeader: {
     fontSize: 18,
     paddingBottom: 5,
-    paddingLeft: 4,
+    paddingLeft: 4
   },
   eventName: {
     paddingHorizontal: 5,
@@ -233,34 +251,32 @@ const styles = StyleSheet.create({
 
     fontSize: 17,
 
-
     fontWeight: "bold",
 
     color: "#32A7BE"
-
   },
   eventDescription: {
     paddingRight: 4,
     paddingLeft: 4,
     marginTop: 5,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingBottom: 0,
-    marginBottom: 0,
+    marginBottom: 0
   },
   eventScrollView: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingTop: 0,
     paddingBottom: 50,
     marginTop: 0,
-    marginBottom: 50,
+    marginBottom: 50
   },
   imageContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingTop: 0,
     paddingBottom: 0,
     marginTop: 0,
     marginBottom: 0,
-    alignContent: 'center',
+    alignContent: "center"
   },
   image: {
     width: imageWidth,
@@ -269,13 +285,14 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     marginTop: 0,
     marginBottom: 0,
-    alignContent: 'center',
+    alignContent: "center"
   },
-  buttonContainer: {
-    alignContent: 'center',
+  addEventButtonContainer: {
+    alignContent: "center",
+    paddingBottom: 2
   },
   eventDate: {
     paddingHorizontal: 7,
-    fontWeight:"bold"
+    fontWeight: "bold"
   }
 });
