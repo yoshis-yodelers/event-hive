@@ -17,7 +17,7 @@ const AppSwitchNavigator = createStackNavigator({
   DashboardScreen: {
     screen: DrawerNavigator,
     navigationOptions: {
-      title: 'Event Hive',
+      title: 'Back',
       header: <MainHeader />,
     },
   },

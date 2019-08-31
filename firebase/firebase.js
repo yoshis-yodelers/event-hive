@@ -199,4 +199,37 @@ export class FirebaseWrapper {
       console.log(error);
     }
   }
+
+  async UserDelEvent (user, eventId) {
+    try {
+      const ref = await this._firestore.collection("User").doc(user)
+      await ref.update({
+        events: firebase.firestore.FieldValue.arrayRemove(eventId)
+    });
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async addInterest (user, categoryCode) {
+    try {
+      const ref = await this._firestore.collection("User").doc(user)
+      await ref.update({
+        interests: firebase.firestore.FieldValue.arrayUnion(categoryCode)
+    });
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async delInterest (user, categoryCode) {
+    try {
+      const ref = await this._firestore.collection("User").doc(user)
+      await ref.update({
+        interests: firebase.firestore.FieldValue.arrayRemove(categoryCode)
+    });
+    } catch (error) {
+      console.log(error)
+    }
+  }
 }
