@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -63,8 +63,7 @@ export default class ExploreScreen extends React.Component {
     return (
       <View style={styles.item}>
         <TouchableOpacity
-          onPress={() => NavigationService.navigate("SingleCategory", {item: item, favorite: this.state.interests.includes(item.key.toString())})}
-        >
+          onPress={() => NavigationService.navigate("SingleCategory", {item: item, favorite: this.state.interests.includes(item.key.toString())})}>
           <ImageBackground
             source={{
               uri: item.imageUrl,
@@ -76,7 +75,7 @@ export default class ExploreScreen extends React.Component {
             }}
             imageStyle={{ borderRadius: 12}}
           >
-            <Text style={styles.item}>{item.type}</Text>
+            <Text style={styles.itemText}>{item.type}</Text>
           </ImageBackground>
         </TouchableOpacity>
       </View>
@@ -100,7 +99,8 @@ export default class ExploreScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 20
+    marginVertical: 20,
+    bottom: 10,
   },
   item: {
     position: 'relative',
@@ -108,24 +108,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     margin: 1,
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: "white",
-    padding: 5,
-    textShadowColor: "black",
-    textShadowRadius: 5,
+
     // backgroundColor: "blue",
-    height: Dimensions.get('window').width / numColumns// creates a square
+    height: Dimensions.get('window').width / numColumns, // creates a square
   },
   itemInvisible: {
-    backgroundColor: "transparent"
+    backgroundColor: 'transparent',
   },
   itemText: {
     color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    padding: 5,
+    textShadowColor: 'black',
+    textShadowRadius: 5,
   },
   image: {},
 });
 
 ExploreScreen.navigationOptions = {
-  header: null
+  header: null,
 };

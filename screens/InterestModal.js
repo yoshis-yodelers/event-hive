@@ -1,14 +1,19 @@
 import React from 'react';
-import { View, Modal, Button, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  Modal,
+  Button,
+  StyleSheet,
+  FlatList,
+  Dimensions,
+  ImageBackground,
+} from 'react-native';
 import { Constants } from 'expo';
 import { Text } from 'react-native-elements';
 import { FirebaseWrapper } from '../firebase/firebase';
 import * as firebase from 'firebase';
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import NavigationService from '../navigation/NavigationService';
 
 const { width } = Dimensions.get('window');
 const buttonWidth = width * 0.3;
@@ -25,6 +30,18 @@ const colors = [
 ];
 let color = colors[Math.floor(Math.random() * colors.length - 1)];
 
+const correctColumns = (data, numColumns) => {
+  const numTotalFullRows = Math.floor(data.length / numColumns);
+  let lastRowElements = data.length - numTotalFullRows * numColumns;
+  while (lastRowElements !== numColumns && lastRowElements !== 0) {
+    data.push({ key: `blank-${lastRowElements}`, empty: true });
+    lastRowElements++;
+  }
+
+  return data;
+};
+const numColumns = 3;
+
 export default class InterestModal extends React.Component {
   constructor(props) {
     super(props);
@@ -35,6 +52,32 @@ export default class InterestModal extends React.Component {
       opacity: 1
     };
   }
+
+  // makes FlatList's grid
+  renderItem = ({ item }) => {
+    // makes square invisible if empty (no key)
+    if (item.empty === true) {
+      return <View style={[styles.item, styles.itemInvisible]} />;
+    }
+    return (
+      <View style={styles.item}>
+        <TouchableOpacity onPress={() => this.addInterest(item.key)}>
+          <ImageBackground
+            source={{
+              uri: item.imageUrl,
+            }}
+            style={{
+              height: Dimensions.get('window').width / numColumns - 4,
+              width: Dimensions.get('window').width / numColumns - 4,
+            }}
+            imageStyle={{ borderRadius: 12 }}
+          >
+            <Text style={styles.itemText}>{item.type}</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   async componentDidMount() {
     try {
@@ -59,11 +102,6 @@ export default class InterestModal extends React.Component {
     }
   }
 
-  addInterest = key => {
-    this.state.userInterests.push(key);
-    console.log(key);
-  };
-
   addInterestToUser = async () => {
     const user = firebase.auth().currentUser;
     if (this.state.userInterests.length !== 0) {
@@ -76,7 +114,13 @@ export default class InterestModal extends React.Component {
     this.props.dismissModal();
   };
 
+  addInterest = key => {
+    this.state.userInterests.push(key);
+    console.log(key);
+  };
+
   render() {
+    console.log(this.state.allCategories);
     return (
       <View>
         <Modal visible={this.props.modalVisible}>
@@ -145,5 +189,22 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingTop: 50,
     marginBottom: 50,
+  },
+  item: {
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    margin: 1,
+    height: Dimensions.get('window').width / numColumns, // creates a square
+  },
+  itemInvisible: {
+    backgroundColor: 'transparent',
+  },
+  itemText: {
+    color: 'black',
+    backgroundColor: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });

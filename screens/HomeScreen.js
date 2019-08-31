@@ -1,18 +1,19 @@
-import React from "react";
+import React from 'react';
 import {
   ListItem,
   FlatList,
   Divider,
   Header,
   Icon,
-  ThemeProvider
-} from "react-native-elements";
+  ThemeProvider,
+} from 'react-native-elements';
 import {
   StyleSheet,
   Text,
   View,
   ScrollView,
   Image,
+
   Dimensions
 } from "react-native";
 import { Constants } from "expo";
@@ -24,7 +25,8 @@ import { fetchUpdateAsync } from "expo/build/Updates/Updates";
 import NavigationService from "../navigation/NavigationService";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const { width } = Dimensions.get("window");
+
+const { width } = Dimensions.get('window');
 const imageHeight = width * 0.3;
 const height = width * 0.5;
 export default class HomeScreen extends React.Component {
@@ -35,7 +37,7 @@ export default class HomeScreen extends React.Component {
       events: [],
       feed: [],
       user: {},
-      modalVisible: false
+      modalVisible: false,
     };
   }
 
@@ -70,7 +72,7 @@ export default class HomeScreen extends React.Component {
       const user = firebase.auth().currentUser;
       //User information fetched from firebase, including upcomign events & interests(change line 31 to user once OAuth done)
       const userInfo = await FirebaseWrapper.GetInstance().GetEvents(
-        "User",
+        'User',
         user.uid
       );
       //Formats the information from userInfo (events/interests/etc.)
@@ -107,7 +109,7 @@ export default class HomeScreen extends React.Component {
       this.setState({
         events: eventsSorted,
         feed: ffevents,
-        user: userInfo.data()
+        user: userInfo.data(),
       });
     } catch (error) {
       console.log(error);
@@ -142,7 +144,7 @@ export default class HomeScreen extends React.Component {
 
       <View style={{ padding: 10, paddingBottom: 170}}>
         <View>
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
             Today's Events
           </Text>
           <ScrollView
@@ -191,7 +193,7 @@ export default class HomeScreen extends React.Component {
           </ScrollView>
         </View>
         <View style={{ paddingBottom: 300 }}>
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>Event Feed</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Event Feed</Text>
           <ScrollView style={styles.interested}>
             {this.state.feed.length > 0 ? (
               this.state.feed.map(event => {
@@ -211,7 +213,7 @@ export default class HomeScreen extends React.Component {
                         + (rawDateArray[3] >= 12 ? (rawDateArray[3]=== 12 ? 12 : (rawDateArray[3]-12))
                         : rawDateArray[3])+ ":" + (rawDateArray[4]=== 0 ? '00' : rawDateArray[4]) + rawDateArray[6]:''}
                         onPress={() =>
-                          navigate("SingleEventScreen", {
+                          navigate('SingleEventScreen', {
                             eventId: event.id,
                             imgUrl: event.imageUrl,
                             eventName: event.name,
@@ -243,11 +245,11 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   listItem: {
     paddingTop: 5,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   listItemParent: {
-    borderStyle: "solid",
-    borderColor: "grey"
+    borderStyle: 'solid',
+    borderColor: 'grey',
   },
   // fix this
   divder: {
@@ -257,14 +259,14 @@ const styles = StyleSheet.create({
   },
   subscribed: {
     height,
-    width
+    width,
   },
   carousel: {
     height,
-    width
+    width,
   },
   eventName: {
     fontSize: 14,
-    fontWeight: "bold"
-  }
+    fontWeight: 'bold',
+  },
 });
