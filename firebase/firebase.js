@@ -151,6 +151,26 @@ export class FirebaseWrapper {
     }
   }
 
+  async GetAllUsers() {
+    try {
+      const ref = await this._firestore.collection('User');
+      const userArray = [];
+      return await ref.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          userArray.push({
+            key: doc.id,
+            profilePicture: doc.data().profile_picture,
+            firstName: doc.data().first_name,
+            lastName: doc.data().last_name,
+          });
+        });
+        return userArray;
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async GetVenueFromFirestore() {
     try {
       const ref = await this._firestore.collection('Event');
@@ -201,36 +221,36 @@ export class FirebaseWrapper {
     }
   }
 
-  async UserDelEvent (user, eventId) {
+  async UserDelEvent(user, eventId) {
     try {
-      const ref = await this._firestore.collection("User").doc(user)
+      const ref = await this._firestore.collection('User').doc(user);
       await ref.update({
-        events: firebase.firestore.FieldValue.arrayRemove(eventId)
-    });
+        events: firebase.firestore.FieldValue.arrayRemove(eventId),
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
-  async addInterest (user, categoryCode) {
+  async addInterest(user, categoryCode) {
     try {
-      const ref = await this._firestore.collection("User").doc(user)
+      const ref = await this._firestore.collection('User').doc(user);
       await ref.update({
-        interests: firebase.firestore.FieldValue.arrayUnion(categoryCode)
-    });
+        interests: firebase.firestore.FieldValue.arrayUnion(categoryCode),
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
-  async delInterest (user, categoryCode) {
+  async delInterest(user, categoryCode) {
     try {
-      const ref = await this._firestore.collection("User").doc(user)
+      const ref = await this._firestore.collection('User').doc(user);
       await ref.update({
-        interests: firebase.firestore.FieldValue.arrayRemove(categoryCode)
-    });
+        interests: firebase.firestore.FieldValue.arrayRemove(categoryCode),
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 }
