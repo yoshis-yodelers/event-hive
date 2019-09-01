@@ -171,10 +171,10 @@ export default class HomeScreen extends React.Component {
                   :endDateArray.push("AM")
 
                   const startTime =(startDateArray[3] >= 12 ? (startDateArray[3]=== 12 ? 12 :(startDateArray[3]-12))
-                  :startDateArray[3])+ ":" +(startDateArray[4]=== 0 ? '00' :startDateArray[4]) + startDateArray[6]
+                  :startDateArray[3] === 0 ? 12 : startDateArray[3])+ ":" +(startDateArray[4]=== 0 ? '00' :startDateArray[4]) + startDateArray[6]
 
                   const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
-                  : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
+                  : endDateArray[3] === 0 ? 12 : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
 
                   const startDate = month[startDateArray[1]-1]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
 
@@ -233,10 +233,10 @@ export default class HomeScreen extends React.Component {
                   :endDateArray.push("AM")
 
                   const startTime = (startDateArray[3] >= 12 ? (startDateArray[3]=== 12 ? 12 : (startDateArray[3]-12))
-                  : startDateArray[3])+ ":" + (startDateArray[4]=== 0 ? '00' : startDateArray[4])+ startDateArray[6]
+                  : startDateArray[3] === 0 ? 12 : startDateArray[3])+ ":" + (startDateArray[4]=== 0 ? '00' : startDateArray[4])+ startDateArray[6]
 
                   const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
-                  : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
+                  : endDateArray[3] === 0 ? 12 : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
 
                   const startDate = month[startDateArray[1]-1]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
 

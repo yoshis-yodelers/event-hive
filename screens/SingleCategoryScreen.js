@@ -106,8 +106,7 @@ export default class SingleCategoryScreen extends React.Component {
     const { navigate, goBack } = this.props.navigation;
     const newDate = new Date();
     const date = newDate.toISOString();
-    const month = ["January", "February", "March", "April", "May", "June", "July", "August",
-                  "September", "October", "November", "December"]
+    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
     return (
       <View style = {{paddingBottom:40}}>
@@ -142,10 +141,10 @@ export default class SingleCategoryScreen extends React.Component {
                 :endDateArray.push("AM")
 
                 const startTime = (startDateArray[3] >= 12 ? (startDateArray[3]=== 12 ? 12 : (startDateArray[3]-12))
-                  : startDateArray[3])+ ":" + (startDateArray[4]=== 0 ? '00' : startDateArray[4]) + startDateArray[6]
+                  : startDateArray[3] === 0 ? 12 : startDateArray[3])+ ":" + (startDateArray[4]=== 0 ? '00' : startDateArray[4]) + startDateArray[6]
 
                 const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
-                : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
+                : endDateArray[3] === 0 ? 12 : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
 
                 const startDate = month[startDateArray[1]-1]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
 
@@ -161,18 +160,17 @@ export default class SingleCategoryScreen extends React.Component {
                       subtitle={event.start ? startDate + ' ' + startTime + " - " + (startDate === endDate ? endTime : endDate + ' ' + endTime): ''}
                       onPress={
                         () =>
-                        // navigate('SingleEventScreen', {
-                        //   eventId: event.id,
-                        //   imgUrl: event.imageUrl,
-                        //   eventName: event.name,
-                        //   description: event.description,
-                        //   startDate: startDate,
-                        //   startTime: startTime,
-                        //   endDate: endDate,
-                        //   endTime: endTime,
-                        //   venue: event.venue
-                        // })
-                        console.log(event)
+                        navigate('SingleEventScreen', {
+                          eventId: event.id,
+                          imgUrl: event.imageUrl,
+                          eventName: event.name,
+                          description: event.description,
+                          startDate: startDate,
+                          startTime: startTime,
+                          endDate: endDate,
+                          endTime: endTime,
+                          venue: event.venue
+                        })
                       }
                     />
                     <View />
