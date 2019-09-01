@@ -49,7 +49,7 @@ export default class CreateEventScreen extends React.Component {
       if (this.state.category && this.state.name && this.state.description && this.state.start && this.state.end && this.state.street && this.state.city && this.state.state && this.state.zipcode){
 
         const createdVenue = await FirebaseWrapper.GetInstance().CreateNewDocument("Venue", {
-          street: this.state.street,
+          address: this.state.street,
           city: this.state.city,
           state: this.state.state.toUpperCase(),
           zipcode: this.state.zipcode})
@@ -63,14 +63,14 @@ export default class CreateEventScreen extends React.Component {
             createdBy: firebase.auth().currentUser.uid,
             start:
               this.state.sampm === 'AM'
-                ? this.state.start + 'T' + start + ':' + this.state.sminute + ":00"
+                ? this.state.start + 'T' + (start === 12 ? 0 : start) + ':' + this.state.sminute + ":00"
                 : this.state.start + 'T' + (start + 12) + ':' + this.state.sminute + ":00",
             end:
               this.state.eampm === 'AM'
-                ? this.state.end + 'T' + end + ':' + this.state.eminute + ":00"
+                ? this.state.end + 'T' + (end === 12 ? 0 : end) + ':' + this.state.eminute + ":00"
                 : this.state.end + 'T' + (end + 12) + ':' + this.state.eminute + ':00',
             venue: createdVenue.id,
-            imageUrl: 'https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiMpZfNmKvkAhUMmeAKHYFNCpcQjRx6BAgBEAQ&url=https%3A%2F%2Ffreedomguidedogs.org%2Fspecial-event-icon%2F&psig=AOvVaw1ioYyEHgl-2j6TCmbhMXyX&ust=1567274938644487'
+            imageUrl: 'https://images.squarespace-cdn.com/content/v1/54ad61f2e4b041e83134a168/1553107558284-DCMOGB45L7M53V9ACB69/ke17ZwdGBToddI8pDm48kOegDzDCzNVF6YUIz20rP6AUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKcaizFwd7npuQr-A_m6boUM7g_TWouBuX-aInZddt8WSJaZnnfpB8RHZYWZIZRb8fa/Events4.jpg?format=1500w'
           });
           await FirebaseWrapper.GetInstance().AddUserEvent(
             createdEvent.id,

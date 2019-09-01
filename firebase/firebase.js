@@ -123,6 +123,7 @@ export class FirebaseWrapper {
             name: doc.data().name,
             category: doc.data().category,
             description: doc.data().description,
+            venue: doc.data().venue
           });
         });
         return categoryArray;

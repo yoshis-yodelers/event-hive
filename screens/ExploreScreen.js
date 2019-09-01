@@ -52,7 +52,7 @@ export default class ExploreScreen extends React.Component {
         'User',
         user.uid
       );
-      const interests = interest.data();
+      const interests = await interest.data();
       this.setState({
         allCategories: allCategories,
         interests: interests.interests,
