@@ -100,9 +100,9 @@ export default class UserProfileScreen extends React.Component {
             const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
             : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
 
-            const startDate = month[startDateArray[1]]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
+            const startDate = month[startDateArray[1]-1]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
 
-            const endDate = month[endDateArray[1]]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
+            const endDate = month[endDateArray[1]-1]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
             return (
               <View key={event.id} style={styles.listItemParent}>
                 <Divider style={styles.divider} />
@@ -123,7 +123,8 @@ export default class UserProfileScreen extends React.Component {
                       startDate: startDate,
                       startTime: startTime,
                       endDate: endDate,
-                      endTime: endTime
+                      endTime: endTime,
+                      venue: event.venue
                     })
                   }
                 />

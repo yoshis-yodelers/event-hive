@@ -63,7 +63,7 @@ export default createBottomTabNavigator(
           <Icon name="create" color={tintColor} size={30} />
         )
       })
-    }
+    },
   },
   {
     tabBarOptions: {

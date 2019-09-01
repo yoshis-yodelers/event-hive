@@ -35,7 +35,7 @@ export default class SingleEventScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      venueInfo: "",
+      venueInfo: {},
       eventId: "",
       venuId: "",
       user: {},
@@ -92,36 +92,32 @@ export default class SingleEventScreen extends React.Component {
   async componentDidMount() {
     const { navigation } = this.props;
     const eventId = navigation.getParam("eventId", "NO-ID");
-    const venueId = navigation.getParam("venueId", "Venue ID");
+    const venueId = await navigation.getParam("venueId", "Venue ID");
     const addButton = navigation.getParam("addButton", true);
     const user = firebase.auth().currentUser;
+
+    const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
+      "Venue",
+      venueId
+    );
+
+    const venue = await eventCollection.data();
 
     this.setState({
       eventId: eventId,
       venuId: venueId,
       user: user,
-      add: addButton
-    });
-    // const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
-    //   "Venue",
-    //   venueId
-    // );
-    // const boop = await eventCollection.data();
-    // this.setState({ venueInfo: await eventCollection.data() });
-    // console.log("this is this.state.venueInfo", this.state.venueInfo);
-
-    // console.log("eventCollection.data", await eventCollection.data());
-    // console.log("event collection:", typeof (await eventCollection.data()));
-    // eventCollection.map(e => console.log(e.data()));
+      add: addButton,
+      venueInfo: venue
+    })
   }
 
-  render() {
-    // console.log(this.state.venueInfo);
+  render(){
     const { navigation } = this.props;
     const { navigate } = this.props.navigation;
 
     const eventId = navigation.getParam("eventId", "NO-ID");
-
+    const venueId = navigation.getParam("venueId", "Venue ID");
     const eventDescription = navigation.getParam(
       "description",
       "Event Description"
@@ -131,28 +127,10 @@ export default class SingleEventScreen extends React.Component {
     const startDate = navigation.getParam("startDate", "");
     const startTime = navigation.getParam("startTime", "");
     const endTime = navigation.getParam("endTime", "");
-    const endDate = navigation.getParam("startDate", "");
-
-    // const lat = this.state.venueInfo.latitude;
-    // const long = this.state.venueInfo.longitude;
-    // console.log("this is the lat>>>>>>>>>>>>", lat);
-    // console.log("this is the long>>>>>>>>>>>>", long);
-
-    // Geocode.setApiKey(googleMapsKey);
-    // Geocode.enableDebug();
-    // Geocode.fromLatLng(lat, long).then(
-    //   response => {
-    //     const address = response.results[0].formatted_address;
-    //     console.log("this is the address>>>>>>>", address);
-    //   },
-    //   error => {
-    //     console.error(error);
-    //   }
-    // );
+    const endDate = navigation.getParam("endDate", "");
 
     return (
       <View style={styles.eventContainer}>
-        {/* <Text style={styles.eventDetailsHeader}>Event Details</Text> */}
         <Text style={styles.eventName}>{eventName}</Text>
         <Text style={styles.eventDate}>
           {startDate +
@@ -161,6 +139,8 @@ export default class SingleEventScreen extends React.Component {
             " - " +
             (startDate === endDate ? endTime : endDate + " " + endTime)}
         </Text>
+        <Text style = {{padding: 5}}>{this.state.venueInfo ? (this.state.venueInfo.address + ', ' + this.state.venueInfo.city + ', '
+        + this.state.venueInfo.state + ' ' + this.state.venueInfo.zipcode):''}</Text>
         <ScrollView>
           <Text style={styles.eventDescription}>{eventDescription.trim()}</Text>
         </ScrollView>
@@ -221,6 +201,7 @@ export default class SingleEventScreen extends React.Component {
   }
 }
 
+
 const theme = {
   Button: {
     raised: true,
@@ -248,11 +229,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingBottom: 5,
     marginBottom: 5,
-
     fontSize: 17,
-
     fontWeight: "bold",
-
     color: "#32A7BE"
   },
   eventDescription: {

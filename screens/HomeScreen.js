@@ -39,6 +39,8 @@ export default class HomeScreen extends React.Component {
       user: {},
       modalVisible: false,
     };
+    this.interestFeedFn = this.interestFeedFn.bind(this)
+    this.createFeeds = this.createFeeds.bind(this)
   }
 
   async componentDidMount() {
@@ -169,14 +171,14 @@ export default class HomeScreen extends React.Component {
                   :endDateArray.push("AM")
 
                   const startTime =(startDateArray[3] >= 12 ? (startDateArray[3]=== 12 ? 12 :(startDateArray[3]-12))
-                  :startDateArray[3])+ ":" +(startDateArray[4]=== 0 ? '00' :startDateArray[4]) + startDateArray[6]
+                  :startDateArray[3] === 0 ? 12 : startDateArray[3])+ ":" +(startDateArray[4]=== 0 ? '00' :startDateArray[4]) + startDateArray[6]
 
                   const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
-                  : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
+                  : endDateArray[3] === 0 ? 12 : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
 
-                  const startDate = month[startDateArray[1]]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
+                  const startDate = month[startDateArray[1]-1]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
 
-                  const endDate = month[endDateArray[1]]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
+                  const endDate = month[endDateArray[1]-1]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
 
                   return (
                     <View key={event.id} style={styles.carousel}>
@@ -195,7 +197,7 @@ export default class HomeScreen extends React.Component {
                           })
                         }>
                       <Image
-                        source={{ uri: (event.imageUrl.length > 2 ? event.imageUrl : 'https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiMpZfNmKvkAhUMmeAKHYFNCpcQjRx6BAgBEAQ&url=https%3A%2F%2Ffreedomguidedogs.org%2Fspecial-event-icon%2F&psig=AOvVaw1ioYyEHgl-2j6TCmbhMXyX&ust=1567274938644487') }}
+                        source={{ uri: event.imageUrl ? event.imageUrl :''}}
                         style={{ height: imageHeight, width }}
                       />
                       <Text style={styles.eventName}>{event.name}</Text>
@@ -231,14 +233,14 @@ export default class HomeScreen extends React.Component {
                   :endDateArray.push("AM")
 
                   const startTime = (startDateArray[3] >= 12 ? (startDateArray[3]=== 12 ? 12 : (startDateArray[3]-12))
-                  : startDateArray[3])+ ":" + (startDateArray[4]=== 0 ? '00' : startDateArray[4])+ startDateArray[6]
+                  : startDateArray[3] === 0 ? 12 : startDateArray[3])+ ":" + (startDateArray[4]=== 0 ? '00' : startDateArray[4])+ startDateArray[6]
 
                   const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
-                  : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
+                  : endDateArray[3] === 0 ? 12 : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
 
-                  const startDate = month[startDateArray[1]]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
+                  const startDate = month[startDateArray[1]-1]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
 
-                  const endDate = month[endDateArray[1]]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
+                  const endDate = month[endDateArray[1]-1]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
 
                   return (
                     <View key={event.id} style={styles.listItemParent}>
@@ -261,7 +263,7 @@ export default class HomeScreen extends React.Component {
                             startDate: startDate,
                             startTime: startTime,
                             endDate: endDate,
-                            endTime: endTime
+                            endTime: endTime,
                           })
                         }
                       />

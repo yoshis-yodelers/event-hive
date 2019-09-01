@@ -34,7 +34,8 @@ export class FirebaseWrapper {
   async CreateNewDocument(collectionPath, doc) {
     try {
       const ref = this._firestore.collection(collectionPath).doc();
-      return await ref.set({ ...doc });
+      await ref.set({ ...doc, id: ref.id})
+      return ref
     } catch (error) {
       console.log(error);
     }
@@ -122,6 +123,7 @@ export class FirebaseWrapper {
             name: doc.data().name,
             category: doc.data().category,
             description: doc.data().description,
+            venue: doc.data().venue
           });
         });
         return categoryArray;
