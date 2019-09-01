@@ -87,11 +87,33 @@ export class FirebaseWrapper {
     }
   }
 
+  async UserDelEvent(user, eventId) {
+    try {
+      const ref = await this._firestore.collection('User').doc(user);
+      await ref.update({
+        events: firebase.firestore.FieldValue.arrayRemove(eventId),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async AddEventAttendee(eventId, UserId) {
     try {
       const ref = await this._firestore.collection('Event').doc(eventId);
       return await ref.update({
         attendees: firebase.firestore.FieldValue.arrayUnion(UserId),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async DelEventAttendee(eventId, UserId) {
+    try {
+      const ref = await this._firestore.collection('Event').doc(eventId);
+      return await ref.update({
+        attendees: firebase.firestore.FieldValue.arrayRemove(UserId),
       });
     } catch (error) {
       console.log(error);
@@ -123,7 +145,8 @@ export class FirebaseWrapper {
             name: doc.data().name,
             category: doc.data().category,
             description: doc.data().description,
-            venue: doc.data().venue
+            venue: doc.data().venue,
+            attendees: doc.data().attendees
           });
         });
         return categoryArray;
@@ -217,17 +240,6 @@ export class FirebaseWrapper {
           console.log(doc);
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async UserDelEvent(user, eventId) {
-    try {
-      const ref = await this._firestore.collection('User').doc(user);
-      await ref.update({
-        events: firebase.firestore.FieldValue.arrayRemove(eventId),
-      });
     } catch (error) {
       console.log(error);
     }

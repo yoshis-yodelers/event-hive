@@ -12,8 +12,8 @@ import UserProfileScreen from '../screens/UserProfileScreen';
 // firebase.initializeApp(firebaseConfig);
 
 const AppSwitchNavigator = createStackNavigator({
-  // LoadingScreen: LoadingScreen,
-  // LoginScreen: LoginScreen,
+  LoadingScreen: LoadingScreen,
+  LoginScreen: LoginScreen,
   DashboardScreen: {
     screen: DrawerNavigator,
     navigationOptions: {

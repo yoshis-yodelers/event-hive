@@ -193,7 +193,8 @@ export default class HomeScreen extends React.Component {
                             startDate: startDate,
                             startTime: startTime,
                             endDate: endDate,
-                            endTime: endTime
+                            endTime: endTime,
+                            attendees: event.attendees
                           })
                         }>
                       <Image
@@ -264,6 +265,7 @@ export default class HomeScreen extends React.Component {
                             startTime: startTime,
                             endDate: endDate,
                             endTime: endTime,
+                            attendees: event.attendees
                           })
                         }
                       />

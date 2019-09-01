@@ -124,7 +124,8 @@ export default class UserProfileScreen extends React.Component {
                       startTime: startTime,
                       endDate: endDate,
                       endTime: endTime,
-                      venue: event.venue
+                      venue: event.venue,
+                      attendees: event.attendees
                     })
                   }
                 />

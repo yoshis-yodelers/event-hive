@@ -13,7 +13,8 @@ import {
   Card,
   ListItem,
   FlatList,
-  withTheme
+  withTheme,
+  Divider
 } from "react-native-elements";
 
 import {
@@ -23,7 +24,8 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  Flatlist
+  Flatlist,
+  Modal
 } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -39,7 +41,9 @@ export default class SingleEventScreen extends React.Component {
       eventId: "",
       venuId: "",
       user: {},
-      add: ""
+      add: "",
+      attendees: [],
+      ashow: false
     };
   }
 
@@ -78,6 +82,10 @@ export default class SingleEventScreen extends React.Component {
       this.state.user.uid,
       this.state.eventId
     );
+    const eventArray = await FirebaseWrapper.GetInstance().AddEventAttendee(
+      this.state.eventId,
+      this.state.user.uid
+    )
     this.setState({ add: false });
   }
 
@@ -86,6 +94,11 @@ export default class SingleEventScreen extends React.Component {
       this.state.user.uid,
       this.state.eventId
     );
+
+    const userInfo = await FirebaseWrapper.GetInstance().DelEventAttendee(
+      this.state.eventId,
+      this.state.user.uid
+    )
     this.setState({ add: true });
   }
 
@@ -95,6 +108,7 @@ export default class SingleEventScreen extends React.Component {
     const venueId = await navigation.getParam("venueId", "Venue ID");
     const addButton = navigation.getParam("addButton", true);
     const user = firebase.auth().currentUser;
+    const attendees = navigation.getParam("attendees", [])
 
     const eventCollection = await FirebaseWrapper.GetInstance().GetEvents(
       "Venue",
@@ -103,12 +117,26 @@ export default class SingleEventScreen extends React.Component {
 
     const venue = await eventCollection.data();
 
+    const attendeesPromise = attendees.map(async user => {
+      try{
+        const attendee = await FirebaseWrapper.GetInstance().GetEvents("User", user)
+        return attendee.data()
+      } catch (error) {
+        console.log(error)
+      }
+    })
+
+    const attendeesList = await Promise.all(attendeesPromise)
+
+    console.log(attendeesList)
+
     this.setState({
       eventId: eventId,
       venuId: venueId,
       user: user,
       add: addButton,
-      venueInfo: venue
+      venueInfo: venue,
+      attendees: attendeesList
     })
   }
 
@@ -153,6 +181,33 @@ export default class SingleEventScreen extends React.Component {
             }}
           />
         </View>
+        <Modal visible= {this.state.ashow}>
+          <View style={{ top: 40, paddingBottom: 300 }}>
+          <Button title = "Back" onPress = {() => this.setState({ashow: false})}/>
+          <Text style={styles.eventTitle}>Attendees: </Text>
+          <ScrollView>
+            {this.state.attendees.length > 0 ? (
+              this.state.attendees.map(attendee => {
+                  return (
+                    <View key={attendee.email} style={styles.listItemParent}>
+                      <Divider style={styles.divider} />
+                      <ListItem
+                        style={styles.listItem}
+                        leftAvatar={{ source: { uri: attendee.profile_picture } }}
+                        title={attendee.first_name}
+                        onPress={() => console.log("You want to message", attendee.first_name)
+                        }
+                      />
+                      <View />
+                    </View>
+                  );
+                      }))
+            : (
+              <Text style = {{paddingLeft: 10}}>(No attendees)</Text>
+            )}
+          </ScrollView>
+          </View>
+        </Modal>
         {/* <View style={styles.buttonContainer}>
           <ThemeProvider theme={theme}>
             <Button
@@ -183,10 +238,10 @@ export default class SingleEventScreen extends React.Component {
           )}
           <ActionButton.Item
             buttonColor="#3498db"
-            title="Empty"
-            onPress={() => {}}
+            title="I want to go with someone!"
+            onPress={() => {this.setState({ashow: true})}}
           >
-            <Icon name="md-notifications-off" style={styles.actionButtonIcon} />
+            <Icon name="md-contacts" style={styles.actionButtonIcon} />
           </ActionButton.Item>
           <ActionButton.Item
             buttonColor="#9b59b6"
@@ -272,5 +327,24 @@ const styles = StyleSheet.create({
   eventDate: {
     paddingHorizontal: 7,
     fontWeight: "bold"
-  }
+  },
+  listItem: {
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+  listItemParent: {
+    borderStyle: 'solid',
+    borderColor: 'grey',
+  },
+  // fix this
+  divder: {
+    backgroundColor: 'grey',
+    height: 2,
+    flex: 1,
+  },
+  eventTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    padding: 10
+  },
 });
