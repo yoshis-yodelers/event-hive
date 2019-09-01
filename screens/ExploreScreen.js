@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
+import { List, ListItem, SearchBar } from 'react-native-elements';
+
 import { FirebaseWrapper } from '../firebase/firebase';
 import NavigationService from '../navigation/NavigationService';
 import * as firebase from 'firebase';
@@ -33,21 +35,28 @@ export default class ExploreScreen extends React.Component {
     super(props);
     this.state = {
       allCategories: [],
-      interests: []
+      interests: [],
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    const userInfo = firebase.auth().currentUser;
+    this.setCategoriesAndInterests(userInfo);
+  }
+
+  async setCategoriesAndInterests(user) {
     try {
-      //User information fetched from firebase, including upcomign events & interests(change line 30 to user once OAuth done)
-      const user = firebase.auth().currentUser;
+      //User information fetched from firebase, including upcoming events & interests(change line 30 to user once OAuth done)
       const allCategories = await FirebaseWrapper.GetInstance().GetAllCategories();
       const interest = await FirebaseWrapper.GetInstance().GetEvents(
-        "User",
+        'User',
         user.uid
       );
-      const interests = interest.data()
-      this.setState({ allCategories: allCategories, interests: interests.interests});
+      const interests = interest.data();
+      this.setState({
+        allCategories: allCategories,
+        interests: interests.interests,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -63,7 +72,13 @@ export default class ExploreScreen extends React.Component {
     return (
       <View style={styles.item}>
         <TouchableOpacity
-          onPress={() => NavigationService.navigate("SingleCategory", {item: item, favorite: this.state.interests.includes(item.key.toString())})}>
+          onPress={() =>
+            NavigationService.navigate('SingleCategory', {
+              item: item,
+              favorite: this.state.interests.includes(item.key.toString()),
+            })
+          }
+        >
           <ImageBackground
             source={{
               uri: item.imageUrl,
@@ -71,9 +86,8 @@ export default class ExploreScreen extends React.Component {
             style={{
               height: Dimensions.get('window').width / numColumns - 4,
               width: Dimensions.get('window').width / numColumns - 4,
-
             }}
-            imageStyle={{ borderRadius: 12}}
+            imageStyle={{ borderRadius: 12 }}
           >
             <Text style={styles.itemText}>{item.type}</Text>
           </ImageBackground>
@@ -116,8 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   itemText: {
-    color: '#fff',
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
     color: 'white',
     padding: 5,
