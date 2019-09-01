@@ -37,6 +37,15 @@ CreateEventStack.navigationOptions = {
 
 export default createBottomTabNavigator(
   {
+    Event: {
+      screen: CreateEventScreen,
+      navigationOptions: () => ({
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="create" color={tintColor} size={30} />
+        )
+      })
+    },
     Home: {
       screen: HomeScreen,
       navigationOptions: () => ({
@@ -55,15 +64,6 @@ export default createBottomTabNavigator(
         )
       })
     },
-    Event: {
-      screen: CreateEventScreen,
-      navigationOptions: () => ({
-        // eslint-disable-next-line react/display-name
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="create" color={tintColor} size={30} />
-        )
-      })
-    }
   },
   {
     tabBarOptions: {

@@ -147,9 +147,9 @@ export default class SingleCategoryScreen extends React.Component {
                 const endTime = (endDateArray[3] >= 12 ? (endDateArray[3]=== 12 ? 12 : (endDateArray[3]-12))
                 : endDateArray[3])+ ":" + (endDateArray[4]=== 0 ? '00' : endDateArray[4]) + endDateArray[6]
 
-                const startDate = month[startDateArray[1]]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
+                const startDate = month[startDateArray[1]-1]+ ' ' + startDateArray[2] + ', ' + startDateArray[0]
 
-                const endDate = month[endDateArray[1]]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
+                const endDate = month[endDateArray[1]-1]+ ' ' + endDateArray[2] + ', ' + endDateArray[0]
 
                 return (
                   <View key={event.id} style={styles.listItemParent}>
@@ -161,16 +161,18 @@ export default class SingleCategoryScreen extends React.Component {
                       subtitle={event.start ? startDate + ' ' + startTime + " - " + (startDate === endDate ? endTime : endDate + ' ' + endTime): ''}
                       onPress={
                         () =>
-                        navigate('SingleEventScreen', {
-                          eventId: event.id,
-                          imgUrl: event.imageUrl,
-                          eventName: event.name,
-                          description: event.description,
-                          startDate: startDate,
-                          startTime: startTime,
-                          endDate: endDate,
-                          endTime: endTime
-                        })
+                        // navigate('SingleEventScreen', {
+                        //   eventId: event.id,
+                        //   imgUrl: event.imageUrl,
+                        //   eventName: event.name,
+                        //   description: event.description,
+                        //   startDate: startDate,
+                        //   startTime: startTime,
+                        //   endDate: endDate,
+                        //   endTime: endTime,
+                        //   venue: event.venue
+                        // })
+                        console.log(event)
                       }
                     />
                     <View />

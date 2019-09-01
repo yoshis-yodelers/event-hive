@@ -72,21 +72,21 @@ export default class LoginScreen extends React.Component {
     try {
       const result = await Google.logInAsync({
         // //event-hive
-            behavior: "web",
-            androidClientId:
-              "1008246741429-2t3icr6oiusv8q64stil4m8rv0hfbdle.apps.googleusercontent.com",
-            iosClientId:
-              "1008246741429-trgs03tg4mdbnbv0f18e7gqonat0suip.apps.googleusercontent.com",
-          scopes: ["profile", "email"]
-        });
+        //     behavior: "web",
+        //     androidClientId:
+        //       "1008246741429-2t3icr6oiusv8q64stil4m8rv0hfbdle.apps.googleusercontent.com",
+        //     iosClientId:
+        //       "1008246741429-trgs03tg4mdbnbv0f18e7gqonat0suip.apps.googleusercontent.com",
+        //   scopes: ["profile", "email"]
+        // });
         // event hive 2
-      //   behavior: 'web',
-      //   androidClientId:
-      //     '231464456947-dslj33o74k57lubdticmuin7vdomeltt.apps.googleusercontent.com',
-      //   iosClientId:
-      //     '231464456947-g0tdhp6jsdrmprvlr15opjnonq16dlb7.apps.googleusercontent.com',
-      //   scopes: ['profile', 'email'],
-      // });
+        behavior: 'web',
+        androidClientId:
+          '231464456947-dslj33o74k57lubdticmuin7vdomeltt.apps.googleusercontent.com',
+        iosClientId:
+          '231464456947-g0tdhp6jsdrmprvlr15opjnonq16dlb7.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+      });
       if (result.type === 'success') {
         // console.log(result);
         this.onSignIn(result);

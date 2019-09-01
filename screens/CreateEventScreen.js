@@ -26,6 +26,7 @@ export default class CreateEventScreen extends React.Component {
       eampm: 'AM',
       categoryshow: false,
       category: '',
+      city: '',
       description: '',
       ehour: 1,
       eminute: '00',
@@ -34,53 +35,113 @@ export default class CreateEventScreen extends React.Component {
       name: '',
       startshow: false,
       start: '',
+      state: '',
+      street: '',
       shour: 1,
       sminute: '00',
       venue: '',
+      zipcode: '',
     };
   }
 
   async createEvent() {
     try {
-      const boop = this.state.shour;
-      const beep = this.state.ehour;
-      Alert.alert('Event Created!');
-      await FirebaseWrapper.GetInstance().CreateNewDocument('Event', {
-        category: this.state.category,
-        name: this.state.name,
-        description: this.state.description,
-        createdBy: firebase.auth().currentUser.uid,
-        start:
-          this.state.sampm === 'AM'
-            ? this.state.start + 'T' + boop + ':' + this.state.sminute + "00"
-            : this.state.start + 'T' + (boop + 12) + ':' + this.state.sminute + "00",
-        end:
-          this.state.eampm === 'AM'
-            ? this.state.end + 'T' + beep + ':' + this.state.eminute + "00"
-            : this.state.end + 'T' + (beep + 12) + ':' + this.state.eminute + "00",
-      });
+      if (this.state.category && this.state.name && this.state.description && this.state.start && this.state.end && this.state.street && this.state.city && this.state.state && this.state.zipcode){
+
+        const createdVenue = await FirebaseWrapper.GetInstance().CreateNewDocument("Venue", {
+          street: this.state.street,
+          city: this.state.city,
+          state: this.state.state.toUpperCase(),
+          zipcode: this.state.zipcode})
+
+          const start = this.state.shour;
+          const end = this.state.ehour;
+          const createdEvent = await FirebaseWrapper.GetInstance().CreateNewDocument('Event', {
+            category: this.state.category,
+            name: this.state.name,
+            description: this.state.description,
+            createdBy: firebase.auth().currentUser.uid,
+            start:
+              this.state.sampm === 'AM'
+                ? this.state.start + 'T' + start + ':' + this.state.sminute + ":00"
+                : this.state.start + 'T' + (start + 12) + ':' + this.state.sminute + ":00",
+            end:
+              this.state.eampm === 'AM'
+                ? this.state.end + 'T' + end + ':' + this.state.eminute + ":00"
+                : this.state.end + 'T' + (end + 12) + ':' + this.state.eminute + ':00',
+            venue: createdVenue.id,
+            imageUrl: 'https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiMpZfNmKvkAhUMmeAKHYFNCpcQjRx6BAgBEAQ&url=https%3A%2F%2Ffreedomguidedogs.org%2Fspecial-event-icon%2F&psig=AOvVaw1ioYyEHgl-2j6TCmbhMXyX&ust=1567274938644487'
+          });
+          await FirebaseWrapper.GetInstance().AddUserEvent(
+            createdEvent.id,
+            firebase.auth().currentUser.uid
+          );
+          Alert.alert('Event Created!');
+          this.setState({
+            sampm: 'AM',
+            eampm: 'AM',
+            category: '',
+            city: '',
+            description: '',
+            ehour: 1,
+            eminute: '00',
+            end: '',
+            name: '',
+            start: '',
+            state: '',
+            shour: 1,
+            sminute: '00',
+            street: '',
+            venue: '',
+            zipcode: ''
+          })
+        } else {
+          Alert.alert("Oops! Please fill out all fields.")
+        }
     } catch (error) {
       console.log(error);
     }
   }
 
   render() {
+    const object = {
+    "101":"Business",
+    "102":"Science & Tech",
+    "103":"Music",
+    "104":"Film & Media",
+    "105":"Performing & Visual Arts",
+    "106":"Fashion",
+    "107":"Health",
+    "108":"Sports & Fitness",
+    "109":"Travel & Outdoor",
+    "110":"Food & Drink",
+    "111":"Charity & Causes",
+    "112":"Government",
+    "113":"Community",
+    "114":"Spirituality",
+    "115":"Family & Education",
+    "116":"Holiday",
+    "117":"Home & Lifestyle",
+    "118":"Auto, Boat & Air",
+    "119":"Hobbies",
+    "120":"School Activities",
+    "121":"Larping",
+    "199":"Other"}
     return (
-      <View>
+      <View style = {styles.view}>
         <View>
-          <Text style={styles.text}>Create New Event</Text>
+          <Text style={styles.title}>Create Event</Text>
         </View>
-        <KeyboardAvoidingView>
-          <ScrollView>
-            <View style={styles.view}>
+          <ScrollView contentContainerStyle = {{flexGrow: 1}}>
+            <View style = {{paddingBottom: 15}}>
               <Text style={styles.text}>Category:</Text>
               <TextInput
                 style={styles.input}
                 onFocus={() => this.setState({ categoryshow: true })}
-                value={this.state.category}
+                value={object[this.state.category]}
               />
               <Modal visible={this.state.categoryshow}>
-              <View style = {{paddingTop: 20}}>
+              <View style = {{paddingTop: 50}}>
               <View
                     style={{
                       justifyContent: 'space-between',
@@ -137,13 +198,42 @@ export default class CreateEventScreen extends React.Component {
                 style={styles.input}
                 onChangeText={name => this.setState({ name })}
                 value={this.state.name}
+                multiline= {true}
               />
               <Text style={styles.text}>Event Description:</Text>
               <TextInput
-                style={styles.input}
+                style={styles.description}
                 onChangeText={description => this.setState({ description })}
                 value={this.state.description}
+                multiline={true}
               />
+              <Text style= {styles.text}>Address: </Text>
+            <TextInput
+                style={styles.input}
+                onChangeText={street => this.setState({ street })}
+                value={this.state.street}
+                placeholder= "Street"
+              />
+              <View style = {{flexDirection: "row", justifyContent: "space-between"}}>
+              <TextInput
+                style={styles.input}
+                onChangeText={city => this.setState({ city })}
+                value={this.state.city}
+                placeholder= "City"
+              />
+              <TextInput
+                style={styles.input}
+                onChangeText={state => this.setState({ state })}
+                value={this.state.state}
+                placeholder= "State"
+              />
+              <TextInput
+                style={styles.input}
+                onChangeText={zipcode => this.setState({ zipcode })}
+                value={this.state.zipcode}
+                placeholder= "Zipcode"
+              />
+              </View>
               <Text style={styles.text}>Start Date/Time:</Text>
               <TextInput
                 style={styles.input}
@@ -160,7 +250,7 @@ export default class CreateEventScreen extends React.Component {
                 onFocus={() => this.setState({ startshow: true })}
               />
               <Modal visible={this.state.startshow}>
-                <View style={{ top: 20 }}>
+                <View style={{ top: 50 }}>
                   <View
                     style={{
                       justifyContent: 'space-between',
@@ -267,7 +357,7 @@ export default class CreateEventScreen extends React.Component {
                 onFocus={() => this.setState({ endshow: true })}
               />
               <Modal visible={this.state.endshow}>
-                <View style={{ top: 20 }}>
+                <View style={{ top: 50 }}>
                   <View
                     style={{
                       justifyContent: 'space-between',
@@ -359,16 +449,19 @@ export default class CreateEventScreen extends React.Component {
                 </View>
               </Modal>
             </View>
-            <Button title="Create Event" onPress={() => this.createEvent()} />
+            <View style = {{backgroundColor: "green", borderRadius: "10"}}>
+            <Button color= "white" titleProps= {{fontWeight: "bold"}}title="Create Event" onPress={() => this.createEvent()} />
+            </View>
           </ScrollView>
-        </KeyboardAvoidingView>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  view: { marginTop: 15, paddingBottom: 20 },
-  input: { height: 30, borderColor: 'gray', borderWidth: 1 },
-  text: { fontSize: 17, fontWeight: 'bold', paddingTop: 15 },
+  title: {fontSize: 25, fontWeight: 'bold', paddingHorizontal: 5},
+  view: {flex: 1, padding: 10},
+  input: { flexGrow: 1, padding: 5, fontSize: 17, height: 40, borderColor: 'gray', borderWidth: 2},
+  text: { fontSize: 20, fontWeight: 'bold', paddingTop: 20, paddingBottom: 5},
+  description: {paddingHorizontal: 5, fontSize: 17, height: 80, borderColor: 'gray', borderWidth: 2 }
 });
