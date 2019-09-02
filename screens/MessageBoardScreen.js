@@ -19,23 +19,22 @@ class MessageBoardScreen extends Component {
     super(props);
     this.state = {
       allContacts: [],
-      user: null,
+      // user: null,
     };
   }
 
   async componentDidMount() {
     const userInfo = await firebase.auth().currentUser;
-    this.setState({
-      user: userInfo,
-    });
+    // this.setState({
+    //   user: userInfo,
+    // });
     this.setAllContacts(userInfo);
   }
 
   async setAllContacts(currentUser) {
     try {
-      //User information fetched from firebase, including upcoming events & interests(change line 30 to user once OAuth done)
+      //User information fetched for key, profilePicture, firstName, lastName
       const allUsers = await FirebaseWrapper.GetInstance().GetAllUsers();
-
       this.setState({
         allContacts: allUsers,
       });
@@ -44,18 +43,13 @@ class MessageBoardScreen extends Component {
     }
   }
 
-  onPress = () =>
-    this.props.navigation.navigate('MessageScreen', { name: this.state.name });
-
-  onChangeText = name => this.setState({ name });
-
   renderItem = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() =>
           NavigationService.navigate('MessageScreen', {
             item: item,
-            user: this.state.user,
+            // user: this.state.user,
           })
         }
       >
