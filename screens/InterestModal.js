@@ -49,7 +49,7 @@ export default class InterestModal extends React.Component {
       allCategories: [],
       modalVisible: true,
       userInterests: [],
-      opacity: 1
+      opacity: 1,
     };
   }
 
@@ -118,6 +118,7 @@ export default class InterestModal extends React.Component {
   };
 
   render() {
+    console.log(this.state.allCategories);
     return (
       <View>
         <Modal visible={this.props.modalVisible}>
@@ -125,30 +126,17 @@ export default class InterestModal extends React.Component {
             contentContainerStyle={styles.contentContainer}
             style={styles.scrollContainer}
           >
-            <View styles={styles.viewContainer}>
-              {this.state.allCategories &&
-                this.state.allCategories.map(category => {
-                  return (
-                    // <View style={styles.buttonContainer} key={category.id}>
-
-                    <TouchableOpacity
-                      style={styles.touchableContainer}
-                      key={category.key}
-                      onPress={() => this.addInterest(category.key)}
-                    >
-                      {/* <TouchableHighlight> */}
-                      <Text style={styles.buttons}>{category.type}</Text>
-                      {/* </TouchableHighlight> */}
-                    </TouchableOpacity>
-                  );
-                })}
-
-              <Button
-                title={'Submit Interests'}
-                style={styles.submitButton}
-                onPress={this.addInterestToUser}
-              />
-            </View>
+            <FlatList
+              data={correctColumns(this.state.allCategories, numColumns)}
+              style={styles.container}
+              renderItem={this.renderItem}
+              numColumns={numColumns}
+            />
+            <Button
+              title="Submit Interests"
+              style={styles.submitButton}
+              onPress={this.addInterestToUser}
+            />
           </ScrollView>
         </Modal>
       </View>
