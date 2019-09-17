@@ -49,6 +49,10 @@ For the best experience using this app, we recommend running this on iOS simulat
   </tr>
 </table>
 
+## Presentation 
+
+[![EventHive Video](https://img.youtube.com/vi/5K37kXpwZ4g/0.jpg)](https://www.youtube.com/watch?v=5K37kXpwZ4g)
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
