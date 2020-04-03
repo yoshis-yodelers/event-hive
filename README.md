@@ -43,8 +43,8 @@ For the best experience using this app, we recommend running this on iOS simulat
 <table>
   <tr>
     <td align="center"><a href="https://github.com/djchinia"><img src="https://avatars1.githubusercontent.com/u/6266179?s=400&v=4" width="120px;" alt="Dan Chiniara"/><br /><sub><b>Dan Chiniara</b></sub><br /></a></td>
-    <td align="center"><a href="https://github.com/StartsAtZero"><img src="https://media.licdn.com/dms/image/C4D03AQHTsZ5DwNrc9Q/profile-displayphoto-shrink_800_800/0?e=1573084800&v=beta&t=wjG8JrZvKVBWTu_jZ26e6_SzBRjYZWtdRWoNocXkaCU" width="120px;" alt="Ally Lobova"/><br /><sub><b>Ally (Lobova)Smirnov</b></sub></a></td>
-    <td align="center"><a href="https://github.com/AnnaYWu"><img src="https://media.licdn.com/dms/image/C4D03AQFKDHxjqkdUyQ/profile-displayphoto-shrink_800_800/0?e=1573084800&v=beta&t=1DwcY6SN1RaS38gNsHunM9qSdAdLjujKvK72uINEMTM" width="120px;" alt="Anna Wu"/><br /><sub><b>Anna Wu</b></sub></a></td>
+    <td align="center"><a href="https://github.com/StartsAtZero"><img src="https://media-exp1.licdn.com/dms/image/C4D03AQH9UIt_NNFZPA/profile-displayphoto-shrink_200_200/0?e=1591228800&v=beta&t=vtq98-LLRfrIEd7302kUOBYuBYDIpG85QamUJY-vHJc" width="120px;" alt="Ally Lobova"/><br /><sub><b>Ally (Lobova)Smirnov</b></sub></a></td>
+    <td align="center"><a href="https://github.com/AnnaYWu"><img src="https://media-exp1.licdn.com/dms/image/C4E03AQGGt6e_G3B0vg/profile-displayphoto-shrink_800_800/0?e=1591228800&v=beta&t=_GvuCVWpQ9cZmwk7OQUSaOvaniOUaxafbAeTjr81wdo" width="120px;" alt="Anna Wu"/><br /><sub><b>Anna Wu</b></sub></a></td>
     <td align="center"><a href="https://github.com/jkirpalani"><img src="https://avatars3.githubusercontent.com/u/49246700?s=400&v=4" width="120px;" alt="Johnny Kirpalani"/><br /><sub><b>Johnny Kirpalani</b></sub></a></td>
   </tr>
 </table>
